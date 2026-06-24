@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>新規賃貸住宅管理受託契約 確認事項アンケート</title>
+    <link rel="stylesheet" href="./styles.css?v=20260624-3" />
+  </head>
+  <body>
+    <main class="app">
+      <header class="hero">
+        <div class="hero-media" aria-hidden="true"></div>
+        <div class="hero-overlay"></div>
+        <div class="hero-inner">
+          <div class="brand-strip">
+            <div class="logo-card">
+              <img src="./assets/heiwajuutaku-logo.jpg" alt="平和住宅情報センター" />
+            </div>
+            <div class="sheet-badge" title="本番実装時はGoogleスプレッドシートに回答を蓄積します">
+              <span aria-hidden="true"></span>
+              Google Sheets連携想定
+            </div>
+          </div>
+
+          <div class="hero-copy">
+            <p class="eyebrow">NEW OWNER ONBOARDING</p>
+            <h1>新規賃貸住宅管理受託契約<br />確認事項アンケート</h1>
+            <p>
+              契約書類の作成に必要な基本情報と、今後の賃貸経営方針を一度に確認するためのフォームです。
+            </p>
+          </div>
+        </div>
+      </header>
+
+      <section class="workspace">
+        <aside class="rail" aria-label="入力ステップ">
+          <div class="rail-card">
+            <p class="rail-kicker">回答の流れ</p>
+            <ol id="stepNav"></ol>
+          </div>
+        </aside>
+
+        <section class="form-stage" aria-live="polite">
+          <div class="stage-head">
+            <div>
+              <p id="stepKicker" class="stage-kicker">ご案内</p>
+              <h2 id="stepTitle">入力前のご案内</h2>
+            </div>
+            <div class="progress-box">
+              <span id="progressText">1 / 12</span>
+              <div class="progress-track">
+                <div id="progressBar" class="progress-bar"></div>
+              </div>
+            </div>
+          </div>
+
+          <form id="surveyForm" novalidate>
+            <section id="stepContent" class="step-content"></section>
+
+            <div class="form-actions">
+              <button class="ghost-btn" id="backBtn" type="button" aria-label="前へ" title="前へ">
+                <span aria-hidden="true">‹</span>
+              </button>
+              <button class="secondary-btn" id="saveBtn" type="button">下書き保存</button>
+              <button class="primary-btn" id="nextBtn" type="button">
+                <span id="nextLabel">次へ</span>
+                <span aria-hidden="true">›</span>
+              </button>
+            </div>
+          </form>
+        </section>
+      </section>
+    </main>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="./script.js?v=20260624-3"></script>
+  </body>
+</html>
