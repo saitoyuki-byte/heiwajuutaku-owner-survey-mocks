@@ -88,7 +88,7 @@
 
       .cards {
         display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: 18px;
         margin-top: 34px;
       }
@@ -151,6 +151,11 @@
         background: #e8f9fc;
       }
 
+      .card:nth-child(3) .tag {
+        color: #07596c;
+        background: #e8f9fc;
+      }
+
       .note {
         margin-top: 20px;
         color: var(--muted);
@@ -187,7 +192,7 @@
         <p class="eyebrow">FORM MOCKUPS</p>
         <h1>オーナー向けアンケートフォーム モック</h1>
         <p class="lead">
-          創業50周年記念の既存オーナー向けフォームと、新規取引オーナー向けの契約確認フォームを確認できます。
+        創業50周年記念の既存オーナー向けフォーム、新規取引オーナー向けの契約確認フォーム、入居時室内チェックフォームを確認できます。
         </p>
       </section>
 
@@ -206,6 +211,15 @@
             <span class="tag">新規取引オーナー向け</span>
             <h2>新規賃貸住宅管理受託契約<br />確認事項アンケート</h2>
             <p>契約方法、委託者情報、必要書類、送金口座、運用方針を確認するフォームです。</p>
+          </div>
+          <span class="open">モックを開く <span aria-hidden="true">›</span></span>
+        </a>
+
+        <a class="card" href="./room-check-form-mock/">
+          <div>
+            <span class="tag">入居者向け</span>
+            <h2>入居時室内チェック<br />写真アップロードフォーム</h2>
+            <p>場所別に複数写真とコメントを登録し、PDF台帳生成の流れを確認できるフォームです。</p>
           </div>
           <span class="open">モックを開く <span aria-hidden="true">›</span></span>
         </a>

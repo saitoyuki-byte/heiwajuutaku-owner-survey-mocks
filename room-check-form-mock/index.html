@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>入居時室内チェックフォーム</title>
+    <link rel="stylesheet" href="./styles.css?v=20260624-1" />
+  </head>
+  <body>
+    <main class="app">
+      <header class="hero">
+        <div class="hero-inner">
+          <div class="brand-row">
+            <div class="logo-card">
+              <img src="./assets/heiwajuutaku-logo.jpg" alt="平和住宅情報センター" />
+            </div>
+            <div class="status-pill">
+              <span aria-hidden="true"></span>
+              PDF台帳生成モック
+            </div>
+          </div>
+
+          <section class="hero-copy">
+            <p class="eyebrow">MOVE-IN CONDITION CHECK</p>
+            <h1>入居時室内チェックフォーム</h1>
+            <p>入居時の写真とコメントを場所ごとに整理し、退去時確認用のPDF台帳として保存する想定の入力画面です。</p>
+          </section>
+        </div>
+      </header>
+
+      <section class="workspace">
+        <aside class="side-panel">
+          <section class="card property-card">
+            <div class="section-head">
+              <p class="kicker">PROPERTY</p>
+              <h2>物件情報</h2>
+            </div>
+
+            <form id="metaForm" class="meta-form" novalidate>
+              <label class="input-field">
+                <span>物件番号 <b>必須</b></span>
+                <input name="propertyNo" type="text" placeholder="例：A01234" />
+              </label>
+              <label class="input-field">
+                <span>物件名 <b>必須</b></span>
+                <input name="propertyName" type="text" placeholder="例：平和レジデンス一番町" />
+              </label>
+              <label class="input-field short">
+                <span>号室 <b>必須</b></span>
+                <input name="roomNo" type="text" placeholder="例：203" />
+              </label>
+              <label class="input-field">
+                <span>契約者名 <b>必須</b></span>
+                <input name="tenantName" type="text" placeholder="例：山田 太郎" />
+              </label>
+              <label class="input-field short">
+                <span>撮影日 <b>必須</b></span>
+                <input name="shootDate" type="date" />
+              </label>
+            </form>
+          </section>
+
+          <section class="card summary-card">
+            <div class="section-head">
+              <p class="kicker">OUTPUT</p>
+              <h2>生成イメージ</h2>
+            </div>
+            <dl class="summary-list">
+              <div>
+                <dt>登録写真</dt>
+                <dd id="totalPhotos">0枚</dd>
+              </div>
+              <div>
+                <dt>入力済み場所</dt>
+                <dd id="filledPlaces">0箇所</dd>
+              </div>
+              <div>
+                <dt>PDFファイル名</dt>
+                <dd id="pdfName">未入力</dd>
+              </div>
+              <div>
+                <dt>保存先フォルダ</dt>
+                <dd id="folderName">未入力</dd>
+              </div>
+            </dl>
+          </section>
+        </aside>
+
+        <section class="main-panel">
+          <div class="toolbar card">
+            <div>
+              <p class="kicker">PHOTO LEDGER</p>
+              <h2>場所別 写真登録</h2>
+            </div>
+            <div class="toolbar-actions">
+              <button class="secondary-btn" id="saveDraftBtn" type="button">下書き保存</button>
+              <button class="secondary-btn accent-btn" id="demoBtn" type="button">デモ写真を配置</button>
+              <button class="primary-btn" id="generateBtn" type="button">PDFプレビュー生成</button>
+            </div>
+          </div>
+
+          <section class="add-place card">
+            <label class="input-field inline">
+              <span>場所を追加</span>
+              <input id="customPlaceInput" type="text" placeholder="例：ベランダ、収納、廊下" />
+            </label>
+            <button class="add-btn" id="addPlaceBtn" type="button">追加</button>
+          </section>
+
+          <section id="placeList" class="place-list" aria-live="polite"></section>
+
+          <section id="reportPanel" class="report-panel card is-hidden">
+            <div class="report-head">
+              <div>
+                <p class="kicker">PDF PREVIEW</p>
+                <h2>生成されるPDF台帳のイメージ</h2>
+              </div>
+              <button class="secondary-btn" id="printBtn" type="button">印刷/保存</button>
+            </div>
+            <div id="reportContent" class="report-content"></div>
+          </section>
+        </section>
+      </section>
+    </main>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <script src="./script.js?v=20260624-1"></script>
+  </body>
+</html>
