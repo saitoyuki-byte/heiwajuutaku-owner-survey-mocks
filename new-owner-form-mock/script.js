@@ -1,6 +1,7 @@
 const STORAGE_KEY = "heiwaNewOwnerSurveyDraft";
 const SUBMITTED_KEY = "heiwaNewOwnerSurveySubmitted";
 const GOOGLE_APPS_SCRIPT_ENDPOINT = "";
+const ZIPCLOUD_ENDPOINT = "https://zipcloud.ibsnet.co.jp/api/search";
 
 const PURCHASE_INTENTS = ["積極的に収益不動産を追加取得したい", "良いものがあれば、収益不動産を追加取得したい"];
 
@@ -60,7 +61,17 @@ const steps = [
       { id: "corp_rep_name", type: "text", label: "法人の代表者氏名", placeholder: "例：山田 太郎" },
       { id: "corp_rep_name_kana", type: "text", label: "法人の代表者氏名（フリガナ）", placeholder: "例：ヤマダ タロウ" },
       { id: "birthdate", type: "date", required: true, label: "生年月日（法人の場合は代表者の生年月日）" },
-      { id: "address", type: "textarea", required: true, label: "住所", placeholder: "郵便番号・住所をご入力ください。" },
+      {
+        id: "address",
+        type: "addressLookup",
+        required: true,
+        label: "住所",
+        postalId: "postal_code",
+        detailId: "address_detail",
+        postalPlaceholder: "例：981-0908",
+        placeholder: "郵便番号検索で町域まで自動反映されます。",
+        detailPlaceholder: "例：2丁目21-4 ○○マンション101",
+      },
       { id: "landline", type: "tel", label: "固定電話", placeholder: "例：022-000-0000" },
       { id: "mobile", type: "tel", required: true, label: "携帯番号", placeholder: "例：090-0000-0000" },
       { id: "email", type: "email", required: true, label: "E-mailアドレス", placeholder: "example@example.com" },
@@ -343,6 +354,7 @@ let formData = loadDraft();
 let currentStepIndex = 0;
 let errors = {};
 let toastTimer = null;
+let addressLookupState = { loading: false, message: "", type: "" };
 
 const els = {
   stepNav: document.getElementById("stepNav"),
@@ -404,11 +416,18 @@ els.saveBtn.addEventListener("click", () => {
   showToast("入力内容をこのブラウザに保存しました。");
 });
 
+els.stepContent.addEventListener("click", (event) => {
+  const trigger = event.target.closest?.("[data-action='lookup-address']");
+  if (!trigger) return;
+  lookupAddressFromPostal();
+});
+
 els.stepContent.addEventListener("change", (event) => {
   const target = event.target;
   if (!target.name) return;
   updateDataFromControl(target);
   errors[target.name] = "";
+  if (["postal_code", "address", "address_detail"].includes(target.name)) errors.address = "";
   saveDraft();
 
   if (["radio", "checkbox", "file"].includes(target.type)) {
@@ -421,6 +440,10 @@ els.stepContent.addEventListener("input", (event) => {
   if (!target.name || ["checkbox", "radio", "file"].includes(target.type)) return;
   updateDataFromControl(target);
   errors[target.name] = "";
+  if (["postal_code", "address", "address_detail"].includes(target.name)) errors.address = "";
+  if (target.name === "postal_code") {
+    addressLookupState = { loading: false, message: "", type: "" };
+  }
   saveDraft();
 });
 
@@ -518,6 +541,7 @@ function renderField(field, compact = false) {
     return renderTextField(field, compact);
   }
 
+  if (field.type === "addressLookup") return renderAddressLookup(field, compact);
   if (field.type === "textarea") return renderTextarea(field, compact);
   if (field.type === "singleCheckbox") return renderSingleCheckbox(field);
   if (field.type === "file") return renderFile(field);
@@ -610,6 +634,62 @@ function renderTextarea(field, compact) {
       <textarea class="textarea-control" name="${escapeAttr(field.id)}" placeholder="${escapeAttr(field.placeholder || "")}">${escapeHtml(formData[field.id] || "")}</textarea>
       ${renderError(field.id)}
     </label>
+  `;
+
+  return compact ? html : `<div class="field-group">${html}</div>`;
+}
+
+function renderAddressLookup(field, compact) {
+  const postalValue = formData[field.postalId] || "";
+  const addressValue = formData[field.id] || "";
+  const detailValue = formData[field.detailId] || "";
+  const status = addressLookupState.message
+    ? `<p class="lookup-status ${escapeAttr(addressLookupState.type)}">${escapeHtml(addressLookupState.message)}</p>`
+    : `<p class="lookup-status">郵便番号を入力して「住所へ反映」を押すと、町域まで自動入力されます。</p>`;
+  const disabled = addressLookupState.loading ? "disabled" : "";
+
+  const html = `
+    <div class="address-lookup-field" data-field="${escapeAttr(field.id)}">
+      <div class="address-lookup-head">
+        <span class="input-label">
+          ${escapeHtml(field.label)}
+          ${field.required ? `<span class="required">必須</span>` : ""}
+        </span>
+      </div>
+      <div class="postal-search-row">
+        <label class="input-field postal-code-field">
+          <span class="input-label">郵便番号</span>
+          <input
+            class="text-control"
+            type="text"
+            name="${escapeAttr(field.postalId)}"
+            value="${escapeAttr(postalValue)}"
+            placeholder="${escapeAttr(field.postalPlaceholder || "")}"
+            inputmode="numeric"
+            autocomplete="postal-code"
+          />
+        </label>
+        <button class="lookup-btn" type="button" data-action="lookup-address" ${disabled}>
+          ${addressLookupState.loading ? "検索中..." : "住所へ反映"}
+        </button>
+      </div>
+      ${status}
+      <label class="input-field">
+        <span class="input-label">住所（自動反映）</span>
+        <textarea class="textarea-control address-base-control" name="${escapeAttr(field.id)}" placeholder="${escapeAttr(field.placeholder || "")}">${escapeHtml(addressValue)}</textarea>
+      </label>
+      <label class="input-field">
+        <span class="input-label">番地・建物名</span>
+        <input
+          class="text-control"
+          type="text"
+          name="${escapeAttr(field.detailId)}"
+          value="${escapeAttr(detailValue)}"
+          placeholder="${escapeAttr(field.detailPlaceholder || "")}"
+        />
+      </label>
+      ${renderError(field.id)}
+    </div>
   `;
 
   return compact ? html : `<div class="field-group">${html}</div>`;
@@ -787,6 +867,13 @@ function validateStep(step) {
   getRenderableFields(step).forEach((field) => {
     const value = formData[field.id];
 
+    if (field.type === "addressLookup") {
+      if (field.required && (isEmptyValue(value) || isEmptyValue(formData[field.detailId]))) {
+        errors[field.id] = "郵便番号検索で住所を反映し、番地・建物名まで入力してください。";
+      }
+      return;
+    }
+
     if (field.required && isEmptyValue(value)) {
       errors[field.id] = "この項目を入力してください。";
       return;
@@ -824,10 +911,63 @@ function buildSummaryRows() {
 
 function formatValue(field, value) {
   if (field.type === "singleCheckbox") return value ? field.option : "";
+  if (field.type === "addressLookup") {
+    return [formData[field.postalId], value, formData[field.detailId]].filter(Boolean).join("\n");
+  }
   if (Array.isArray(value)) return value.join("\n");
   if (field.type === "invoice" && value) return `T${value}`;
   if (field.type === "currency" && value) return `${value}円`;
   return value || "";
+}
+
+async function lookupAddressFromPostal() {
+  const postalInput = document.querySelector('[name="postal_code"]');
+  const rawPostal = postalInput ? postalInput.value : formData.postal_code || "";
+  const zipcode = normalizePostalCode(rawPostal);
+
+  if (!/^\d{7}$/.test(zipcode)) {
+    formData.postal_code = rawPostal;
+    addressLookupState = { loading: false, message: "郵便番号は7桁で入力してください。", type: "error" };
+    render();
+    return;
+  }
+
+  formData.postal_code = formatPostalCode(zipcode);
+  addressLookupState = { loading: true, message: "住所を検索しています。", type: "info" };
+  render();
+
+  try {
+    const response = await fetch(`${ZIPCLOUD_ENDPOINT}?zipcode=${encodeURIComponent(zipcode)}`);
+    if (!response.ok) throw new Error("network");
+
+    const data = await response.json();
+    const result = Array.isArray(data.results) ? data.results[0] : null;
+
+    if (data.status !== 200 || !result) {
+      addressLookupState = { loading: false, message: "該当する住所が見つかりませんでした。郵便番号をご確認ください。", type: "error" };
+      render();
+      return;
+    }
+
+    formData.address = `${result.address1}${result.address2}${result.address3}`;
+    errors.address = "";
+    addressLookupState = { loading: false, message: "住所を反映しました。番地・建物名を追記してください。", type: "success" };
+    saveDraft();
+    render();
+  } catch {
+    addressLookupState = { loading: false, message: "住所検索に失敗しました。時間をおいて再度お試しください。", type: "error" };
+    render();
+  }
+}
+
+function normalizePostalCode(value) {
+  return String(value || "")
+    .replace(/[０-９]/g, (char) => String.fromCharCode(char.charCodeAt(0) - 0xfee0))
+    .replace(/[^\d]/g, "");
+}
+
+function formatPostalCode(value) {
+  return `${value.slice(0, 3)}-${value.slice(3)}`;
 }
 
 function buildSheetPayload() {

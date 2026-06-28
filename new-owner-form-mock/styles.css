@@ -585,6 +585,67 @@ button {
   padding-right: 44px;
 }
 
+.address-lookup-field {
+  grid-column: 1 / -1;
+  display: grid;
+  gap: 12px;
+}
+
+.address-lookup-head {
+  display: flex;
+  align-items: center;
+  min-height: 22px;
+}
+
+.postal-search-row {
+  display: grid;
+  grid-template-columns: minmax(180px, 280px) auto;
+  gap: 10px;
+  align-items: end;
+}
+
+.postal-code-field {
+  min-width: 0;
+}
+
+.lookup-btn {
+  min-height: 48px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: var(--radius);
+  color: #fff;
+  background: linear-gradient(135deg, var(--cyan), var(--green));
+  font-size: 14px;
+  font-weight: 900;
+  white-space: nowrap;
+  box-shadow: 0 10px 22px rgba(0, 125, 151, 0.18);
+}
+
+.lookup-btn:disabled {
+  opacity: 0.68;
+  cursor: wait;
+}
+
+.lookup-status {
+  min-height: 20px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.lookup-status.success {
+  color: var(--green);
+}
+
+.lookup-status.error {
+  color: var(--danger);
+}
+
+.address-base-control {
+  min-height: 82px;
+}
+
 .error-message {
   min-height: 20px;
   margin: 0;
@@ -859,6 +920,14 @@ button {
   .field-grid.three,
   .mini-grid {
     grid-template-columns: 1fr;
+  }
+
+  .postal-search-row {
+    grid-template-columns: 1fr;
+  }
+
+  .lookup-btn {
+    width: 100%;
   }
 
   .field-label {
