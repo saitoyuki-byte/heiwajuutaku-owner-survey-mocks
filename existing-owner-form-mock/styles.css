@@ -440,6 +440,19 @@ button {
   background: #f0f6ff;
 }
 
+.inline-discretion-field {
+  margin-top: -6px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-top: 0;
+  border-radius: 0 0 var(--radius) var(--radius);
+  background: #f8fbff;
+}
+
+.option-card:has(input:checked) + .inline-discretion-field {
+  border-color: var(--brand);
+}
+
 .option-card:has(input:focus-visible),
 .text-control:focus,
 .textarea-control:focus {

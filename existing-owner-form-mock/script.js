@@ -463,6 +463,8 @@ function renderFields(step) {
 }
 
 function renderField(field, compact = false) {
+  if (field.id === "q4_discretion_amount") return "";
+
   if (field.showIf && !field.showIf(formData)) return "";
 
   if (["text", "tel", "email", "date", "currency"].includes(field.type)) {
@@ -482,7 +484,7 @@ function renderField(field, compact = false) {
       ${renderFieldHead(field)}
       <div class="option-grid">
         ${field.options
-          .map((option) => renderOption(field, option))
+          .map((option, optionIndex) => renderOption(field, option, optionIndex))
           .join("")}
       </div>
       ${renderError(field.id)}
@@ -502,7 +504,7 @@ function renderFieldHead(field) {
   `;
 }
 
-function renderOption(field, option) {
+function renderOption(field, option, optionIndex = -1) {
   const value = typeof option === "string" ? option : option.value;
   const title = typeof option === "string" ? option : option.title;
   const desc = typeof option === "string" ? "" : option.desc || "";
@@ -510,6 +512,11 @@ function renderOption(field, option) {
     field.type === "checkbox"
       ? Array.isArray(formData[field.id]) && formData[field.id].includes(value)
       : formData[field.id] === value;
+
+  const inlineDiscretionAmount =
+    field.id === "q4_condition_relaxation" && optionIndex === 0 && checked
+      ? renderInlineDiscretionAmount()
+      : "";
 
   return `
     <label class="option-card">
@@ -524,6 +531,19 @@ function renderOption(field, option) {
         ${desc ? `<span class="option-desc">${escapeHtml(desc)}</span>` : ""}
       </span>
     </label>
+    ${inlineDiscretionAmount}
+  `;
+}
+
+function renderInlineDiscretionAmount() {
+  const q4Step = steps.find((step) => step.id === "q4");
+  const field = q4Step?.fields.find((item) => item.id === "q4_discretion_amount");
+  if (!field) return "";
+
+  return `
+    <div class="inline-discretion-field">
+      ${renderTextField(field, true)}
+    </div>
   `;
 }
 
