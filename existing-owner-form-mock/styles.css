@@ -485,10 +485,11 @@ button {
 
 .option-card input[type="checkbox"]:checked {
   box-shadow: none;
-  background:
-    linear-gradient(45deg, transparent 58%, #fff 58%, #fff 68%, transparent 68%),
-    linear-gradient(-45deg, transparent 46%, #fff 46%, #fff 56%, transparent 56%),
-    var(--brand);
+  background-color: var(--brand);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.2 4.2L19 7'/%3E%3C/svg%3E");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 18px 18px;
 }
 
 .option-text {
