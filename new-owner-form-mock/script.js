@@ -60,7 +60,7 @@ const steps = [
       { id: "corp_rep_title", type: "text", label: "法人の代表者役職", placeholder: "例：代表取締役" },
       { id: "corp_rep_name", type: "text", label: "法人の代表者氏名", placeholder: "例：山田 太郎" },
       { id: "corp_rep_name_kana", type: "text", label: "法人の代表者氏名（フリガナ）", placeholder: "例：ヤマダ タロウ" },
-      { id: "birthdate", type: "date", required: true, label: "生年月日（法人の場合は代表者の生年月日）" },
+      { id: "birthdate", type: "date", label: "生年月日（法人の場合は代表者の生年月日）" },
       {
         id: "address",
         type: "addressLookup",
@@ -74,7 +74,7 @@ const steps = [
       },
       { id: "landline", type: "tel", label: "固定電話", placeholder: "例：022-000-0000" },
       { id: "mobile", type: "tel", required: true, label: "携帯番号", placeholder: "例：090-0000-0000" },
-      { id: "email", type: "email", required: true, label: "E-mailアドレス", placeholder: "example@example.com" },
+      { id: "email", type: "email", label: "E-mailアドレス", placeholder: "example@example.com" },
       {
         id: "preferred_contact",
         type: "radio",

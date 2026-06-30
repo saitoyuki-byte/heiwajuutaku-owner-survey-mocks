@@ -614,15 +614,23 @@ button {
 }
 
 .icon-btn {
-  width: 46px;
-  display: grid;
-  place-items: center;
+  min-width: 86px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 0 14px;
   color: var(--brand-deep);
   background: var(--mist);
 }
 
-.icon-btn span {
+.icon-btn span:first-child {
   font-size: 26px;
+  line-height: 1;
+}
+
+.icon-btn span:last-child {
+  font-size: 14px;
   line-height: 1;
 }
 

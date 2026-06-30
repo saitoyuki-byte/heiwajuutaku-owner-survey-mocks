@@ -691,16 +691,24 @@ button {
 }
 
 .ghost-btn {
-  width: 46px;
-  display: grid;
-  place-items: center;
+  min-width: 86px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 0 14px;
   color: var(--navy);
   background: #e8f3f8;
 }
 
-.ghost-btn span,
+.ghost-btn span:first-child,
 .primary-btn span:last-child {
   font-size: 24px;
+  line-height: 1;
+}
+
+.ghost-btn span:last-child {
+  font-size: 14px;
   line-height: 1;
 }
 
