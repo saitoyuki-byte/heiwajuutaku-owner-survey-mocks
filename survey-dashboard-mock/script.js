@@ -52,6 +52,72 @@ const dashboards = {
       ["現状維持層", [2, 2, 1, 2]],
       ["売却検討層", [1, 2, 1, 4]],
     ],
+    respondents: [
+      {
+        id: "EX-1042",
+        name: "佐藤 一郎",
+        property: "青葉レジデンス",
+        submitted: "2026/07/02 09:14",
+        status: "投資意向あり",
+        score: "高",
+        summary: "修繕と追加取得に前向き。物件紹介と外壁修繕提案の優先度が高い回答。",
+        answers: [
+          ["外壁・屋根", "耐用年数を伸長させる建物保全を行いたい"],
+          ["室内修繕", "家賃維持を目的としたリフォームを希望"],
+          ["募集条件", "賃料値下げ裁量を委任、フリーレント導入"],
+          ["不動産投資", "積極的に収益不動産を追加取得したい"],
+          ["相談事項", "築古物件の修繕計画と購入候補について相談したい"],
+        ],
+      },
+      {
+        id: "EX-1038",
+        name: "株式会社泉中央企画",
+        property: "泉中央パークビル",
+        submitted: "2026/07/01 17:46",
+        status: "売却検討",
+        score: "中",
+        summary: "近い将来の売却方針。査定・出口戦略の案内が有効な回答。",
+        answers: [
+          ["外壁・屋根", "最低限必要な修繕のみ行いたい"],
+          ["室内修繕", "現状維持程度の修繕に留める"],
+          ["募集方針", "募集条件を緩和して早期入居を優先"],
+          ["不動産投資", "将来売却方針"],
+          ["相談事項", "売却時期と概算査定について相談したい"],
+        ],
+      },
+      {
+        id: "EX-1029",
+        name: "高橋 美智子",
+        property: "一番町コート",
+        submitted: "2026/07/01 11:22",
+        status: "相続相談",
+        score: "高",
+        summary: "後継者未定で相続相談ニーズあり。承継面談の候補。",
+        answers: [
+          ["外壁・屋根", "まだ具体的には決まっていない"],
+          ["室内修繕", "家賃を維持できるようにリフォームしたい"],
+          ["募集条件", "条件緩和は都度相談"],
+          ["相続", "相続について相談したい"],
+          ["自由記述", "子どもに賃貸経営を引き継ぐべきか相談したい"],
+        ],
+      },
+      {
+        id: "EX-1017",
+        name: "山田 太郎",
+        property: "平和レジデンス一番町",
+        submitted: "2026/06/30 15:08",
+        status: "現状維持",
+        score: "低",
+        summary: "現状維持寄り。大きな営業アクションより定期接点向き。",
+        answers: [
+          ["外壁・屋根", "安全面を維持できる程度の修繕のみ"],
+          ["室内修繕", "多少賃料が下がっても現状維持"],
+          ["募集方針", "リフォームも条件緩和もせず待つ"],
+          ["不動産投資", "現状維持"],
+          ["相談事項", "特になし"],
+        ],
+      },
+    ],
   },
   new: {
     kicker: "NEW OWNER ONBOARDING",
@@ -100,6 +166,72 @@ const dashboards = {
       ["投資意向あり", [2, 2, 2, 4]],
       ["後継者未定", [1, 2, 2, 3]],
     ],
+    respondents: [
+      {
+        id: "NW-0086",
+        name: "株式会社青葉アセット",
+        property: "青葉区上杉 1棟マンション",
+        submitted: "2026/07/02 10:03",
+        status: "電子契約",
+        score: "高",
+        summary: "電子契約・書類提出済。追加取得意向があり、収益物件紹介につなげやすい回答。",
+        answers: [
+          ["契約方法", "電子契約による締結"],
+          ["委託者情報", "法人 / 代表者情報入力済"],
+          ["提出書類", "本人確認書類アップロード済"],
+          ["送金口座", "下記口座を送金先とする"],
+          ["不動産投資", "良いものがあれば追加取得したい"],
+        ],
+      },
+      {
+        id: "NW-0082",
+        name: "伊藤 由紀",
+        property: "泉区南光台 アパート",
+        submitted: "2026/07/01 16:32",
+        status: "書類待ち",
+        score: "中",
+        summary: "基本情報は入力済み。本人確認書類と送金口座の確認が残っている回答。",
+        answers: [
+          ["契約方法", "書面契約による締結"],
+          ["委託者情報", "住所検索済 / E-mail任意未入力"],
+          ["提出書類", "別の手段で後日提出"],
+          ["送金口座", "送金先口座が未定の為、後日連絡"],
+          ["希望連絡手段", "電話"],
+        ],
+      },
+      {
+        id: "NW-0077",
+        name: "遠藤 誠",
+        property: "太白区長町 戸建",
+        submitted: "2026/07/01 09:50",
+        status: "後継者未定",
+        score: "中",
+        summary: "契約準備は進行中。後継者未定のため承継方針のヒアリング候補。",
+        answers: [
+          ["契約方法", "電子契約による締結"],
+          ["提出書類", "本人確認書類アップロード済"],
+          ["募集条件", "フリーレント導入を検討"],
+          ["相続", "まだ何も決まっていない、わからない"],
+          ["後継者", "検討中・未定"],
+        ],
+      },
+      {
+        id: "NW-0069",
+        name: "森田 裕子",
+        property: "若林区荒井 マンション",
+        submitted: "2026/06/30 13:17",
+        status: "口座確認",
+        score: "低",
+        summary: "運用方針は保守的。送金口座確認後、通常契約フローで進める回答。",
+        answers: [
+          ["契約方法", "電子契約による締結"],
+          ["希望連絡手段", "メール"],
+          ["送金口座", "送金先口座が未定の為、後日連絡"],
+          ["募集条件", "募集条件緩和は原則行わない"],
+          ["不動産投資", "現状維持"],
+        ],
+      },
+    ],
   },
 };
 
@@ -120,9 +252,15 @@ const els = {
   signalList: document.getElementById("signalList"),
   matrixTitle: document.getElementById("matrixTitle"),
   matrixChart: document.getElementById("matrixChart"),
+  respondentCount: document.getElementById("respondentCount"),
+  respondentList: document.getElementById("respondentList"),
+  respondentDetailTitle: document.getElementById("respondentDetailTitle"),
+  respondentDetailMeta: document.getElementById("respondentDetailMeta"),
+  respondentDetail: document.getElementById("respondentDetail"),
 };
 
 let activeDashboard = "existing";
+let selectedRespondentId = dashboards[activeDashboard].respondents[0].id;
 
 els.updatedAt.textContent = new Date().toLocaleString("ja-JP", {
   month: "2-digit",
@@ -134,9 +272,17 @@ els.updatedAt.textContent = new Date().toLocaleString("ja-JP", {
 els.tabs.forEach((tab) => {
   tab.addEventListener("click", () => {
     activeDashboard = tab.dataset.dashboard;
+    selectedRespondentId = dashboards[activeDashboard].respondents[0].id;
     els.tabs.forEach((item) => item.classList.toggle("is-active", item === tab));
     renderDashboard();
   });
+});
+
+els.respondentList.addEventListener("click", (event) => {
+  const button = event.target.closest(".respondent-row");
+  if (!button) return;
+  selectedRespondentId = button.dataset.respondentId;
+  renderRespondents(dashboards[activeDashboard].respondents);
 });
 
 els.toolBtns.forEach((button) => {
@@ -163,6 +309,7 @@ function renderDashboard() {
   renderBars(data.bars);
   renderSignals(data.signals);
   renderMatrix(data.matrixColumns, data.matrixRows);
+  renderRespondents(data.respondents);
 }
 
 function renderKpi([label, value, note]) {
@@ -270,6 +417,47 @@ function renderMatrix(columns, rows) {
     .join("");
 
   els.matrixChart.innerHTML = headers + body;
+}
+
+function renderRespondents(respondents) {
+  const selected = respondents.find((item) => item.id === selectedRespondentId) || respondents[0];
+  selectedRespondentId = selected.id;
+  els.respondentCount.textContent = `${respondents.length}件表示`;
+
+  els.respondentList.innerHTML = respondents
+    .map(
+      (respondent) => `
+        <button class="respondent-row ${respondent.id === selectedRespondentId ? "is-active" : ""}" type="button" data-respondent-id="${escapeHtml(respondent.id)}">
+          <span class="respondent-id">${escapeHtml(respondent.id)}</span>
+          <strong>${escapeHtml(respondent.name)}</strong>
+          <span>${escapeHtml(respondent.property)}</span>
+          <em>${escapeHtml(respondent.status)}</em>
+        </button>
+      `,
+    )
+    .join("");
+
+  els.respondentDetailTitle.textContent = selected.name;
+  els.respondentDetailMeta.textContent = selected.submitted;
+  els.respondentDetail.innerHTML = `
+    <div class="detail-summary">
+      <span class="score-badge ${selected.score === "高" ? "high" : selected.score === "中" ? "middle" : "low"}">優先度 ${escapeHtml(selected.score)}</span>
+      <strong>${escapeHtml(selected.property)}</strong>
+      <p>${escapeHtml(selected.summary)}</p>
+    </div>
+    <div class="answer-list">
+      ${selected.answers
+        .map(
+          ([label, value]) => `
+            <div class="answer-item">
+              <span>${escapeHtml(label)}</span>
+              <p>${escapeHtml(value)}</p>
+            </div>
+          `,
+        )
+        .join("")}
+    </div>
+  `;
 }
 
 function escapeHtml(value) {

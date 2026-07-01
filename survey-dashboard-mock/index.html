@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>平和住宅情報センター アンケート集計ダッシュボード</title>
-    <link rel="stylesheet" href="./styles.css?v=20260702-1" />
+    <link rel="stylesheet" href="./styles.css?v=20260702-2" />
   </head>
   <body>
     <main class="dashboard-shell">
@@ -107,9 +107,33 @@
             <div id="matrixChart" class="matrix"></div>
           </article>
         </section>
+
+        <section class="respondent-workspace" aria-label="個別回答">
+          <article class="panel respondent-list-panel">
+            <div class="panel-head">
+              <div>
+                <p class="panel-kicker">INDIVIDUAL RESPONSES</p>
+                <h3>回答者一覧</h3>
+              </div>
+              <span id="respondentCount" class="panel-note"></span>
+            </div>
+            <div id="respondentList" class="respondent-list"></div>
+          </article>
+
+          <article class="panel respondent-detail-panel">
+            <div class="panel-head">
+              <div>
+                <p class="panel-kicker">RESPONSE DETAIL</p>
+                <h3 id="respondentDetailTitle">回答詳細</h3>
+              </div>
+              <span id="respondentDetailMeta" class="panel-note"></span>
+            </div>
+            <div id="respondentDetail" class="respondent-detail"></div>
+          </article>
+        </section>
       </section>
     </main>
 
-    <script src="./script.js?v=20260702-1"></script>
+    <script src="./script.js?v=20260702-2"></script>
   </body>
 </html>
