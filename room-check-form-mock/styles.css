@@ -601,6 +601,57 @@ button {
   background: #edf2f7;
 }
 
+.repair-request {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+  padding: 16px;
+  border: 1px solid rgba(14, 165, 233, 0.34);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, #f0fbff, #fff);
+}
+
+.repair-request h3,
+.repair-request p {
+  margin: 0;
+}
+
+.repair-request h3 {
+  margin-top: 4px;
+  color: var(--navy);
+  font-size: 17px;
+}
+
+.repair-request p:not(.kicker) {
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.7;
+}
+
+.repair-check {
+  flex: none;
+  min-height: 46px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 16px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  color: var(--ink);
+  background: #fff;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.repair-check input {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--navy);
+}
+
 .toast {
   position: fixed;
   right: 24px;
@@ -687,9 +738,15 @@ button {
 
   .toolbar,
   .add-place,
-  .report-head {
+  .report-head,
+  .repair-request {
     align-items: stretch;
     flex-direction: column;
+  }
+
+  .repair-check {
+    width: 100%;
+    justify-content: center;
   }
 
   .toolbar-actions {

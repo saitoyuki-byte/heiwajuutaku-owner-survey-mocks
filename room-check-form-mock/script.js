@@ -25,6 +25,7 @@ let state = {
     photos: [],
     removable: false,
   })),
+  repairRequested: false,
 };
 
 let toastTimer = null;
@@ -156,6 +157,13 @@ els.generateBtn.addEventListener("click", () => {
 
 els.printBtn.addEventListener("click", () => {
   window.print();
+});
+
+els.reportContent.addEventListener("change", (event) => {
+  const target = event.target;
+  if (target.name !== "repairRequested") return;
+  state.repairRequested = target.checked;
+  saveDraft(false);
 });
 
 function addCustomPlace() {
@@ -340,6 +348,7 @@ function renderReport() {
       <strong>保存先：</strong>${escapeHtml(buildFolderName())}
     </div>
     ${placesWithContent.map(renderReportPlace).join("")}
+    ${renderRepairRequest()}
   `;
 }
 
@@ -369,6 +378,22 @@ function renderReportPhoto(photo) {
       <strong>${escapeHtml(photo.name)}</strong>
       <span>${escapeHtml(photo.comment || "コメントなし")}</span>
     </article>
+  `;
+}
+
+function renderRepairRequest() {
+  return `
+    <section class="repair-request">
+      <div>
+        <p class="kicker">AFTER SUBMISSION</p>
+        <h3>修繕対応の希望確認</h3>
+        <p>写真台帳の提出とは別に、実際に修繕対応を希望する場合のみチェックしてください。</p>
+      </div>
+      <label class="repair-check">
+        <input type="checkbox" name="repairRequested" ${state.repairRequested ? "checked" : ""} />
+        <span>修繕対応を希望する</span>
+      </label>
+    </section>
   `;
 }
 
@@ -439,6 +464,7 @@ function hydrateDraft() {
     state = {
       meta: { ...state.meta, ...(draft.meta || {}) },
       places: Array.isArray(draft.places) ? draft.places : state.places,
+      repairRequested: Boolean(draft.repairRequested),
     };
   } catch {
     return;
