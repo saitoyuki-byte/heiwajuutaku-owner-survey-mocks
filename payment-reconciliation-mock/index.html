@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="銀行入金と進捗くんの未決済データを照合する打ち合わせ用モック"
+    />
+    <title>未決済照合｜平和住宅情報センター モック</title>
+    <link rel="stylesheet" href="./styles.css?v=20260720-1" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <div class="toast" id="toast" role="status" hidden>
+        <span id="toastMessage"></span>
+        <button type="button" id="toastClose" aria-label="通知を閉じる">×</button>
+      </div>
+
+      <header class="topbar">
+        <div class="brand">
+          <span class="brand-mark">平</span>
+          <div>
+            <p class="eyebrow">HEIWA HOUSING / INTERNAL TOOL</p>
+            <h1>未決済照合</h1>
+          </div>
+        </div>
+        <div class="topbar-actions">
+          <span class="prototype-badge">打ち合わせ用・仮説モック</span>
+          <a class="back-link" href="../">モック集へ戻る</a>
+        </div>
+      </header>
+
+      <section class="intro">
+        <div>
+          <p class="section-kicker">本日の作業</p>
+          <h2>銀行の入金と、進捗くんの未決済を突き合わせる</h2>
+          <p>
+            まず機械が候補を出し、迷うものだけ人が確認します。
+            この画面ではまだ進捗くんへ書き込みません。
+          </p>
+        </div>
+        <div class="today-note">
+          <span class="today-note-label">今日決めたいこと</span>
+          <strong>この一覧で判断に必要な情報が足りるか</strong>
+        </div>
+      </section>
+
+      <nav class="stepper" aria-label="照合の流れ">
+        <div class="step is-complete">
+          <span>1</span>
+          <div>
+            <strong>データを取り込む</strong>
+            <small>匿名サンプルを読込済み</small>
+          </div>
+        </div>
+        <div class="step is-current">
+          <span>2</span>
+          <div>
+            <strong>照合結果を確認</strong>
+            <small>いま作業する場所</small>
+          </div>
+        </div>
+        <div class="step">
+          <span>3</span>
+          <div>
+            <strong>進捗くんへ反映</strong>
+            <small>初版では実行しない</small>
+          </div>
+        </div>
+      </nav>
+
+      <section class="source-strip" aria-label="取込データ">
+        <div class="source-file">
+          <span class="source-icon source-icon-blue">進</span>
+          <div>
+            <small>進捗くんの未決済</small>
+            <strong id="shinchokuFile">未決済リスト（匿名サンプル）.csv</strong>
+          </div>
+          <label>
+            入れ替える
+            <input id="shinchokuInput" type="file" accept=".csv,.xlsx,.xlsm" />
+          </label>
+        </div>
+        <span class="plus">＋</span>
+        <div class="source-file">
+          <span class="source-icon source-icon-green">銀</span>
+          <div>
+            <small>七十七銀行・杜の都信用金庫</small>
+            <strong id="bankFile">銀行入金データ（匿名サンプル）.csv</strong>
+          </div>
+          <label>
+            入れ替える
+            <input id="bankInput" type="file" accept=".csv" />
+          </label>
+        </div>
+      </section>
+
+      <section class="summary-grid" aria-label="照合結果サマリー">
+        <article class="summary-card">
+          <span>銀行入金</span>
+          <strong>12<small>件</small></strong>
+          <p>¥2,495,270</p>
+        </article>
+        <article class="summary-card summary-green">
+          <span>候補あり</span>
+          <strong id="candidateCount">10<small>件</small></strong>
+          <p>機械が案件候補を提示</p>
+        </article>
+        <article class="summary-card summary-amber">
+          <span>人の確認が必要</span>
+          <strong id="reviewCount">2<small>件</small></strong>
+          <p>名義違い・一部入金</p>
+        </article>
+        <article class="summary-card summary-red">
+          <span>未一致</span>
+          <strong id="unmatchedCount">2<small>件</small></strong>
+          <p>対応方法を決める</p>
+        </article>
+      </section>
+
+      <section class="workspace">
+        <div class="list-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="section-kicker">STEP 2</p>
+              <h3>入金一覧</h3>
+            </div>
+            <span id="visibleCount">12件を表示</span>
+          </div>
+
+          <div class="filters">
+            <div class="filter-tabs" role="group" aria-label="状態で絞り込む">
+              <button type="button" class="active" data-filter="すべて">すべて</button>
+              <button type="button" data-filter="一致">一致 <span>8</span></button>
+              <button type="button" data-filter="要確認">要確認 <span>1</span></button>
+              <button type="button" data-filter="一部入金">一部入金 <span>1</span></button>
+              <button type="button" data-filter="未一致">未一致 <span>2</span></button>
+            </div>
+            <label class="search-box">
+              <span aria-hidden="true">⌕</span>
+              <input id="searchInput" placeholder="名義・物件・IDで検索" />
+            </label>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>状態</th>
+                  <th>入金日</th>
+                  <th>振込名義</th>
+                  <th>入金額</th>
+                  <th>候補案件</th>
+                  <th aria-label="詳細"></th>
+                </tr>
+              </thead>
+              <tbody id="paymentRows"></tbody>
+            </table>
+            <div class="empty-state" id="emptyState" hidden>
+              条件に合う入金がありません。
+            </div>
+          </div>
+        </div>
+
+        <aside class="detail-panel" id="detailPanel" aria-label="選択した入金の詳細"></aside>
+      </section>
+
+      <section class="guide" id="guide">
+        <div class="guide-title">
+          <p class="section-kicker">このモックの意味</p>
+          <h2>いまの手作業を、4つの箱に整理しています</h2>
+          <p>正解を決める画面ではなく、現場の判断を聞き出すためのたたき台です。</p>
+        </div>
+        <div class="guide-grid">
+          <article>
+            <span>01</span>
+            <h3>材料をそろえる</h3>
+            <p>進捗くんの未決済と、2行の銀行CSVを同じ場所へ集めます。</p>
+          </article>
+          <article>
+            <span>02</span>
+            <h3>機械が候補を出す</h3>
+            <p>金額、名義、過去の履歴などから同じ案件らしいものを並べます。</p>
+          </article>
+          <article>
+            <span>03</span>
+            <h3>人は迷うものだけ見る</h3>
+            <p>名義違い、一部入金、合算入金などを担当者が確認します。</p>
+          </article>
+          <article>
+            <span>04</span>
+            <h3>確認後に反映する</h3>
+            <p>全額回収できた案件だけ、最後に進捗くんへ反映する想定です。</p>
+          </article>
+        </div>
+        <div class="question-box">
+          <strong>現場の方に見てもらうポイント</strong>
+          <p>
+            「この情報では判断できない」「この区分は違う」「この後に別の作業がある」
+            という指摘を集めれば、次に作るべき機能が見えてきます。
+          </p>
+        </div>
+      </section>
+
+      <footer>
+        <span>未決済照合 仮説モック v0.1</span>
+        <span>実データ・進捗くんへの書き込みは行いません</span>
+      </footer>
+    </main>
+    <script src="./script.js?v=20260720-1"></script>
+  </body>
+</html>
