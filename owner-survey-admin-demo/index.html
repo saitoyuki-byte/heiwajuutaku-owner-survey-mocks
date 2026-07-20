@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>平和住宅情報センター様 アンケート管理ダッシュボード デモ</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="brand-panel">
+        <img src="assets/heiwajuutaku-logo.jpg" alt="平和住宅情報センター" class="brand-logo">
+      </div>
+      <div class="hero-copy">
+        <p class="eyebrow">MEETING DEMO</p>
+        <h1>アンケート回答を壊さず確認し、スタッフコメントだけを安全に追加する管理画面</h1>
+        <p>
+          スプレッドシートを直接編集せず、回答確認・対応状況管理・コメント記録を専用画面で行う想定のデモです。
+        </p>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="meeting-grid" aria-label="打ち合わせで確認すること">
+      <article class="explain-panel">
+        <p class="section-kicker">PROBLEM</p>
+        <h2>今回解決したいこと</h2>
+        <p>
+          フォーム回答の元データは守りながら、スタッフの方が回答内容を確認し、必要なメモや対応状況だけを更新できる状態にします。
+        </p>
+        <div class="flow">
+          <div>
+            <span>1</span>
+            <strong>回答受付</strong>
+            <small>既存フォームからスプレッドシートへ蓄積</small>
+          </div>
+          <div>
+            <span>2</span>
+            <strong>管理画面で閲覧</strong>
+            <small>スタッフはシートを直接開かない</small>
+          </div>
+          <div>
+            <span>3</span>
+            <strong>コメント保存</strong>
+            <small>担当者・日時・履歴を記録</small>
+          </div>
+        </div>
+      </article>
+
+      <article class="explain-panel">
+        <p class="section-kicker">CHECKLIST</p>
+        <h2>打ち合わせで決めること</h2>
+        <ul class="check-list">
+          <li>誰がダッシュボードを見られるか</li>
+          <li>スタッフが追記できる項目は何か</li>
+          <li>対応ステータスの種類</li>
+          <li>コメント履歴をどこまで残すか</li>
+          <li>通知メールを送る条件</li>
+          <li>集計グラフで見たい指標</li>
+        </ul>
+      </article>
+    </section>
+
+    <section class="dashboard-shell" aria-label="アンケート管理ダッシュボード">
+      <aside class="sidebar">
+        <p class="section-kicker">OWNER SURVEY</p>
+        <h2>創業50周年記念<br>既存オーナーアンケート</h2>
+        <nav class="side-nav" aria-label="画面メニュー">
+          <a href="#summary" class="active">集計サマリー</a>
+          <a href="#responses">回答者一覧</a>
+          <a href="#detail">回答詳細</a>
+          <a href="#requirements">要件確認</a>
+        </nav>
+        <div class="notice-box">
+          <strong>想定運用</strong>
+          <p>スタッフはこの画面から確認・コメントを行い、元データ用シートは編集しません。</p>
+        </div>
+      </aside>
+
+      <div class="dashboard-main">
+        <section id="summary" class="summary-band">
+          <div class="metric">
+            <span>総回答数</span>
+            <strong id="metricTotal">0</strong>
+          </div>
+          <div class="metric">
+            <span>要対応</span>
+            <strong id="metricAction">0</strong>
+          </div>
+          <div class="metric">
+            <span>コメント済み</span>
+            <strong id="metricCommented">0</strong>
+          </div>
+          <div class="metric">
+            <span>最終更新</span>
+            <strong>本日 10:40</strong>
+          </div>
+        </section>
+
+        <section class="chart-grid" aria-label="集計グラフ">
+          <article class="chart-panel">
+            <div class="panel-heading">
+              <p class="section-kicker">GRAPH</p>
+              <h3>投資意向の傾向</h3>
+            </div>
+            <div class="bar-chart">
+              <div><span>追加購入に関心あり</span><b style="width: 72%"></b><em>72%</em></div>
+              <div><span>リフォーム提案希望</span><b style="width: 48%"></b><em>48%</em></div>
+              <div><span>売却・組替相談</span><b style="width: 26%"></b><em>26%</em></div>
+            </div>
+          </article>
+
+          <article class="chart-panel">
+            <div class="panel-heading">
+              <p class="section-kicker">STATUS</p>
+              <h3>対応状況</h3>
+            </div>
+            <div class="status-donut" aria-label="対応状況グラフ">
+              <div class="donut"></div>
+              <ul>
+                <li><span class="dot dot-green"></span>対応済み 3件</li>
+                <li><span class="dot dot-amber"></span>確認中 4件</li>
+                <li><span class="dot dot-red"></span>要対応 2件</li>
+              </ul>
+            </div>
+          </article>
+        </section>
+
+        <section id="responses" class="work-area">
+          <div class="list-panel">
+            <div class="panel-heading">
+              <div>
+                <p class="section-kicker">RESPONSES</p>
+                <h3>回答者一覧</h3>
+              </div>
+              <select id="statusFilter" aria-label="対応状況で絞り込み">
+                <option value="all">すべて</option>
+                <option value="要対応">要対応</option>
+                <option value="確認中">確認中</option>
+                <option value="対応済み">対応済み</option>
+              </select>
+            </div>
+            <input id="searchInput" class="search" type="search" placeholder="氏名・物件名・担当者で検索">
+            <div id="respondentList" class="respondent-list"></div>
+          </div>
+
+          <article id="detail" class="detail-panel">
+            <div class="panel-heading detail-heading">
+              <div>
+                <p class="section-kicker">DETAIL</p>
+                <h3 id="detailName">回答詳細</h3>
+              </div>
+              <span id="detailStatus" class="status-chip">確認中</span>
+            </div>
+
+            <div class="detail-meta" id="detailMeta"></div>
+
+            <div class="answer-section">
+              <h4>主な回答内容</h4>
+              <div id="answerList" class="answer-list"></div>
+            </div>
+
+            <div class="comment-box">
+              <h4>スタッフコメント</h4>
+              <label>
+                対応状況
+                <select id="commentStatus">
+                  <option>要対応</option>
+                  <option>確認中</option>
+                  <option>対応済み</option>
+                  <option>保留</option>
+                </select>
+              </label>
+              <label>
+                コメント
+                <textarea id="commentText" rows="4" placeholder="例：7月中に担当者から追加購入の希望条件をヒアリング"></textarea>
+              </label>
+              <button id="saveComment" type="button">コメントを保存</button>
+              <p class="save-note">このデモでは画面内だけに保存されます。本番ではStaffCommentsシートへ記録します。</p>
+            </div>
+
+            <div class="history-section">
+              <h4>コメント履歴</h4>
+              <div id="historyList" class="history-list"></div>
+            </div>
+          </article>
+        </section>
+
+        <section id="requirements" class="requirements-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="section-kicker">REQUIREMENTS</p>
+              <h3>要件確認メモ</h3>
+            </div>
+          </div>
+          <div class="requirements-grid">
+            <div>
+              <h4>権限</h4>
+              <p>Googleアカウントでログインしたスタッフだけが閲覧。元データ用シートは管理者以外編集不可。</p>
+            </div>
+            <div>
+              <h4>保存先</h4>
+              <p>フォーム回答はRawResponses、スタッフ追記はStaffComments、変更履歴はAuditLogへ分離。</p>
+            </div>
+            <div>
+              <h4>通知</h4>
+              <p>要対応への変更時、または新規コメント追加時に指定メールへ通知するか確認。</p>
+            </div>
+            <div>
+              <h4>次の確認</h4>
+              <p>本番シートの列名、スタッフ一覧、見せたい集計指標、コメント項目を確認。</p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
