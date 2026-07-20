@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="写真・動画・設備品番の案内を含む、入居者向けお問い合わせフォームの画面確認用モックです。"
+    />
+    <meta property="og:title" content="入居者様専用 お問い合わせフォーム｜画面確認用モック" />
+    <meta
+      property="og:description"
+      content="写真・動画で状況を伝え、設備の品番確認もできるお問い合わせフォームです。"
+    />
+    <meta
+      property="og:image"
+      content="https://saitoyuki-byte.github.io/heiwajuutaku-owner-survey-mocks/tenant-contact-mock/assets/og.png"
+    />
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:url"
+      content="https://saitoyuki-byte.github.io/heiwajuutaku-owner-survey-mocks/tenant-contact-mock/"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <title>入居者お問い合わせフォーム｜平和住宅情報センター</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="site-shell">
+      <header class="site-header">
+        <a class="brand" href="../" aria-label="モック集へ戻る">
+          <img src="./assets/heiwa-logo.jpg" alt="平和住宅情報センター" />
+        </a>
+        <div class="header-meta">
+          <span>入居者様専用</span>
+          <a
+            href="https://heiwajuutaku.tayori.com/faq/13d179e934b2d688df6270b53bba1294f072580c/"
+            target="_blank"
+            rel="noreferrer"
+          >
+            FAQを確認する
+          </a>
+        </div>
+      </header>
+
+      <div class="demo-ribbon">画面確認用モック｜実際の送信・保存は行われません</div>
+
+      <section class="intro">
+        <div>
+          <p class="eyebrow">入居者様専用</p>
+          <h1>お困りごと・建物の不具合<br />お問い合わせフォーム</h1>
+          <p class="intro-copy">
+            状況が分かる写真や動画を一緒に送ると、よりスムーズにご案内できます。
+          </p>
+        </div>
+        <div class="support-card">
+          <span class="support-icon" aria-hidden="true">☎</span>
+          <div>
+            <strong>水漏れ・鍵の紛失など緊急の場合</strong>
+            <p>24時間対応のサポート窓口へお電話ください</p>
+            <div class="support-lines">
+              <a href="tel:0120024377">安心入居サポート　0120-024-377</a>
+              <a href="tel:0120555560">学生110番　0120-555-560</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="form-card" id="formCard" aria-live="polite"></section>
+
+      <footer>
+        <img src="./assets/heiwa-logo.jpg" alt="平和住宅情報センター" />
+        <a href="../">業務改善モック集へ戻る</a>
+        <p>画面確認用プロトタイプ</p>
+      </footer>
+    </main>
+
+    <div class="modal-backdrop" id="guideModal" hidden>
+      <section class="guide-modal" role="dialog" aria-modal="true" aria-labelledby="guideTitle">
+        <button class="modal-close" id="modalClose" type="button" aria-label="閉じる">×</button>
+        <div class="modal-heading">
+          <p class="eyebrow">品番の確認方法</p>
+          <h2 id="guideTitle"></h2>
+        </div>
+        <img id="guideImage" src="" alt="" />
+        <p class="modal-note">
+          メーカーや製品により場所は異なります。安全を確認して、無理のない範囲でご確認ください。
+        </p>
+        <button class="button button-primary" id="modalConfirm" type="button">確認しました</button>
+      </section>
+    </div>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
