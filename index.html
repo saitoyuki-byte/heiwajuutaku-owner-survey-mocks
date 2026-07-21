@@ -353,6 +353,10 @@
         box-shadow: var(--shadow);
       }
 
+      .featured-card + .featured-card {
+        margin-top: 18px;
+      }
+
       .featured-content {
         padding: 34px;
         display: flex;
@@ -891,7 +895,7 @@
           <div class="map-row">
             <span class="map-icon">業務</span>
             <div><strong>業務改善</strong><small>日々の作業を支援する画面</small></div>
-            <b>1</b>
+            <b>2</b>
           </div>
         </div>
       </section>
@@ -936,6 +940,51 @@
                 <div><span>候補あり</span><b>10</b></div>
                 <div><span>要確認</span><b>2</b></div>
                 <div><span>未一致</span><b>2</b></div>
+              </div>
+              <div class="preview-body">
+                <div class="preview-table">
+                  <div><i></i><i></i><i></i></div>
+                  <div><i></i><i></i><i></i></div>
+                  <div><i></i><i></i><i></i></div>
+                  <div><i></i><i></i><i></i></div>
+                  <div><i></i><i></i><i></i></div>
+                </div>
+                <div class="preview-side"><i></i><i></i><i></i><i></i></div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="featured-card">
+          <div class="featured-content">
+            <span class="tag orange new">工事優先順位</span>
+            <h3>工事優先順位ダッシュボード</h3>
+            <p>
+              発注伝票CSVと入居申込一覧CSVを照合し、次回入居日が近い物件の工事を
+              優先度順に確認するためのプロトタイプです。
+            </p>
+            <ul class="feature-list">
+              <li>物件名＋号室で発注と入居予定を自動照合</li>
+              <li>緊急・注意・通常の優先度と期限矛盾を表示</li>
+              <li>絞り込み結果を郵便番号・発注URL付きCSVで出力</li>
+            </ul>
+            <a
+              class="open-button"
+              href="https://construction-priority-dashboard.vercel.app/"
+              target="_blank"
+              rel="noopener"
+            >
+              工事優先順位モックを開く <span aria-hidden="true">›</span>
+            </a>
+          </div>
+          <div class="featured-preview" aria-hidden="true">
+            <div class="preview-window">
+              <div class="preview-bar"><i></i><i></i><i></i></div>
+              <div class="preview-summary">
+                <div><span>緊急</span><b>3</b></div>
+                <div><span>注意</span><b>2</b></div>
+                <div><span>通常</span><b>19</b></div>
+                <div><span>照合</span><b>CSV</b></div>
               </div>
               <div class="preview-body">
                 <div class="preview-table">
