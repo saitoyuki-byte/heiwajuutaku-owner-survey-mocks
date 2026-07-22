@@ -45,6 +45,123 @@
 
       <div class="demo-ribbon">画面確認用モック｜実際の送信・保存は行われません</div>
 
+      <div class="welcome-backdrop" id="welcomeBackdrop">
+        <section
+          class="welcome-dialog"
+          id="welcomeDialog"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="welcomeTitle"
+          tabindex="-1"
+        >
+          <div class="welcome-header">
+            <span class="welcome-label">お問い合わせの前に</span>
+            <h2 id="welcomeTitle">緊急時・近隣トラブルの窓口をご確認ください</h2>
+            <p>
+              内容によっては、お問い合わせフォームよりも専門窓口へご連絡いただくことで、
+              より早く対応できる場合があります。
+            </p>
+          </div>
+
+          <div class="welcome-content">
+            <section class="notice-section emergency-section">
+              <div class="notice-heading">
+                <span class="notice-icon" aria-hidden="true">!</span>
+                <div>
+                  <p>24時間対応</p>
+                  <h3>水漏れ・鍵の紛失など緊急の場合</h3>
+                </div>
+              </div>
+
+              <div class="hotline-grid">
+                <article class="hotline-card">
+                  <span>安心入居サポート</span>
+                  <a class="phone-link" href="tel:0120024377">0120-024-377</a>
+                  <p>賃貸住宅総合補償スタンダード・ライト等に加入の方</p>
+                </article>
+                <article class="hotline-card">
+                  <span>学生110番</span>
+                  <a class="phone-link" href="tel:0120555560">0120-555-560</a>
+                  <p>大学生協提供サービスに加入の方</p>
+                </article>
+              </div>
+            </section>
+
+            <section class="notice-section mamorocca-section">
+              <div class="notice-heading">
+                <span class="notice-icon shield-icon" aria-hidden="true">守</span>
+                <div>
+                  <p>元警察官による解決支援</p>
+                  <h3>騒音・迷惑行為・不法侵入・ストーカー等の近隣トラブル</h3>
+                </div>
+              </div>
+
+              <div class="mamorocca-layout">
+                <div class="mamorocca-copy">
+                  <strong>Mamorocca（マモロッカ）</strong>
+                  <a class="phone-link coral" href="tel:0570007001">0570-007-001</a>
+                  <p class="hours">平日 10:00～18:30</p>
+                  <p class="eligibility">
+                    賃貸住宅総合補償スタンダード・ライト、大学生協加入者向け、
+                    マモロッカプラン加入の方
+                  </p>
+                  <a
+                    class="external-button"
+                    href="https://www.v-smith.co.jp/contact-trouble"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    時間外専用相談受付フォームを開く <span aria-hidden="true">↗</span>
+                  </a>
+                </div>
+                <a
+                  class="qr-link"
+                  href="https://www.v-smith.co.jp/contact-trouble"
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label="マモロッカ時間外専用相談受付フォームを開く"
+                >
+                  <img src="./assets/mamorocca-contact-qr.png" alt="時間外専用相談受付フォームのQRコード" />
+                  <span>スマートフォンで読み取る</span>
+                </a>
+              </div>
+            </section>
+
+            <div class="service-note">
+              <span aria-hidden="true">i</span>
+              <p>
+                上記サービスに加入している方は、一部を無償で対応できる場合があります。
+                ご加入状況とサービス内容をご確認ください。
+              </p>
+            </div>
+
+            <nav class="service-links" aria-label="各サービスの詳細資料">
+              <a
+                href="https://wmp3-cf.njc-web.jp/users/12600/files/651213/674c3b061fa04.pdf"
+                target="_blank"
+                rel="noreferrer"
+              >安心入居サポートのサービスを見る <span aria-hidden="true">↗</span></a>
+              <a
+                href="https://www.univcoop.or.jp/gakusei110/index.html"
+                target="_blank"
+                rel="noreferrer"
+              >学生110番のサービスを見る <span aria-hidden="true">↗</span></a>
+              <a href="./assets/mamorocca-service.pdf" target="_blank" rel="noreferrer">
+                マモロッカのサービス資料を見る <span aria-hidden="true">PDF</span>
+              </a>
+            </nav>
+          </div>
+
+          <div class="welcome-action">
+            <button class="button welcome-start-button" id="startFormButton" type="button">
+              内容を確認しました｜フォーム入力を始める
+              <span aria-hidden="true">→</span>
+            </button>
+            <p>この画面を閉じた後も、緊急連絡先はフォーム上部で確認できます。</p>
+          </div>
+        </section>
+      </div>
+
       <section class="intro">
         <div>
           <p class="eyebrow">入居者様専用</p>

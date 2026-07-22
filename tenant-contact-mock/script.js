@@ -51,6 +51,9 @@ const formCard = document.getElementById("formCard");
 const guideModal = document.getElementById("guideModal");
 const guideTitle = document.getElementById("guideTitle");
 const guideImage = document.getElementById("guideImage");
+const welcomeBackdrop = document.getElementById("welcomeBackdrop");
+const welcomeDialog = document.getElementById("welcomeDialog");
+const startFormButton = document.getElementById("startFormButton");
 
 const esc = (value) =>
   String(value ?? "")
@@ -490,3 +493,22 @@ document.addEventListener("keydown", (event) => {
 });
 
 render();
+
+const pageBehindWelcome = document.querySelectorAll(
+  ".site-header, .demo-ribbon, .intro, #formCard, footer",
+);
+
+document.body.classList.add("modal-open");
+pageBehindWelcome.forEach((element) => {
+  element.inert = true;
+});
+welcomeDialog.focus({ preventScroll: true });
+
+startFormButton.addEventListener("click", () => {
+  welcomeBackdrop.hidden = true;
+  document.body.classList.remove("modal-open");
+  pageBehindWelcome.forEach((element) => {
+    element.inert = false;
+  });
+  document.querySelector("[data-inquiry]")?.focus({ preventScroll: true });
+});
