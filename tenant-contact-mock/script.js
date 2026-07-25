@@ -21,6 +21,7 @@ const equipmentList = [
 const steps = ["お問い合わせ内容", "状況・添付", "入居者情報", "確認"];
 
 const state = {
+  formMode: "standard",
   step: 1,
   complete: false,
   inquiryType: "room",
@@ -38,6 +39,24 @@ const state = {
   phone: "",
   email: "",
 };
+
+const membershipState = {
+  step: 1,
+  complete: false,
+  services: [],
+  lastName: "",
+  firstName: "",
+  property: "",
+  room: "",
+  phone: "",
+  email: "",
+  error: "",
+};
+
+const membershipServices = [
+  { id: "support", label: "安心入居サポート" },
+  { id: "mamorocca", label: "Mamorocca（マモロッカ）" },
+];
 
 const formCard = document.getElementById("formCard");
 const guideModal = document.getElementById("guideModal");
@@ -88,6 +107,23 @@ function stepper() {
             number < state.step ? "done" : "",
           ].join(" ");
           return `<li class="${classes}"><span>${number < state.step ? "✓" : number}</span><small>${label}</small></li>`;
+        })
+        .join("")}
+    </ol>`;
+}
+
+function membershipStepper() {
+  const labels = ["入居者情報の入力", "入力内容の確認"];
+  return `
+    <ol class="stepper membership-stepper" aria-label="入力の進み具合">
+      ${labels
+        .map((label, index) => {
+          const number = index + 1;
+          const classes = [
+            number === membershipState.step ? "active" : "",
+            number < membershipState.step ? "done" : "",
+          ].join(" ");
+          return `<li class="${classes}"><span>${number < membershipState.step ? "✓" : number}</span><small>${label}</small></li>`;
         })
         .join("")}
     </ol>`;
@@ -307,6 +343,171 @@ function renderStep4() {
     </section>`;
 }
 
+function membershipServiceLabels() {
+  return membershipServices
+    .filter((service) => membershipState.services.includes(service.id))
+    .map((service) => service.label)
+    .join("、");
+}
+
+function membershipInputReady() {
+  return (
+    membershipState.services.length > 0 &&
+    membershipState.lastName.trim() &&
+    membershipState.firstName.trim() &&
+    membershipState.property.trim() &&
+    membershipState.room.trim() &&
+    membershipState.phone.trim() &&
+    membershipState.email.trim()
+  );
+}
+
+function renderMembershipInput() {
+  return `
+    <section class="form-section membership-form-section">
+      ${heading("01", "サービスの加入状況を確認する", "確認したいサービスと、現在お住まいの方の情報をご入力ください。")}
+      ${
+        membershipState.error
+          ? `<p class="form-error" role="alert">${membershipState.error}</p>`
+          : ""
+      }
+      <fieldset class="membership-service-fieldset">
+        <legend>加入確認したいサービス ${required()} <small>複数選択可</small></legend>
+        <div class="membership-service-grid">
+          ${membershipServices
+            .map(
+              (service) => `
+                <label class="membership-service-choice ${membershipState.services.includes(service.id) ? "selected" : ""}">
+                  <input
+                    type="checkbox"
+                    value="${service.id}"
+                    data-membership-service
+                    ${membershipState.services.includes(service.id) ? "checked" : ""}
+                  />
+                  <span>${service.label}</span>
+                  <b aria-hidden="true">✓</b>
+                </label>`,
+            )
+            .join("")}
+        </div>
+      </fieldset>
+
+      <div class="membership-resident-heading">
+        <h3>入居者情報</h3>
+        <p>※契約者ではありませんので、ご注意ください。</p>
+      </div>
+      <div class="two-column">
+        <label class="field"><span class="field-label">姓 ${required()}</span>
+          <input id="membershipLastName" value="${esc(membershipState.lastName)}" placeholder="平和" autocomplete="family-name" />
+        </label>
+        <label class="field"><span class="field-label">名 ${required()}</span>
+          <input id="membershipFirstName" value="${esc(membershipState.firstName)}" placeholder="太郎" autocomplete="given-name" />
+        </label>
+      </div>
+      <label class="field"><span class="field-label">物件名 ${required()}</span>
+        <input
+          id="membershipProperty"
+          list="membership-property-options"
+          value="${esc(membershipState.property)}"
+          placeholder="物件名を入力すると候補が表示されます"
+        />
+        <datalist id="membership-property-options">
+          <option value="ピースフル五橋"></option>
+          <option value="ピースフル旭ヶ丘"></option>
+          <option value="ピースフル泉中央"></option>
+        </datalist>
+        <span class="field-hint">例：「ピースフル」と入力して候補から選択</span>
+      </label>
+      <div class="two-column">
+        <label class="field"><span class="field-label">号室 ${required()}</span>
+          <input id="membershipRoom" value="${esc(membershipState.room)}" placeholder="101" inputmode="numeric" />
+        </label>
+        <label class="field"><span class="field-label">電話番号 ${required()}</span>
+          <input id="membershipPhone" value="${esc(membershipState.phone)}" placeholder="090-1234-5678" inputmode="tel" autocomplete="tel" />
+        </label>
+      </div>
+      <label class="field"><span class="field-label">メールアドレス ${required()}</span>
+        <input id="membershipEmail" value="${esc(membershipState.email)}" placeholder="example@email.com" inputmode="email" autocomplete="email" />
+      </label>
+      <div class="navigation membership-navigation">
+        <span></span>
+        <button type="button" class="button button-primary" data-action="membership-next">
+          入力を確認する<span aria-hidden="true">→</span>
+        </button>
+      </div>
+    </section>`;
+}
+
+function renderMembershipConfirmation() {
+  return `
+    <section class="form-section membership-form-section">
+      ${heading("02", "入力された内容をご確認ください", "内容を修正する場合は「戻る」を押してください。")}
+      <dl class="summary-card">
+        ${summaryRow("加入確認したいサービス", membershipServiceLabels())}
+        ${summaryRow("お名前", `${membershipState.lastName} ${membershipState.firstName}`.trim())}
+        ${summaryRow("物件・号室", `${membershipState.property} ${membershipState.room ? `${membershipState.room}号室` : ""}`.trim())}
+        ${summaryRow("電話番号", membershipState.phone)}
+        ${summaryRow("メールアドレス", membershipState.email)}
+      </dl>
+      <div class="privacy-policy-card">
+        <div>
+          <strong>プライバシーポリシー</strong>
+          <p>送信前に、個人情報の利用目的および取り扱いについてご確認ください。</p>
+        </div>
+        <a
+          href="https://www.heiwajuutaku.com/privacy_policy"
+          target="_blank"
+          rel="noreferrer"
+        >プライバシーポリシーを確認する <span aria-hidden="true">↗</span></a>
+      </div>
+      <div class="membership-caution">
+        <p>
+          入居者情報が入居申込書、または変更のご連絡を頂いた情報と相違する場合は、お電話等で本人確認または契約者様に確認させて頂く場合がございます。
+          確認できない場合は回答できない場合もありますので、予めご了承ください。
+        </p>
+        <p>
+          お問合せ頂いた2営業日を目安に回答させて頂きます。<br />
+          回答の連絡がない場合は、改めてお問合せ頂けますようお願い申し上げます。
+        </p>
+      </div>
+      <div class="navigation">
+        <button type="button" class="button button-secondary" data-action="membership-back">戻る</button>
+        <button type="button" class="button button-primary" data-action="membership-submit">
+          上記を確認・同意して、送信<span aria-hidden="true">→</span>
+        </button>
+      </div>
+      <p class="mock-note">※画面確認用モックのため、実際の送信・保存は行われません。</p>
+    </section>`;
+}
+
+function renderMembershipSuccess() {
+  const current = document.getElementById("formCard");
+  current.outerHTML = `
+    <section class="success-card membership-success" id="formCard">
+      <div class="success-icon" aria-hidden="true">✓</div>
+      <p class="eyebrow">加入状況確認受付</p>
+      <h1>送信が完了しました</h1>
+      <p class="success-lead">受付番号は <strong>HM-2026-0725-0001</strong> です。</p>
+      <div class="success-info">
+        <p>入力いただいたメールアドレス宛に受付内容をお送りします。</p>
+        <p>お問合せ頂いた2営業日を目安に回答いたします。</p>
+      </div>
+      <button class="button button-primary" data-action="membership-restart" type="button">入力画面に戻る</button>
+      <p class="mock-note">※モックのため、メール送信やデータ保存は行われません。</p>
+    </section>`;
+}
+
+function renderMembershipForm() {
+  const current = document.getElementById("formCard");
+  if (membershipState.complete) {
+    renderMembershipSuccess();
+    return;
+  }
+  current.innerHTML = `${membershipStepper()}${
+    membershipState.step === 1 ? renderMembershipInput() : renderMembershipConfirmation()
+  }`;
+}
+
 function renderSuccess() {
   document.getElementById("formCard").outerHTML = `
     <section class="success-card" id="formCard">
@@ -324,6 +525,10 @@ function renderSuccess() {
 }
 
 function render() {
+  if (state.formMode === "membership") {
+    renderMembershipForm();
+    return;
+  }
   if (state.complete) {
     renderSuccess();
     return;
@@ -373,6 +578,33 @@ document.addEventListener("click", (event) => {
     render();
   } else if (target.dataset.guide) {
     showGuide(target.dataset.guide);
+  } else if (target.dataset.action === "membership-next") {
+    if (!membershipInputReady()) {
+      membershipState.error = "必須項目を入力してください。";
+      render();
+      document.querySelector(".form-error")?.scrollIntoView({ behavior: "smooth", block: "center" });
+      return;
+    }
+    membershipState.error = "";
+    membershipState.step = 2;
+    render();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  } else if (target.dataset.action === "membership-back") {
+    membershipState.step = 1;
+    render();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  } else if (target.dataset.action === "membership-submit") {
+    membershipState.complete = true;
+    render();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  } else if (target.dataset.action === "membership-restart") {
+    membershipState.complete = false;
+    membershipState.step = 1;
+    membershipState.error = "";
+    document.querySelector(".success-card").outerHTML =
+      '<section class="form-card" id="formCard" aria-live="polite"></section>';
+    render();
+    window.scrollTo({ top: 0, behavior: "smooth" });
   } else if (target.dataset.action === "next") {
     state.step = Math.min(4, state.step + 1);
     render();
@@ -395,6 +627,18 @@ document.addEventListener("click", (event) => {
 
 document.addEventListener("input", (event) => {
   const target = event.target;
+  const membershipFieldMap = {
+    membershipLastName: "lastName",
+    membershipFirstName: "firstName",
+    membershipProperty: "property",
+    membershipRoom: "room",
+    membershipPhone: "phone",
+    membershipEmail: "email",
+  };
+  if (membershipFieldMap[target.id]) {
+    membershipState[membershipFieldMap[target.id]] = target.value;
+    membershipState.error = "";
+  }
   if (["detail", "locationDetail", "manufacturer", "modelNumber", "lastName", "firstName", "property", "room", "phone", "email"].includes(target.id)) {
     state[target.id] = target.value;
   }
@@ -411,7 +655,13 @@ document.addEventListener("input", (event) => {
 
 document.addEventListener("change", (event) => {
   const target = event.target;
-  if (target.id === "photoFiles" || target.id === "videoFiles") {
+  if (target.matches("[data-membership-service]")) {
+    membershipState.services = target.checked
+      ? [...new Set([...membershipState.services, target.value])]
+      : membershipState.services.filter((service) => service !== target.value);
+    membershipState.error = "";
+    render();
+  } else if (target.id === "photoFiles" || target.id === "videoFiles") {
     const names = Array.from(target.files || []).map((file) => file.name);
     if (target.id === "photoFiles") state.photos = names;
     if (target.id === "videoFiles") state.videos = names;
@@ -442,11 +692,17 @@ welcomeDialog.focus({ preventScroll: true });
 
 startFormButtons.forEach((button) => {
   button.addEventListener("click", () => {
+    state.formMode = button.dataset.route === "membership" ? "membership" : "standard";
+    render();
     welcomeBackdrop.hidden = true;
     document.body.classList.remove("modal-open");
     pageBehindWelcome.forEach((element) => {
       element.inert = false;
     });
-    document.querySelector("[data-inquiry]")?.focus({ preventScroll: true });
+    const firstField =
+      state.formMode === "membership"
+        ? document.querySelector("[data-membership-service]")
+        : document.querySelector("[data-inquiry]");
+    firstField?.focus({ preventScroll: true });
   });
 });
