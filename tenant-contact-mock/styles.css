@@ -1405,6 +1405,10 @@ footer a {
   text-align: center;
 }
 
+.success-card.with-email-preview {
+  width: min(940px, calc(100% - 40px));
+}
+
 .success-icon {
   width: 76px;
   height: 76px;
@@ -1444,6 +1448,129 @@ footer a {
 
 .success-info p {
   margin: 4px 0;
+}
+
+.email-preview {
+  margin: 28px 0;
+  overflow: hidden;
+  border: 1px solid #b8cde2;
+  border-radius: 14px;
+  background: white;
+  text-align: left;
+}
+
+.email-preview summary {
+  padding: 17px 19px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  color: var(--navy-dark);
+  background: #eef5fc;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.email-preview summary small {
+  color: var(--muted);
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+.email-preview-content {
+  padding: 20px;
+}
+
+.email-meta {
+  margin: 0 0 20px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+
+.email-meta > div {
+  display: grid;
+  grid-template-columns: 74px 1fr;
+}
+
+.email-meta > div + div {
+  border-top: 1px solid var(--line);
+}
+
+.email-meta dt,
+.email-meta dd {
+  margin: 0;
+  padding: 10px 12px;
+  font-size: 0.78rem;
+}
+
+.email-meta dt {
+  color: #526276;
+  background: var(--soft);
+  font-weight: 800;
+}
+
+.email-meta dd {
+  overflow-wrap: anywhere;
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.email-body {
+  padding: 22px;
+  border: 1px solid #e0e5eb;
+  border-radius: 10px;
+  color: #27384b;
+  background: #fff;
+  font-family:
+    "Yu Gothic",
+    "Hiragino Kaku Gothic ProN",
+    sans-serif;
+  font-size: 0.79rem;
+  line-height: 1.85;
+}
+
+.email-body p {
+  margin: 0 0 18px;
+}
+
+.email-body p:last-child {
+  margin-bottom: 0;
+}
+
+.email-body a {
+  color: var(--blue);
+  overflow-wrap: anywhere;
+}
+
+.email-link-line,
+.email-service-section,
+.email-inquiry-section {
+  padding: 14px 16px;
+  border-radius: 9px;
+  background: var(--soft);
+}
+
+.email-service-section {
+  margin-bottom: 18px;
+}
+
+.email-service-section > strong,
+.email-inquiry-section > strong {
+  color: var(--navy-dark);
+}
+
+.email-service-section p,
+.email-inquiry-section p {
+  margin: 11px 0 0;
+}
+
+.email-service-section span {
+  color: var(--muted);
+}
+
+.success-card.with-email-preview > .button {
+  margin-top: 4px;
 }
 
 .success-card .mock-note {
@@ -1730,6 +1857,29 @@ footer a {
   .success-card {
     margin: 35px auto;
     padding: 36px 22px;
+  }
+
+  .success-card.with-email-preview {
+    width: min(100% - 28px, 940px);
+  }
+
+  .email-preview summary {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .email-preview-content {
+    padding: 13px;
+  }
+
+  .email-body {
+    padding: 16px;
+    font-size: 0.74rem;
+  }
+
+  .email-meta > div {
+    grid-template-columns: 58px 1fr;
   }
 }
 

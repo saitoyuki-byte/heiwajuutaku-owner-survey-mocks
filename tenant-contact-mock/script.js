@@ -58,6 +58,22 @@ const membershipServices = [
   { id: "mamorocca", label: "Mamorocca（マモロッカ）" },
 ];
 
+const mockSubmissionDate = new Date();
+const mockDateParts = {
+  year: mockSubmissionDate.getFullYear(),
+  month: String(mockSubmissionDate.getMonth() + 1).padStart(2, "0"),
+  day: String(mockSubmissionDate.getDate()).padStart(2, "0"),
+  hour: String(mockSubmissionDate.getHours()).padStart(2, "0"),
+  minute: String(mockSubmissionDate.getMinutes()).padStart(2, "0"),
+};
+const mockSubmissionTime =
+  `${mockDateParts.year}/${mockDateParts.month}/${mockDateParts.day} ` +
+  `${mockDateParts.hour}:${mockDateParts.minute}`;
+const generalTicketNumber =
+  `HC-${mockDateParts.year}${mockDateParts.month}${mockDateParts.day}-0012`;
+const membershipTicketNumber =
+  `HM-${mockDateParts.year}${mockDateParts.month}${mockDateParts.day}-0001`;
+
 const formCard = document.getElementById("formCard");
 const guideModal = document.getElementById("guideModal");
 const guideTitle = document.getElementById("guideTitle");
@@ -350,6 +366,130 @@ function membershipServiceLabels() {
     .join("、");
 }
 
+function emailPreview(subject, recipientName, body) {
+  return `
+    <details class="email-preview" open>
+      <summary>
+        <span>自動返信メールの内容を確認</span>
+        <small>Gmail APIで送信する想定のプレビュー</small>
+      </summary>
+      <div class="email-preview-content">
+        <dl class="email-meta">
+          <div><dt>宛先</dt><dd>${esc(recipientName)} 様</dd></div>
+          <div><dt>件名</dt><dd>${subject}</dd></div>
+        </dl>
+        <div class="email-body">${body}</div>
+      </div>
+    </details>`;
+}
+
+function generalInquirySummary() {
+  const rows = [`お問い合わせ種類：${selectedInquiry().label}`];
+  if (state.inquiryType === "room") {
+    rows.push(`対象設備：${selectedEquipment().label}`);
+  }
+  if (state.manufacturer || state.modelNumber) {
+    rows.push(`機器情報：${[state.manufacturer, state.modelNumber].filter(Boolean).join(" / ")}`);
+  }
+  rows.push(`お問い合わせ内容：${state.detail || "（未入力）"}`);
+  return esc(rows.join("\n")).replaceAll("\n", "<br />");
+}
+
+function generalReplyEmail() {
+  const recipientName = `${state.lastName} ${state.firstName}`.trim() || "〇〇 〇〇";
+  const subject = "【お困りごと・建物の不具合お問い合わせフォーム】お問い合わせを承りました";
+  const body = `
+    <p>${esc(recipientName)} 様</p>
+    <p>
+      お客様のお問い合わせを以下の内容で承りました。<br />
+      本件のお問い合わせ番号は【${generalTicketNumber}】です。<br />
+      現在、順次対応を行なっております。通常2営業日以内にご返信いたしますので、今しばらくお待ちください。<br />
+      なお、よくあるご質問については下記FAQページにも記載がございます。解決の手助けとなる場合もございますので、併せてご確認ください。
+    </p>
+    <p class="email-link-line">
+      ▼ よくあるご質問（FAQ）<br />
+      <a href="https://heiwajuutaku.tayori.com/faq/13d179e934b2d688df6270b53bba1294f072580c/" target="_blank" rel="noreferrer">
+        https://heiwajuutaku.tayori.com/faq/13d179e934b2d688df6270b53bba1294f072580c/
+      </a>
+    </p>
+    <section class="email-service-section">
+      <strong>◆緊急時・近隣トラブルの窓口もご利用頂けます※加入者の方が対象◆</strong>
+      <p>
+        ＜24時間対応＞水漏れ・鍵の紛失など緊急の場合<br />
+        ◎安心入居サポート　0120－024－377<br />
+        <span>※賃貸住宅総合補償スタンダード・ライト・安心入居サポート（2年版・月額版）等に加入の方</span><br />
+        <a href="https://wmp3-cf.njc-web.jp/users/12600/files/651213/674c3b061fa04.pdf" target="_blank" rel="noreferrer">サービス内容はこちら</a>
+      </p>
+      <p>
+        ◎学生110番　0120－555－560<br />
+        <span>※大学生協提供サービスに加入の方</span><br />
+        <a href="https://www.univcoop.or.jp/gakusei110/index.html" target="_blank" rel="noreferrer">サービス内容はこちら</a>
+      </p>
+      <p>
+        ＜元警察官による解決支援＞騒音・迷惑行為・不法侵入・ストーカー等の近隣トラブル<br />
+        ◎Mamorocca（マモロッカ）　0570-007-001（平日 10:00～18:30）<br />
+        <span>※賃貸住宅総合補償スタンダード・ライト、大学生協加入者向け、マモロッカプラン加入の方</span><br />
+        <a href="https://www.v-smith.co.jp/contact-trouble" target="_blank" rel="noreferrer">時間外専用相談受付フォームはこちら</a><br />
+        <a href="https://saitoyuki-byte.github.io/heiwajuutaku-owner-survey-mocks/tenant-contact-mock/assets/mamorocca-service.pdf" target="_blank" rel="noreferrer">サービス内容はこちら</a>
+      </p>
+    </section>
+    <section class="email-inquiry-section">
+      <strong>■ お問い合わせ内容</strong>
+      <p>
+        【受付番号】${generalTicketNumber}<br />
+        【お問い合わせ日時】${mockSubmissionTime}<br />
+        【ご内容】<br />
+        ${generalInquirySummary()}
+      </p>
+    </section>
+    <p>
+      お問合せ頂いた2営業日を目安に回答させて頂きます。<br />
+      回答の連絡がない場合は、改めてお問合せ頂けますようお願い申し上げます。
+    </p>
+    <p>株式会社平和住宅情報センター<br />管理センター</p>`;
+
+  return emailPreview(subject, recipientName, body);
+}
+
+function membershipReplyEmail() {
+  const recipientName =
+    `${membershipState.lastName} ${membershipState.firstName}`.trim() || "〇〇 〇〇";
+  const subject =
+    "【安心入居サポート・Mamorocca（マモロッカ）加入確認問合せフォーム】お問い合わせを承りました";
+  const membershipContent = esc(
+    [
+      `加入確認したいサービス：${membershipServiceLabels()}`,
+      `入居者名：${recipientName}`,
+      `物件・号室：${membershipState.property} ${membershipState.room}号室`,
+      `電話番号：${membershipState.phone}`,
+      `メールアドレス：${membershipState.email}`,
+    ].join("\n"),
+  ).replaceAll("\n", "<br />");
+  const body = `
+    <p>${esc(recipientName)} 様</p>
+    <p>
+      お客様のお問い合わせを以下の内容で承りました。<br />
+      本件のお問い合わせ番号は【${membershipTicketNumber}】です。<br />
+      現在、順次対応を行なっております。通常2営業日以内にご返信いたしますので、今しばらくお待ちください。
+    </p>
+    <section class="email-inquiry-section">
+      <strong>■ お問い合わせ内容</strong>
+      <p>
+        【受付番号】${membershipTicketNumber}<br />
+        【お問い合わせ日時】${mockSubmissionTime}<br />
+        【ご内容】<br />
+        ${membershipContent}
+      </p>
+    </section>
+    <p>
+      お問合せ頂いた2営業日を目安に回答させて頂きます。<br />
+      回答の連絡がない場合は、改めてお問合せ頂けますようお願い申し上げます。
+    </p>
+    <p>株式会社平和住宅情報センター<br />管理センター</p>`;
+
+  return emailPreview(subject, recipientName, body);
+}
+
 function membershipInputReady() {
   return (
     membershipState.services.length > 0 &&
@@ -483,15 +623,16 @@ function renderMembershipConfirmation() {
 function renderMembershipSuccess() {
   const current = document.getElementById("formCard");
   current.outerHTML = `
-    <section class="success-card membership-success" id="formCard">
+    <section class="success-card membership-success with-email-preview" id="formCard">
       <div class="success-icon" aria-hidden="true">✓</div>
       <p class="eyebrow">加入状況確認受付</p>
       <h1>送信が完了しました</h1>
-      <p class="success-lead">受付番号は <strong>HM-2026-0725-0001</strong> です。</p>
+      <p class="success-lead">受付番号は <strong>${membershipTicketNumber}</strong> です。</p>
       <div class="success-info">
         <p>入力いただいたメールアドレス宛に受付内容をお送りします。</p>
         <p>お問合せ頂いた2営業日を目安に回答いたします。</p>
       </div>
+      ${membershipReplyEmail()}
       <button class="button button-primary" data-action="membership-restart" type="button">入力画面に戻る</button>
       <p class="mock-note">※モックのため、メール送信やデータ保存は行われません。</p>
     </section>`;
@@ -510,15 +651,16 @@ function renderMembershipForm() {
 
 function renderSuccess() {
   document.getElementById("formCard").outerHTML = `
-    <section class="success-card" id="formCard">
+    <section class="success-card with-email-preview" id="formCard">
       <div class="success-icon" aria-hidden="true">✓</div>
       <p class="eyebrow">お問い合わせ受付</p>
       <h1>送信が完了しました</h1>
-      <p class="success-lead">受付番号は <strong>HC-2026-0720-0012</strong> です。</p>
+      <p class="success-lead">受付番号は <strong>${generalTicketNumber}</strong> です。</p>
       <div class="success-info">
         <p>入力いただいたメールアドレス宛に受付内容をお送りします。</p>
         <p>営業時間外のご連絡は、翌営業日以降に確認いたします。</p>
       </div>
+      ${generalReplyEmail()}
       <button class="button button-primary" data-action="restart" type="button">入力画面に戻る</button>
       <p class="mock-note">※モックのため、メール送信やデータ保存は行われません。</p>
     </section>`;
