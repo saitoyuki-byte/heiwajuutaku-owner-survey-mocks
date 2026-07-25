@@ -170,11 +170,39 @@ body.modal-open {
   background: white;
 }
 
-.hotline-card > span {
-  display: block;
+.service-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.service-title-row > span,
+.service-title-row > strong {
   color: #583b3c;
   font-size: 0.79rem;
   font-weight: 800;
+}
+
+.service-detail-link {
+  padding: 6px 8px;
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 5px;
+  border: 1px solid #bed2e7;
+  border-radius: 7px;
+  color: var(--navy);
+  background: #f8fbff;
+  font-size: 0.64rem;
+  font-weight: 800;
+  line-height: 1.35;
+  text-decoration: none;
+}
+
+.service-detail-link:hover {
+  border-color: var(--blue);
+  background: #eef6ff;
 }
 
 .phone-link {
@@ -207,10 +235,20 @@ body.modal-open {
   align-items: center;
 }
 
-.mamorocca-copy > strong {
-  display: block;
+.mamorocca-title-row {
+  width: min(590px, 100%);
+  justify-content: flex-start;
+}
+
+.mamorocca-title-row > strong {
   color: #173e31;
   font-size: 1rem;
+}
+
+.mamorocca-title-row .service-detail-link {
+  border-color: #bcd9cc;
+  color: #17644d;
+  background: white;
 }
 
 .mamorocca-copy .hours {
@@ -295,67 +333,85 @@ body.modal-open {
   line-height: 1.65;
 }
 
-.service-links {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 9px;
-}
-
-.service-links a {
-  min-height: 54px;
-  padding: 10px 12px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  color: var(--navy);
-  background: white;
-  font-size: 0.72rem;
-  font-weight: 800;
-  line-height: 1.45;
-  text-decoration: none;
-}
-
-.service-links a:hover,
 .external-button:hover {
   filter: brightness(0.96);
-}
-
-.service-links span {
-  flex: 0 0 auto;
-  color: var(--blue);
-  font-size: 0.66rem;
 }
 
 .welcome-action {
   position: sticky;
   bottom: 0;
-  padding: 18px 34px 20px;
+  padding: 14px 34px 18px;
   border-top: 1px solid var(--line);
   background: rgba(255, 255, 255, 0.96);
   backdrop-filter: blur(8px);
-  text-align: center;
 }
 
-.welcome-start-button {
-  width: min(520px, 100%);
-  min-height: 54px;
-  border: 1px solid var(--navy);
-  color: white;
-  background: var(--navy);
-  box-shadow: 0 9px 22px rgba(7, 58, 120, 0.22);
+.inquiry-route-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 9px;
 }
 
-.welcome-start-button span {
-  margin-left: 10px;
+.inquiry-route-button {
+  min-width: 0;
+  min-height: 112px;
+  padding: 13px 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 5px;
+  border: 1px solid #bfd0e2;
+  border-radius: 11px;
+  color: var(--ink);
+  background: white;
+  font: inherit;
+  line-height: 1.45;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    transform 0.15s ease,
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
 }
 
-.welcome-action p {
-  margin: 7px 0 0;
+.inquiry-route-button strong {
+  color: var(--navy-dark);
+  font-size: 0.76rem;
+}
+
+.inquiry-route-button > span {
   color: var(--muted);
   font-size: 0.67rem;
+}
+
+.inquiry-route-button b {
+  color: var(--navy);
+  font-size: 0.7rem;
+}
+
+.inquiry-route-button:hover,
+.inquiry-route-button:focus-visible {
+  transform: translateY(-2px);
+  border-color: var(--blue);
+  box-shadow: 0 8px 20px rgba(7, 58, 120, 0.12);
+}
+
+.primary-route {
+  border-color: var(--navy);
+  color: white;
+  background: var(--navy);
+}
+
+.primary-route strong,
+.primary-route > span,
+.primary-route b {
+  color: white;
+}
+
+.primary-route > span {
+  color: rgba(255, 255, 255, 0.75);
 }
 
 html {
@@ -1346,7 +1402,7 @@ footer a {
   }
 
   .hotline-grid,
-  .service-links {
+  .inquiry-route-grid {
     grid-template-columns: 1fr;
   }
 
@@ -1375,10 +1431,19 @@ footer a {
     padding: 14px;
   }
 
-  .welcome-start-button {
-    min-height: 50px;
-    padding: 11px 14px;
-    font-size: 0.79rem;
+  .inquiry-route-button {
+    min-height: 102px;
+  }
+
+  .service-title-row {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 7px;
+  }
+
+  .service-detail-link {
+    width: 100%;
+    justify-content: space-between;
   }
 
   .site-header {

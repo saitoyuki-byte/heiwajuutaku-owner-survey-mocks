@@ -53,7 +53,7 @@ const guideTitle = document.getElementById("guideTitle");
 const guideImage = document.getElementById("guideImage");
 const welcomeBackdrop = document.getElementById("welcomeBackdrop");
 const welcomeDialog = document.getElementById("welcomeDialog");
-const startFormButton = document.getElementById("startFormButton");
+const startFormButtons = document.querySelectorAll("[data-start-form]");
 
 const esc = (value) =>
   String(value ?? "")
@@ -504,11 +504,13 @@ pageBehindWelcome.forEach((element) => {
 });
 welcomeDialog.focus({ preventScroll: true });
 
-startFormButton.addEventListener("click", () => {
-  welcomeBackdrop.hidden = true;
-  document.body.classList.remove("modal-open");
-  pageBehindWelcome.forEach((element) => {
-    element.inert = false;
+startFormButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    welcomeBackdrop.hidden = true;
+    document.body.classList.remove("modal-open");
+    pageBehindWelcome.forEach((element) => {
+      element.inert = false;
+    });
+    document.querySelector("[data-inquiry]")?.focus({ preventScroll: true });
   });
-  document.querySelector("[data-inquiry]")?.focus({ preventScroll: true });
 });

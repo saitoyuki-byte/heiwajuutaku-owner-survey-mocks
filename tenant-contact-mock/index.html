@@ -75,12 +75,31 @@
 
               <div class="hotline-grid">
                 <article class="hotline-card">
-                  <span>安心入居サポート</span>
+                  <div class="service-title-row">
+                    <span>安心入居サポート</span>
+                    <a
+                      class="service-detail-link"
+                      href="https://wmp3-cf.njc-web.jp/users/12600/files/651213/674c3b061fa04.pdf"
+                      target="_blank"
+                      rel="noreferrer"
+                    >安心入居サポートのサービスを見る <span aria-hidden="true">↗</span></a>
+                  </div>
                   <a class="phone-link" href="tel:0120024377">0120-024-377</a>
-                  <p>賃貸住宅総合補償スタンダード・ライト等に加入の方</p>
+                  <p>
+                    賃貸住宅総合補償（スタンダード・ライト）<br />
+                    安心入居サポート（2年版・月額版）等に加入の方
+                  </p>
                 </article>
                 <article class="hotline-card">
-                  <span>学生110番</span>
+                  <div class="service-title-row">
+                    <span>学生110番</span>
+                    <a
+                      class="service-detail-link"
+                      href="https://www.univcoop.or.jp/gakusei110/index.html"
+                      target="_blank"
+                      rel="noreferrer"
+                    >学生110番のサービスを見る <span aria-hidden="true">↗</span></a>
+                  </div>
                   <a class="phone-link" href="tel:0120555560">0120-555-560</a>
                   <p>大学生協提供サービスに加入の方</p>
                 </article>
@@ -98,7 +117,15 @@
 
               <div class="mamorocca-layout">
                 <div class="mamorocca-copy">
-                  <strong>Mamorocca（マモロッカ）</strong>
+                  <div class="service-title-row mamorocca-title-row">
+                    <strong>Mamorocca（マモロッカ）</strong>
+                    <a
+                      class="service-detail-link"
+                      href="./assets/mamorocca-service.pdf"
+                      target="_blank"
+                      rel="noreferrer"
+                    >マモロッカのサービス資料を見る <span aria-hidden="true">PDF</span></a>
+                  </div>
                   <a class="phone-link coral" href="tel:0570007001">0570-007-001</a>
                   <p class="hours">平日 10:00～18:30</p>
                   <p class="eligibility">
@@ -134,30 +161,31 @@
                 ご加入状況とサービス内容をご確認ください。
               </p>
             </div>
-
-            <nav class="service-links" aria-label="各サービスの詳細資料">
-              <a
-                href="https://wmp3-cf.njc-web.jp/users/12600/files/651213/674c3b061fa04.pdf"
-                target="_blank"
-                rel="noreferrer"
-              >安心入居サポートのサービスを見る <span aria-hidden="true">↗</span></a>
-              <a
-                href="https://www.univcoop.or.jp/gakusei110/index.html"
-                target="_blank"
-                rel="noreferrer"
-              >学生110番のサービスを見る <span aria-hidden="true">↗</span></a>
-              <a href="./assets/mamorocca-service.pdf" target="_blank" rel="noreferrer">
-                マモロッカのサービス資料を見る <span aria-hidden="true">PDF</span>
-              </a>
-            </nav>
           </div>
 
           <div class="welcome-action">
-            <button class="button welcome-start-button" id="startFormButton" type="button">
-              上記内容を確認・承諾してフォーム入力を始める
-              <span aria-hidden="true">→</span>
-            </button>
-            <p>この画面を閉じた後も、緊急連絡先はフォーム上部で確認できます。</p>
+            <div class="inquiry-route-grid" aria-label="お問い合わせ先を選択">
+              <button class="inquiry-route-button" type="button" data-start-form data-route="membership">
+                <strong>安心入居サポート・Mamorocca（マモロッカ）</strong>
+                <span>に加入しているか確認したい方は</span>
+                <b>こちらからお問い合わせください <span aria-hidden="true">→</span></b>
+              </button>
+              <a
+                class="inquiry-route-button"
+                href="https://www.univcoop.or.jp/gakusei110/index.html"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <strong>学生110番に加入しているか確認したい方は</strong>
+                <span>学生110番のHP掲載の各大学生協にお問い合わせください。</span>
+                <b>学生110番のHPはこちら <span aria-hidden="true">↗</span></b>
+              </a>
+              <button class="inquiry-route-button primary-route" type="button" data-start-form data-route="inquiry">
+                <strong>上記サービスで対応しない内容の方は</strong>
+                <span>平和住宅情報センターへお問い合わせください。</span>
+                <b>こちらからお問い合わせください <span aria-hidden="true">→</span></b>
+              </button>
+            </div>
           </div>
         </section>
       </div>
