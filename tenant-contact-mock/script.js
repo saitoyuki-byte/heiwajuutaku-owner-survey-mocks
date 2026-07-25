@@ -19,7 +19,6 @@ const equipmentList = [
 ];
 
 const steps = ["お問い合わせ内容", "状況・添付", "入居者情報", "確認"];
-const timeOptions = ["9:30〜11:00", "11:00〜12:30", "12:30〜14:00", "14:00〜15:30", "15:30〜17:00"];
 
 const state = {
   step: 1,
@@ -38,13 +37,6 @@ const state = {
   room: "",
   phone: "",
   email: "",
-  responseMethod: "report",
-  visitDates: [
-    { date: "", time: "" },
-    { date: "", time: "" },
-    { date: "", time: "" },
-  ],
-  privacy: false,
 };
 
 const formCard = document.getElementById("formCard");
@@ -230,45 +222,6 @@ function renderStep2() {
     </section>`;
 }
 
-function responseChoices() {
-  return `
-    <fieldset class="field fieldset">
-      <legend class="field-label">ご希望の対応 ${required()}</legend>
-      <label class="response-choice ${state.responseMethod === "report" ? "selected" : ""}">
-        <input type="radio" name="response" value="report" ${state.responseMethod === "report" ? "checked" : ""} />
-        <span><strong>対応結果の報告のみを希望する</strong><small>立会い不要で対応できる場合</small></span>
-      </label>
-      <label class="response-choice ${state.responseMethod === "visit" ? "selected" : ""}">
-        <input type="radio" name="response" value="visit" ${state.responseMethod === "visit" ? "checked" : ""} />
-        <span><strong>現地立会いで訪問対応を希望する</strong><small>室内への入室・確認が必要な場合</small></span>
-      </label>
-    </fieldset>`;
-}
-
-function visitFields() {
-  if (state.responseMethod !== "visit") return "";
-  return `
-    <div class="visit-panel">
-      <p class="field-label">訪問希望日時</p>
-      <p class="field-hint">ご希望に沿えない場合があります。担当者から確定日時をご連絡します。</p>
-      ${state.visitDates
-        .map(
-          (visit, index) => `
-            <div class="visit-row">
-              <strong>第${index + 1}希望</strong>
-              <input type="date" data-visit-date="${index}" value="${esc(visit.date)}" aria-label="第${index + 1}希望日" />
-              <select data-visit-time="${index}" aria-label="第${index + 1}希望時間">
-                <option value="">時間帯を選択</option>
-                ${timeOptions
-                  .map((time) => `<option value="${time}" ${visit.time === time ? "selected" : ""}>${time}</option>`)
-                  .join("")}
-              </select>
-            </div>`,
-        )
-        .join("")}
-    </div>`;
-}
-
 function renderStep3() {
   return `
     <section class="form-section">
@@ -306,8 +259,6 @@ function renderStep3() {
       <label class="field"><span class="field-label">メールアドレス ${required()}</span>
         <input id="email" value="${esc(state.email)}" placeholder="example@email.com" inputmode="email" />
       </label>
-      ${responseChoices()}
-      ${visitFields()}
       ${navigation(true, "入力内容を確認する")}
     </section>`;
 }
@@ -317,14 +268,6 @@ function summaryRow(label, value) {
 }
 
 function renderStep4() {
-  const visitSummary =
-    state.responseMethod === "visit"
-      ? state.visitDates
-          .filter((item) => item.date || item.time)
-          .map((item, index) => `第${index + 1}希望：${item.date || "日付未選択"} ${item.time || ""}`)
-          .join("\n") || "訪問希望（日時未選択）"
-      : "対応結果の報告のみを希望";
-
   return `
     <section class="form-section">
       ${heading("04", "入力内容をご確認ください", "内容を修正する場合は「戻る」を押してください。")}
@@ -339,23 +282,26 @@ function renderStep4() {
         ${summaryRow("管理番号", managementNumber())}
         ${summaryRow("電話番号", state.phone)}
         ${summaryRow("メールアドレス", state.email)}
-        ${summaryRow("ご希望の対応", visitSummary)}
       </dl>
-      <details class="privacy-details">
-        <summary>個人情報の取り扱いについて</summary>
-        <p>
-          ご入力いただいた情報は、お問い合わせへの対応、修繕手配、管理物件との照合のために利用します。
-          法令に基づく場合を除き、ご本人の同意なく目的外に利用しません。
-        </p>
-      </details>
-      <label class="privacy-check">
-        <input id="privacy" type="checkbox" ${state.privacy ? "checked" : ""} />
-        <span>個人情報の取り扱いに同意します</span>
-      </label>
+      <div class="privacy-policy-card">
+        <div>
+          <strong>プライバシーポリシー</strong>
+          <p>送信前に、個人情報の利用目的および取り扱いについてご確認ください。</p>
+        </div>
+        <a
+          href="https://www.heiwajuutaku.com/privacy_policy"
+          target="_blank"
+          rel="noreferrer"
+        >プライバシーポリシーを確認する <span aria-hidden="true">↗</span></a>
+      </div>
+      <p class="response-time-note">
+        お問合せ頂いた2営業日を目安に回答させて頂きます。回答の連絡がない場合は、改めてお問合せ頂けますようお願い申し上げます。
+      </p>
       <div class="navigation">
         <button type="button" class="button button-secondary" data-action="back">戻る</button>
-        <button type="button" class="button button-primary" id="submitMock" data-action="submit"
-          ${state.privacy ? "" : "disabled"}>この内容で送信する<span aria-hidden="true">→</span></button>
+        <button type="button" class="button button-primary" id="submitMock" data-action="submit">
+          上記を確認・同意して、送信<span aria-hidden="true">→</span>
+        </button>
       </div>
       <p class="mock-note">※画面確認用モックのため、実際の送信・保存は行われません。</p>
     </section>`;
@@ -435,7 +381,7 @@ document.addEventListener("click", (event) => {
     state.step = Math.max(1, state.step - 1);
     render();
     window.scrollTo({ top: 0, behavior: "smooth" });
-  } else if (target.dataset.action === "submit" && state.privacy) {
+  } else if (target.dataset.action === "submit") {
     state.complete = true;
     render();
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -470,16 +416,6 @@ document.addEventListener("change", (event) => {
     if (target.id === "photoFiles") state.photos = names;
     if (target.id === "videoFiles") state.videos = names;
     render();
-  } else if (target.name === "response") {
-    state.responseMethod = target.value;
-    render();
-  } else if (target.id === "privacy") {
-    state.privacy = target.checked;
-    document.getElementById("submitMock").disabled = !state.privacy;
-  } else if (target.dataset.visitDate !== undefined) {
-    state.visitDates[Number(target.dataset.visitDate)].date = target.value;
-  } else if (target.dataset.visitTime !== undefined) {
-    state.visitDates[Number(target.dataset.visitTime)].time = target.value;
   }
 });
 
