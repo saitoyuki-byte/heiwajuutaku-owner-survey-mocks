@@ -445,6 +445,25 @@
         font-size: 17px;
       }
 
+      .button-row {
+        width: 100%;
+        margin-top: auto;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 9px;
+      }
+
+      .button-row .open-button {
+        margin-top: 0;
+      }
+
+      .open-button.secondary {
+        color: var(--green);
+        background: white;
+        border: 1px solid #9fc7b5;
+        box-shadow: none;
+      }
+
       .featured-preview {
         min-height: 330px;
         padding: 30px;
@@ -861,7 +880,7 @@
         </a>
         <div class="header-meta">
           <span>打ち合わせ・要件確認用</span>
-          <strong>9 MOCKUPS</strong>
+          <strong>10 MOCKUPS</strong>
         </div>
       </div>
     </header>
@@ -878,7 +897,7 @@
           <div class="hero-chips" aria-label="モックの種類">
             <span>入力フォーム 4件</span>
             <span>集計・管理 2件</span>
-            <span>業務改善 3件</span>
+            <span>業務改善 4件</span>
           </div>
         </div>
         <div class="library-map" aria-label="モック集の内訳">
@@ -896,7 +915,7 @@
           <div class="map-row">
             <span class="map-icon">業務</span>
             <div><strong>業務改善</strong><small>日々の作業を支援する画面</small></div>
-            <b>3</b>
+            <b>4</b>
           </div>
         </div>
       </section>
@@ -915,6 +934,61 @@
           </div>
           <span>現場業務の整理と効率化</span>
         </div>
+
+        <article class="featured-card">
+          <div class="featured-content">
+            <span class="tag green new">受付・顧客対応</span>
+            <h3>2027年春入居<br />空き待ち予約システム</h3>
+            <p>
+              2027年4月1日からの契約を希望する学生・保護者のエントリーを受け付け、
+              スタッフが対応状況を一つの画面で管理するデモです。
+            </p>
+            <ul class="feature-list">
+              <li>物件マスタ1,333件から希望物件を検索</li>
+              <li>受付番号と物件ごとの優先順位を自動採番</li>
+              <li>対応状況・担当者・期限・メモをダッシュボードで管理</li>
+            </ul>
+            <div class="button-row">
+              <a
+                class="open-button"
+                href="https://script.google.com/a/macros/heiwajuutaku.com/s/AKfycbzETNzbS41xyKsHc2jQr99Qb9GzpZrujSzwo_ZSYAjUFf4UQEMsRO_WswujSnCDqF1unw/exec"
+                target="_blank"
+                rel="noopener"
+              >
+                お客様用画面を開く <span aria-hidden="true">›</span>
+              </a>
+              <a
+                class="open-button secondary"
+                href="https://script.google.com/a/macros/heiwajuutaku.com/s/AKfycbzETNzbS41xyKsHc2jQr99Qb9GzpZrujSzwo_ZSYAjUFf4UQEMsRO_WswujSnCDqF1unw/exec?page=admin"
+                target="_blank"
+                rel="noopener"
+              >
+                管理画面を開く <span aria-hidden="true">›</span>
+              </a>
+            </div>
+          </div>
+          <div class="featured-preview" aria-hidden="true">
+            <div class="preview-window">
+              <div class="preview-bar"><i></i><i></i><i></i></div>
+              <div class="preview-summary">
+                <div><span>受付総数</span><b>1</b></div>
+                <div><span>本日の受付</span><b>1</b></div>
+                <div><span>要対応</span><b>1</b></div>
+                <div><span>重複候補</span><b>0</b></div>
+              </div>
+              <div class="preview-body">
+                <div class="preview-table">
+                  <div><i></i><i></i><i></i></div>
+                  <div><i></i><i></i><i></i></div>
+                  <div><i></i><i></i><i></i></div>
+                  <div><i></i><i></i><i></i></div>
+                  <div><i></i><i></i><i></i></div>
+                </div>
+                <div class="preview-side"><i></i><i></i><i></i><i></i></div>
+              </div>
+            </div>
+          </div>
+        </article>
 
         <article class="featured-card">
           <div class="featured-content">
@@ -1165,7 +1239,8 @@
         <strong>ご確認ください</strong>
         <span>
           掲載している画面は、打ち合わせで要件と操作イメージを確認するためのモックです。
-          すべてダミーデータを使用しており、外部送信や本番システムへの書き込みは行いません。
+          空き待ち予約システムへの入力内容は確認用スプレッドシートに保存されるため、
+          動作確認には必ず架空の情報を使用し、実在するお客様の個人情報は入力しないでください。
         </span>
       </aside>
     </main>
