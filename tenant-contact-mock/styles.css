@@ -509,10 +509,6 @@ summary:focus-visible {
 .intro {
   width: min(1120px, calc(100% - 40px));
   margin: 48px auto 30px;
-  display: grid;
-  grid-template-columns: minmax(0, 1.25fr) minmax(320px, 0.75fr);
-  align-items: end;
-  gap: 34px;
 }
 
 .eyebrow {
@@ -537,53 +533,6 @@ summary:focus-visible {
   margin: 18px 0 0;
   color: var(--muted);
   font-size: 1.02rem;
-}
-
-.support-card {
-  padding: 22px;
-  display: flex;
-  gap: 15px;
-  background: var(--warning);
-  border: 1px solid var(--warning-line);
-  border-radius: 18px;
-  box-shadow: 0 8px 24px rgba(86, 66, 18, 0.07);
-}
-
-.support-icon {
-  width: 42px;
-  height: 42px;
-  display: grid;
-  flex: 0 0 auto;
-  place-items: center;
-  background: white;
-  border-radius: 50%;
-  color: var(--danger);
-  font-size: 1.3rem;
-  box-shadow: 0 5px 14px rgba(117, 82, 9, 0.12);
-}
-
-.support-card strong {
-  color: #5b3a00;
-  font-size: 0.94rem;
-}
-
-.support-card p {
-  margin: 3px 0 10px;
-  color: #735c31;
-  font-size: 0.82rem;
-  line-height: 1.45;
-}
-
-.support-lines {
-  display: grid;
-  gap: 4px;
-}
-
-.support-lines a {
-  color: var(--danger);
-  font-size: 0.82rem;
-  font-weight: 800;
-  text-decoration: none;
 }
 
 .form-card {
@@ -1578,10 +1527,6 @@ footer a {
 }
 
 @media (max-width: 850px) {
-  .intro {
-    grid-template-columns: 1fr;
-  }
-
   .choice-grid {
     grid-template-columns: 1fr 1fr;
   }
@@ -1703,10 +1648,6 @@ footer a {
 
   .intro-copy {
     font-size: 0.9rem;
-  }
-
-  .support-card {
-    padding: 17px;
   }
 
   .form-card {
