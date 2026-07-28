@@ -58,6 +58,12 @@ const membershipServices = [
   { id: "mamorocca", label: "Mamorocca（マモロッカ）" },
 ];
 
+const managedProperties = {
+  ピースフル五橋: "15321",
+  ピースフル旭ヶ丘: "15322",
+  ピースフル泉中央: "15323",
+};
+
 const mockSubmissionDate = new Date();
 const mockDateParts = {
   year: mockSubmissionDate.getFullYear(),
@@ -99,9 +105,53 @@ function selectedEquipment() {
   return equipmentList.find((item) => item.id === state.equipment) || equipmentList[0];
 }
 
-function managementNumber() {
-  if (state.property === "ピースフル五橋") return "H-10582";
-  return state.property ? "確認中" : "—";
+function propertyNumber(propertyName) {
+  return managedProperties[propertyName] || "";
+}
+
+function propertyStatusMarkup(propertyName, elementId) {
+  const number = propertyNumber(propertyName);
+
+  if (!propertyName) {
+    return `
+      <div class="property-status" id="${elementId}" aria-live="polite">
+        <div class="property-status-heading">
+          <span>物件番号</span><strong>—</strong>
+        </div>
+        <p>物件名を選択すると物件番号が自動表示されます。</p>
+      </div>`;
+  }
+
+  if (number) {
+    return `
+      <div class="property-status matched" id="${elementId}" aria-live="polite">
+        <div class="property-status-heading">
+          <span>物件番号</span><strong>${number}</strong>
+        </div>
+        <p>物件名が管理物件と一致しました。</p>
+      </div>`;
+  }
+
+  return `
+    <div class="property-status not-found" id="${elementId}" role="status" aria-live="polite">
+      <div class="property-status-heading">
+        <span>物件番号</span><strong>見つかりません</strong>
+      </div>
+      <p>
+        ご入力いただいた物件名に該当する物件番号が見つかりませんでした。<br />
+        物件名に誤りがないか（全角・半角、アルファベットの大文字・小文字、スペースの有無など）
+        ご確認の上、再度ご入力をお試しください。<br />
+        <small>
+          ※正しい物件名を入力しても表示されない場合は、弊社以外で管理している物件の可能性がございます。
+          その際は、該当物件の管理会社様へ直接お問い合わせください。
+        </small>
+      </p>
+    </div>`;
+}
+
+function refreshPropertyStatus(elementId, propertyName) {
+  const current = document.getElementById(elementId);
+  if (current) current.outerHTML = propertyStatusMarkup(propertyName, elementId);
 }
 
 function heading(number, title, description) {
@@ -296,10 +346,7 @@ function renderStep3() {
         </datalist>
         <span class="field-hint">例：「ピースフル」と入力して候補から選択</span>
       </label>
-      <div class="property-status">
-        <div><span>管理番号</span><strong id="managementNumber">${managementNumber()}</strong></div>
-        <p id="propertyMessage">${state.property ? "入力された物件名を管理物件データと照合します。" : "物件名を選択すると管理番号が自動表示されます。"}</p>
-      </div>
+      ${propertyStatusMarkup(state.property, "propertyStatus")}
       <div class="two-column">
         <label class="field"><span class="field-label">号室 ${required()}</span>
           <input id="room" value="${esc(state.room)}" placeholder="101" inputmode="numeric" />
@@ -331,7 +378,7 @@ function renderStep4() {
         ${summaryRow("添付ファイル", [...state.photos, ...state.videos].join("\n"))}
         ${summaryRow("お名前", `${state.lastName} ${state.firstName}`.trim())}
         ${summaryRow("物件・号室", `${state.property} ${state.room ? `${state.room}号室` : ""}`.trim())}
-        ${summaryRow("管理番号", managementNumber())}
+        ${summaryRow("物件番号", propertyNumber(state.property) || "—")}
         ${summaryRow("電話番号", state.phone)}
         ${summaryRow("メールアドレス", state.email)}
       </dl>
@@ -384,7 +431,11 @@ function emailPreview(subject, recipientName, body) {
 }
 
 function generalInquirySummary() {
-  const rows = [`お問い合わせ種類：${selectedInquiry().label}`];
+  const rows = [
+    `物件・号室：${state.property} ${state.room ? `${state.room}号室` : ""}`.trim(),
+    `物件番号：${propertyNumber(state.property) || "該当なし"}`,
+    `お問い合わせ種類：${selectedInquiry().label}`,
+  ];
   if (state.inquiryType === "room") {
     rows.push(`対象設備：${selectedEquipment().label}`);
   }
@@ -461,6 +512,7 @@ function membershipReplyEmail() {
       `加入確認したいサービス：${membershipServiceLabels()}`,
       `入居者名：${recipientName}`,
       `物件・号室：${membershipState.property} ${membershipState.room}号室`,
+      `物件番号：${propertyNumber(membershipState.property) || "該当なし"}`,
       `電話番号：${membershipState.phone}`,
       `メールアドレス：${membershipState.email}`,
     ].join("\n"),
@@ -558,6 +610,7 @@ function renderMembershipInput() {
         </datalist>
         <span class="field-hint">例：「ピースフル」と入力して候補から選択</span>
       </label>
+      ${propertyStatusMarkup(membershipState.property, "membershipPropertyStatus")}
       <div class="two-column">
         <label class="field"><span class="field-label">号室 ${required()}</span>
           <input id="membershipRoom" value="${esc(membershipState.room)}" placeholder="101" inputmode="numeric" />
@@ -586,6 +639,7 @@ function renderMembershipConfirmation() {
         ${summaryRow("加入確認したいサービス", membershipServiceLabels())}
         ${summaryRow("お名前", `${membershipState.lastName} ${membershipState.firstName}`.trim())}
         ${summaryRow("物件・号室", `${membershipState.property} ${membershipState.room ? `${membershipState.room}号室` : ""}`.trim())}
+        ${summaryRow("物件番号", propertyNumber(membershipState.property) || "—")}
         ${summaryRow("電話番号", membershipState.phone)}
         ${summaryRow("メールアドレス", membershipState.email)}
       </dl>
@@ -781,6 +835,9 @@ document.addEventListener("input", (event) => {
     membershipState[membershipFieldMap[target.id]] = target.value;
     membershipState.error = "";
   }
+  if (target.id === "membershipProperty") {
+    refreshPropertyStatus("membershipPropertyStatus", target.value);
+  }
   if (["detail", "locationDetail", "manufacturer", "modelNumber", "lastName", "firstName", "property", "room", "phone", "email"].includes(target.id)) {
     state[target.id] = target.value;
   }
@@ -788,10 +845,7 @@ document.addEventListener("input", (event) => {
     document.getElementById("characterCount").textContent = `${target.value.length} / 1,000文字`;
   }
   if (target.id === "property") {
-    document.getElementById("managementNumber").textContent = managementNumber();
-    document.getElementById("propertyMessage").textContent = target.value
-      ? "入力された物件名を管理物件データと照合します。"
-      : "物件名を選択すると管理番号が自動表示されます。";
+    refreshPropertyStatus("propertyStatus", target.value);
   }
 });
 

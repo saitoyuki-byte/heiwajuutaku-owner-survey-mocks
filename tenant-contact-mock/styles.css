@@ -1088,7 +1088,7 @@ summary:focus-visible {
   border-radius: 12px;
 }
 
-.property-status div {
+.property-status-heading {
   min-width: 160px;
   display: flex;
   align-items: baseline;
@@ -1109,6 +1109,35 @@ summary:focus-visible {
   margin: 0;
   color: #3a6b67;
   font-size: 0.76rem;
+  line-height: 1.65;
+}
+
+.property-status.not-found {
+  align-items: flex-start;
+  border-color: #f2a34a;
+  background: #fff7ed;
+}
+
+.property-status.not-found .property-status-heading {
+  min-width: 150px;
+}
+
+.property-status.not-found span,
+.property-status.not-found strong,
+.property-status.not-found p {
+  color: #a43f0b;
+}
+
+.property-status.not-found p {
+  font-weight: 700;
+}
+
+.property-status.not-found small {
+  display: inline-block;
+  margin-top: 6px;
+  color: #7c3b17;
+  font-size: 0.7rem;
+  font-weight: 600;
 }
 
 .navigation {
