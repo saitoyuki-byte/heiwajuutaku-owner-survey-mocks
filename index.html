@@ -490,6 +490,20 @@
         border-left: 1px solid var(--line);
       }
 
+      .staging-preview {
+        padding: 0;
+        overflow: hidden;
+        background: #e7f0ed;
+      }
+
+      .staging-preview img {
+        width: 100%;
+        height: 100%;
+        min-height: 330px;
+        display: block;
+        object-fit: cover;
+      }
+
       .preview-window {
         width: 100%;
         max-width: 560px;
@@ -912,7 +926,7 @@
           <div class="hero-chips" aria-label="成果物の種類">
             <span>入力フォーム 6件</span>
             <span>集計・管理 2件</span>
-            <span>業務改善 10件</span>
+            <span>業務改善 11件</span>
           </div>
         </div>
         <div class="library-map" aria-label="システム・プロトタイプ集の内訳">
@@ -930,7 +944,7 @@
           <div class="map-row">
             <span class="map-icon">業務</span>
             <div><strong>業務改善</strong><small>日々の作業を支援する画面</small></div>
-            <b>10</b>
+            <b>11</b>
           </div>
         </div>
       </section>
@@ -949,6 +963,37 @@
           </div>
           <span>現場業務の整理と効率化</span>
         </div>
+
+        <article class="featured-card">
+          <div class="featured-content">
+            <span class="tag green new">AI・接客支援</span>
+            <h3>AIお部屋ステージング</h3>
+            <p>
+              物件の室内写真に家具を配置し、内覧中のお客様へ
+              暮らしのイメージをその場で見せる操作プロトタイプです。
+            </p>
+            <ul class="feature-list">
+              <li>写真・部屋の種類・家具テイストを簡単に選択</li>
+              <li>生成待ち、配置前後の比較、お客様向け拡大表示を体験</li>
+              <li>現在はAPI未接続の画面デモとして公開</li>
+            </ul>
+            <a
+              class="open-button"
+              href="https://heiwa-ai-room-staging.cantera-saito.chatgpt.site"
+              target="_blank"
+              rel="noopener"
+            >
+              AIステージングを開く <span aria-hidden="true">›</span>
+            </a>
+          </div>
+          <div class="featured-preview staging-preview" aria-hidden="true">
+            <img
+              src="https://heiwa-ai-room-staging.cantera-saito.chatgpt.site/og.png"
+              alt=""
+              loading="lazy"
+            />
+          </div>
+        </article>
 
         <article class="featured-card">
           <div class="featured-content">
