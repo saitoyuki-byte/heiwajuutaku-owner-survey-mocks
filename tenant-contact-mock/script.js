@@ -35,6 +35,7 @@ const state = {
   lastName: "",
   firstName: "",
   property: "",
+  propertyNumber: "",
   room: "",
   phone: "",
   email: "",
@@ -47,6 +48,7 @@ const membershipState = {
   lastName: "",
   firstName: "",
   property: "",
+  propertyNumber: "",
   room: "",
   phone: "",
   email: "",
@@ -58,11 +60,28 @@ const membershipServices = [
   { id: "mamorocca", label: "Mamorocca（マモロッカ）" },
 ];
 
-const managedProperties = {
-  ピースフル五橋: "15321",
-  ピースフル旭ヶ丘: "15322",
-  ピースフル泉中央: "15323",
-};
+const propertyCatalog = Array.isArray(window.PROPERTY_CATALOG) ? window.PROPERTY_CATALOG : [];
+
+function normalizePropertySearch(value) {
+  return String(value ?? "")
+    .normalize("NFKC")
+    .toLocaleLowerCase("ja")
+    .replace(/\s+/g, "");
+}
+
+const propertySearchIndex = propertyCatalog.map((property) => ({
+  ...property,
+  normalizedNumber: normalizePropertySearch(property.number),
+  normalizedName: normalizePropertySearch(property.name),
+}));
+const propertyByNumber = new Map(propertyCatalog.map((property) => [property.number, property]));
+const propertiesByName = new Map();
+
+propertySearchIndex.forEach((property) => {
+  const matches = propertiesByName.get(property.normalizedName) || [];
+  matches.push(property);
+  propertiesByName.set(property.normalizedName, matches);
+});
 
 const mockSubmissionDate = new Date();
 const mockDateParts = {
@@ -105,30 +124,73 @@ function selectedEquipment() {
   return equipmentList.find((item) => item.id === state.equipment) || equipmentList[0];
 }
 
-function propertyNumber(propertyName) {
-  return managedProperties[propertyName] || "";
+function resolvePropertyQuery(query) {
+  const trimmedQuery = String(query ?? "").trim();
+  if (!trimmedQuery) return null;
+
+  const numberMatch = propertyByNumber.get(trimmedQuery);
+  if (numberMatch) return numberMatch;
+
+  const nameMatches = propertiesByName.get(normalizePropertySearch(trimmedQuery)) || [];
+  return nameMatches.length === 1 ? nameMatches[0] : null;
 }
 
-function propertyStatusMarkup(propertyName, elementId) {
-  const number = propertyNumber(propertyName);
+function selectedProperty(formState) {
+  const selectedByNumber = propertyByNumber.get(formState.propertyNumber);
+  if (
+    selectedByNumber &&
+    normalizePropertySearch(selectedByNumber.name) === normalizePropertySearch(formState.property)
+  ) {
+    return selectedByNumber;
+  }
+  return resolvePropertyQuery(formState.property);
+}
 
-  if (!propertyName) {
+function selectedPropertyNumber(formState) {
+  return selectedProperty(formState)?.number || "";
+}
+
+function selectedPropertyName(formState) {
+  return selectedProperty(formState)?.name || formState.property;
+}
+
+function updatePropertyState(formState, value) {
+  formState.property = value;
+  formState.propertyNumber = resolvePropertyQuery(value)?.number || "";
+}
+
+function propertyStatusMarkup(formState, elementId) {
+  const property = selectedProperty(formState);
+
+  if (!formState.property) {
     return `
       <div class="property-status" id="${elementId}" aria-live="polite">
         <div class="property-status-heading">
           <span>物件番号</span><strong>—</strong>
         </div>
-        <p>物件名を選択すると物件番号が自動表示されます。</p>
+        <p>物件番号または物件名から選択すると、登録内容が表示されます。</p>
       </div>`;
   }
 
-  if (number) {
+  if (property) {
     return `
       <div class="property-status matched" id="${elementId}" aria-live="polite">
         <div class="property-status-heading">
-          <span>物件番号</span><strong>${number}</strong>
+          <span>物件番号</span><strong>${esc(property.number)}</strong>
         </div>
-        <p>物件名が管理物件と一致しました。</p>
+        <p><strong>${esc(property.name)}</strong><br />登録物件と一致しました。</p>
+      </div>`;
+  }
+
+  const exactNameMatches =
+    propertiesByName.get(normalizePropertySearch(formState.property)) || [];
+  if (exactNameMatches.length > 1) {
+    return `
+      <div class="property-status not-found" id="${elementId}" role="status" aria-live="polite">
+        <div class="property-status-heading">
+          <span>検索結果</span><strong>${exactNameMatches.length}件</strong>
+        </div>
+        <p>同じ物件名が複数あります。候補に表示された物件番号を確認して選択してください。</p>
       </div>`;
   }
 
@@ -138,20 +200,115 @@ function propertyStatusMarkup(propertyName, elementId) {
         <span>物件番号</span><strong>見つかりません</strong>
       </div>
       <p>
-        ご入力いただいた物件名に該当する物件番号が見つかりませんでした。<br />
-        物件名に誤りがないか（全角・半角、アルファベットの大文字・小文字、スペースの有無など）
-        ご確認の上、再度ご入力をお試しください。<br />
+        入力内容と一致する物件が見つかりませんでした。<br />
+        物件番号または物件名の一部を入力し、表示された候補から選択してください。<br />
         <small>
-          ※正しい物件名を入力しても表示されない場合は、弊社以外で管理している物件の可能性がございます。
+          ※候補に表示されない場合は、弊社以外で管理している物件の可能性がございます。
           その際は、該当物件の管理会社様へ直接お問い合わせください。
         </small>
       </p>
     </div>`;
 }
 
-function refreshPropertyStatus(elementId, propertyName) {
+function refreshPropertyStatus(elementId, formState) {
   const current = document.getElementById(elementId);
-  if (current) current.outerHTML = propertyStatusMarkup(propertyName, elementId);
+  if (current) current.outerHTML = propertyStatusMarkup(formState, elementId);
+}
+
+function propertySearchScore(property, query) {
+  if (property.normalizedNumber === query) return 0;
+  if (property.normalizedNumber.startsWith(query)) return 1;
+  if (property.normalizedName === query) return 2;
+  if (property.normalizedName.startsWith(query)) return 3;
+  if (property.normalizedName.includes(query)) return 4;
+  return 5;
+}
+
+function searchProperties(query) {
+  const normalizedQuery = normalizePropertySearch(query);
+  if (!normalizedQuery) return { matches: [], total: 0 };
+
+  const matches = propertySearchIndex
+    .filter(
+      (property) =>
+        property.normalizedNumber.includes(normalizedQuery) ||
+        property.normalizedName.includes(normalizedQuery),
+    )
+    .sort((propertyA, propertyB) => {
+      const scoreDifference =
+        propertySearchScore(propertyA, normalizedQuery) -
+        propertySearchScore(propertyB, normalizedQuery);
+      if (scoreDifference) return scoreDifference;
+      return propertyA.number.localeCompare(propertyB.number, "ja", { numeric: true });
+    });
+
+  return { matches: matches.slice(0, 20), total: matches.length };
+}
+
+function closePropertyResults() {
+  document.querySelectorAll(".property-search-results").forEach((results) => {
+    results.hidden = true;
+  });
+  document.querySelectorAll(".property-search input").forEach((input) => {
+    input.setAttribute("aria-expanded", "false");
+  });
+}
+
+function showPropertyResults(inputId, resultsId, targetName) {
+  const input = document.getElementById(inputId);
+  const results = document.getElementById(resultsId);
+  if (!input || !results) return;
+
+  const query = input.value.trim();
+  if (!query) {
+    results.hidden = true;
+    input.setAttribute("aria-expanded", "false");
+    return;
+  }
+
+  const searchResult = searchProperties(query);
+  if (!searchResult.matches.length) {
+    results.innerHTML = '<p class="property-search-empty">一致する物件がありません。</p>';
+  } else {
+    results.innerHTML = `${searchResult.matches
+      .map(
+        (property) => `
+          <button
+            type="button"
+            class="property-search-option"
+            role="option"
+            data-property-select
+            data-property-target="${targetName}"
+            data-property-number="${esc(property.number)}"
+            data-property-name="${esc(property.name)}"
+          >
+            <span>No. ${esc(property.number)}</span>
+            <strong>${esc(property.name)}</strong>
+          </button>`,
+      )
+      .join("")}${
+        searchResult.total > searchResult.matches.length
+          ? `<p class="property-search-more">ほか${searchResult.total - searchResult.matches.length}件。文字を追加して絞り込んでください。</p>`
+          : ""
+      }`;
+  }
+  results.hidden = false;
+  input.setAttribute("aria-expanded", "true");
+}
+
+function selectProperty(targetName, number, name) {
+  const isMembership = targetName === "membership";
+  const formState = isMembership ? membershipState : state;
+  const inputId = isMembership ? "membershipProperty" : "property";
+  const statusId = isMembership ? "membershipPropertyStatus" : "propertyStatus";
+  const input = document.getElementById(inputId);
+
+  formState.property = name;
+  formState.propertyNumber = number;
+  if (input) input.value = name;
+  refreshPropertyStatus(statusId, formState);
+  input?.focus();
+  closePropertyResults();
 }
 
 function heading(number, title, description) {
@@ -286,9 +443,17 @@ function renderStep2() {
               </div>
               ${
                 equipment.image
-                  ? `<button type="button" class="guide-link" data-guide="${equipment.id}">
-                      <span aria-hidden="true">＋</span>品番の場所をイラストで確認
-                    </button>`
+                  ? `<figure class="inline-equipment-guide">
+                      <figcaption>
+                        <strong>${equipment.label}の品番確認位置</strong>
+                        <span>下の画像を参考に、確認できる範囲で品番・型番をご入力ください。</span>
+                      </figcaption>
+                      <img
+                        src="./assets/${equipment.image}"
+                        alt="${equipment.label}の品番確認位置"
+                      />
+                      <p>メーカーや製品により場所は異なります。安全を確認し、無理のない範囲でご確認ください。</p>
+                    </figure>`
                   : ""
               }
             </div>`
@@ -336,17 +501,24 @@ function renderStep3() {
           <input id="firstName" value="${esc(state.firstName)}" placeholder="太郎" />
         </label>
       </div>
-      <label class="field"><span class="field-label">物件名 ${required()}</span>
-        <input id="property" list="property-options" value="${esc(state.property)}"
-          placeholder="物件名を入力すると候補が表示されます" />
-        <datalist id="property-options">
-          <option value="ピースフル五橋"></option>
-          <option value="ピースフル旭ヶ丘"></option>
-          <option value="ピースフル泉中央"></option>
-        </datalist>
-        <span class="field-hint">例：「ピースフル」と入力して候補から選択</span>
-      </label>
-      ${propertyStatusMarkup(state.property, "propertyStatus")}
+      <div class="field">
+        <label class="field-label" for="property">物件番号または物件名 ${required()}</label>
+        <div class="property-search">
+          <input
+            id="property"
+            value="${esc(state.property)}"
+            placeholder="物件番号または物件名を入力"
+            autocomplete="off"
+            role="combobox"
+            aria-autocomplete="list"
+            aria-expanded="false"
+            aria-controls="propertyResults"
+          />
+          <div class="property-search-results" id="propertyResults" role="listbox" hidden></div>
+        </div>
+        <span class="field-hint">物件番号または物件名の一部を入力し、候補から選択してください（${propertyCatalog.length.toLocaleString("ja-JP")}件）</span>
+      </div>
+      ${propertyStatusMarkup(state, "propertyStatus")}
       <div class="two-column">
         <label class="field"><span class="field-label">号室 ${required()}</span>
           <input id="room" value="${esc(state.room)}" placeholder="101" inputmode="numeric" />
@@ -377,8 +549,8 @@ function renderStep4() {
         ${summaryRow("機器情報", [state.manufacturer, state.modelNumber].filter(Boolean).join(" / "))}
         ${summaryRow("添付ファイル", [...state.photos, ...state.videos].join("\n"))}
         ${summaryRow("お名前", `${state.lastName} ${state.firstName}`.trim())}
-        ${summaryRow("物件・号室", `${state.property} ${state.room ? `${state.room}号室` : ""}`.trim())}
-        ${summaryRow("物件番号", propertyNumber(state.property) || "—")}
+        ${summaryRow("物件・号室", `${selectedPropertyName(state)} ${state.room ? `${state.room}号室` : ""}`.trim())}
+        ${summaryRow("物件番号", selectedPropertyNumber(state) || "—")}
         ${summaryRow("電話番号", state.phone)}
         ${summaryRow("メールアドレス", state.email)}
       </dl>
@@ -432,8 +604,8 @@ function emailPreview(subject, recipientName, body) {
 
 function generalInquirySummary() {
   const rows = [
-    `物件・号室：${state.property} ${state.room ? `${state.room}号室` : ""}`.trim(),
-    `物件番号：${propertyNumber(state.property) || "該当なし"}`,
+    `物件・号室：${selectedPropertyName(state)} ${state.room ? `${state.room}号室` : ""}`.trim(),
+    `物件番号：${selectedPropertyNumber(state) || "該当なし"}`,
     `お問い合わせ種類：${selectedInquiry().label}`,
   ];
   if (state.inquiryType === "room") {
@@ -511,8 +683,8 @@ function membershipReplyEmail() {
     [
       `加入確認したいサービス：${membershipServiceLabels()}`,
       `入居者名：${recipientName}`,
-      `物件・号室：${membershipState.property} ${membershipState.room}号室`,
-      `物件番号：${propertyNumber(membershipState.property) || "該当なし"}`,
+      `物件・号室：${selectedPropertyName(membershipState)} ${membershipState.room}号室`,
+      `物件番号：${selectedPropertyNumber(membershipState) || "該当なし"}`,
       `電話番号：${membershipState.phone}`,
       `メールアドレス：${membershipState.email}`,
     ].join("\n"),
@@ -596,21 +768,24 @@ function renderMembershipInput() {
           <input id="membershipFirstName" value="${esc(membershipState.firstName)}" placeholder="太郎" autocomplete="given-name" />
         </label>
       </div>
-      <label class="field"><span class="field-label">物件名 ${required()}</span>
-        <input
-          id="membershipProperty"
-          list="membership-property-options"
-          value="${esc(membershipState.property)}"
-          placeholder="物件名を入力すると候補が表示されます"
-        />
-        <datalist id="membership-property-options">
-          <option value="ピースフル五橋"></option>
-          <option value="ピースフル旭ヶ丘"></option>
-          <option value="ピースフル泉中央"></option>
-        </datalist>
-        <span class="field-hint">例：「ピースフル」と入力して候補から選択</span>
-      </label>
-      ${propertyStatusMarkup(membershipState.property, "membershipPropertyStatus")}
+      <div class="field">
+        <label class="field-label" for="membershipProperty">物件番号または物件名 ${required()}</label>
+        <div class="property-search">
+          <input
+            id="membershipProperty"
+            value="${esc(membershipState.property)}"
+            placeholder="物件番号または物件名を入力"
+            autocomplete="off"
+            role="combobox"
+            aria-autocomplete="list"
+            aria-expanded="false"
+            aria-controls="membershipPropertyResults"
+          />
+          <div class="property-search-results" id="membershipPropertyResults" role="listbox" hidden></div>
+        </div>
+        <span class="field-hint">物件番号または物件名の一部を入力し、候補から選択してください（${propertyCatalog.length.toLocaleString("ja-JP")}件）</span>
+      </div>
+      ${propertyStatusMarkup(membershipState, "membershipPropertyStatus")}
       <div class="two-column">
         <label class="field"><span class="field-label">号室 ${required()}</span>
           <input id="membershipRoom" value="${esc(membershipState.room)}" placeholder="101" inputmode="numeric" />
@@ -638,8 +813,8 @@ function renderMembershipConfirmation() {
       <dl class="summary-card">
         ${summaryRow("加入確認したいサービス", membershipServiceLabels())}
         ${summaryRow("お名前", `${membershipState.lastName} ${membershipState.firstName}`.trim())}
-        ${summaryRow("物件・号室", `${membershipState.property} ${membershipState.room ? `${membershipState.room}号室` : ""}`.trim())}
-        ${summaryRow("物件番号", propertyNumber(membershipState.property) || "—")}
+        ${summaryRow("物件・号室", `${selectedPropertyName(membershipState)} ${membershipState.room ? `${membershipState.room}号室` : ""}`.trim())}
+        ${summaryRow("物件番号", selectedPropertyNumber(membershipState) || "—")}
         ${summaryRow("電話番号", membershipState.phone)}
         ${summaryRow("メールアドレス", membershipState.email)}
       </dl>
@@ -763,10 +938,18 @@ function closeGuide() {
 }
 
 document.addEventListener("click", (event) => {
+  if (!event.target.closest(".property-search")) closePropertyResults();
+
   const target = event.target.closest("button");
   if (!target) return;
 
-  if (target.dataset.inquiry) {
+  if (target.hasAttribute("data-property-select")) {
+    selectProperty(
+      target.dataset.propertyTarget,
+      target.dataset.propertyNumber,
+      target.dataset.propertyName,
+    );
+  } else if (target.dataset.inquiry) {
     state.inquiryType = target.dataset.inquiry;
     render();
   } else if (target.dataset.equipment) {
@@ -826,7 +1009,6 @@ document.addEventListener("input", (event) => {
   const membershipFieldMap = {
     membershipLastName: "lastName",
     membershipFirstName: "firstName",
-    membershipProperty: "property",
     membershipRoom: "room",
     membershipPhone: "phone",
     membershipEmail: "email",
@@ -836,16 +1018,29 @@ document.addEventListener("input", (event) => {
     membershipState.error = "";
   }
   if (target.id === "membershipProperty") {
-    refreshPropertyStatus("membershipPropertyStatus", target.value);
+    updatePropertyState(membershipState, target.value);
+    membershipState.error = "";
+    refreshPropertyStatus("membershipPropertyStatus", membershipState);
+    showPropertyResults("membershipProperty", "membershipPropertyResults", "membership");
   }
-  if (["detail", "locationDetail", "manufacturer", "modelNumber", "lastName", "firstName", "property", "room", "phone", "email"].includes(target.id)) {
+  if (["detail", "locationDetail", "manufacturer", "modelNumber", "lastName", "firstName", "room", "phone", "email"].includes(target.id)) {
     state[target.id] = target.value;
   }
   if (target.id === "detail") {
     document.getElementById("characterCount").textContent = `${target.value.length} / 1,000文字`;
   }
   if (target.id === "property") {
-    refreshPropertyStatus("propertyStatus", target.value);
+    updatePropertyState(state, target.value);
+    refreshPropertyStatus("propertyStatus", state);
+    showPropertyResults("property", "propertyResults", "standard");
+  }
+});
+
+document.addEventListener("focusin", (event) => {
+  if (event.target.id === "property") {
+    showPropertyResults("property", "propertyResults", "standard");
+  } else if (event.target.id === "membershipProperty") {
+    showPropertyResults("membershipProperty", "membershipPropertyResults", "membership");
   }
 });
 
@@ -872,6 +1067,7 @@ guideModal.addEventListener("click", (event) => {
 });
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape" && !guideModal.hidden) closeGuide();
+  if (event.key === "Escape") closePropertyResults();
 });
 
 render();
