@@ -330,6 +330,70 @@
         background: #edf4fa;
       }
 
+      .production-guide {
+        margin-top: 14px;
+        padding: 17px 18px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+        border: 1px solid #bcd8e2;
+        border-radius: 14px;
+        background:
+          linear-gradient(110deg, rgba(0, 167, 200, 0.08), transparent 55%),
+          #f7fbfd;
+      }
+
+      .production-guide-copy {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+
+      .production-guide-icon {
+        width: 42px;
+        height: 42px;
+        flex: 0 0 auto;
+        display: grid;
+        place-items: center;
+        border-radius: 11px;
+        color: white;
+        background: linear-gradient(135deg, var(--navy), var(--cyan));
+        font-size: 18px;
+        font-weight: 900;
+      }
+
+      .production-guide-copy strong,
+      .production-guide-copy span {
+        display: block;
+      }
+
+      .production-guide-copy strong {
+        font-size: 14px;
+      }
+
+      .production-guide-copy span {
+        margin-top: 4px;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.6;
+      }
+
+      .production-guide-link {
+        flex: 0 0 auto;
+        padding: 10px 14px;
+        border-radius: 9px;
+        color: white;
+        background: var(--navy);
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 900;
+      }
+
+      .production-guide-link:hover {
+        background: var(--navy-dark);
+      }
+
       .status-board {
         margin-top: 18px;
         padding: 20px;
@@ -1008,6 +1072,16 @@
           gap: 16px;
         }
 
+        .production-guide {
+          align-items: stretch;
+          flex-direction: column;
+          gap: 13px;
+        }
+
+        .production-guide-link {
+          text-align: center;
+        }
+
         .status-filters {
           display: flex;
           overflow-x: auto;
@@ -1135,6 +1209,24 @@
         <a href="#forms">アンケート・入力フォーム</a>
         <a href="#dashboards">集計・管理画面</a>
       </nav>
+
+      <aside class="production-guide" aria-label="正式実装ツールのご案内">
+        <div class="production-guide-copy">
+          <span class="production-guide-icon" aria-hidden="true">✓</span>
+          <div>
+            <strong>正式なテスト実装・本実装ツールはこちら</strong>
+            <span>運用に進んだツールは、社内ツール一覧でご確認いただけます。</span>
+          </div>
+        </div>
+        <a
+          class="production-guide-link"
+          href="https://heiwa-internal-tools.cantera-saito.chatgpt.site/#top"
+          target="_blank"
+          rel="noopener"
+        >
+          社内ツール一覧を開く <span aria-hidden="true">↗</span>
+        </a>
+      </aside>
 
       <section class="status-board" aria-labelledby="status-title">
         <div class="status-heading">
