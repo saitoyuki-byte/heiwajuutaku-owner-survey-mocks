@@ -122,16 +122,18 @@
     cardEntries.forEach((entry) => {
       const projectState = state.projects[entry.project.id];
       const matches = activeFilter === "all" || projectState.status === activeFilter;
-      entry.card.hidden = !projectState.visible || !matches;
+      entry.card.classList.toggle("is-filtered-out", !projectState.visible || !matches);
     });
 
     Object.keys(store.categories).forEach((categoryId) => {
       const section = document.getElementById(categoryId);
       if (!section) return;
       const hasResult = cardEntries.some(
-        (entry) => entry.project.category === categoryId && !entry.card.hidden,
+        (entry) =>
+          entry.project.category === categoryId &&
+          !entry.card.classList.contains("is-filtered-out"),
       );
-      section.hidden = !hasResult;
+      section.classList.toggle("is-filtered-out", !hasResult);
     });
   }
 
