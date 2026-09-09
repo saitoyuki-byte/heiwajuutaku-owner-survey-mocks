@@ -126,6 +126,22 @@
         font-size: 11px;
       }
 
+      .admin-link {
+        padding: 7px 10px;
+        border: 1px solid #cbd9d2;
+        border-radius: 8px;
+        color: #46564e;
+        background: #f7faf8;
+        text-decoration: none;
+        font-weight: 800;
+      }
+
+      .admin-link:hover {
+        color: var(--navy);
+        border-color: #b5cadb;
+        background: #eff6fb;
+      }
+
       .header-meta strong {
         padding: 6px 9px;
         border-radius: 99px;
@@ -314,6 +330,92 @@
         background: #edf4fa;
       }
 
+      .status-board {
+        margin-top: 18px;
+        padding: 20px;
+        display: grid;
+        grid-template-columns: minmax(210px, 0.65fr) minmax(0, 1.35fr);
+        gap: 24px;
+        align-items: center;
+        border: 1px solid #d4e0da;
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.92);
+        box-shadow: 0 12px 34px rgba(20, 46, 35, 0.06);
+      }
+
+      .status-heading p {
+        margin: 0 0 5px;
+        color: var(--green);
+        font-size: 10px;
+        font-weight: 900;
+        letter-spacing: 0.13em;
+      }
+
+      .status-heading h2 {
+        margin: 0;
+        font-size: 22px;
+        letter-spacing: -0.025em;
+      }
+
+      .status-heading span {
+        display: block;
+        margin-top: 7px;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.6;
+      }
+
+      .status-filters {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 7px;
+      }
+
+      .status-filter {
+        --status-color: var(--navy);
+        min-width: 0;
+        padding: 10px 9px;
+        display: grid;
+        gap: 4px;
+        text-align: left;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        color: #53605a;
+        background: #f9fbfa;
+        cursor: pointer;
+      }
+
+      .status-filter:hover,
+      .status-filter[aria-pressed="true"] {
+        border-color: color-mix(in srgb, var(--status-color) 38%, #dce4df);
+        background: color-mix(in srgb, var(--status-color) 7%, white);
+      }
+
+      .status-filter[aria-pressed="true"] {
+        box-shadow: inset 0 -3px 0 var(--status-color);
+      }
+
+      .status-filter span {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: 12px;
+        font-weight: 800;
+        white-space: nowrap;
+      }
+
+      .status-filter strong {
+        color: var(--status-color);
+        font-size: 20px;
+        line-height: 1;
+      }
+
+      .status-filter.all { --status-color: var(--navy); }
+      .status-filter.done { --status-color: #17765a; }
+      .status-filter.active { --status-color: #0879b7; }
+      .status-filter.review { --status-color: #a45d12; }
+      .status-filter.hold { --status-color: #6f7782; }
+      .status-filter.planned { --status-color: #7b55a5; }
+
       .section {
         padding-top: 46px;
       }
@@ -346,6 +448,7 @@
       }
 
       .featured-card {
+        --status-color: #6f7782;
         min-height: 330px;
         display: grid;
         grid-template-columns: minmax(0, 0.9fr) minmax(430px, 1.1fr);
@@ -354,6 +457,47 @@
         border-radius: 18px;
         background: var(--surface);
         box-shadow: var(--shadow);
+      }
+
+      .featured-card,
+      .mock-card {
+        border-left: 5px solid var(--status-color);
+      }
+
+      .project-is-done { --status-color: #17765a; }
+      .project-is-active { --status-color: #0879b7; }
+      .project-is-review { --status-color: #a45d12; }
+      .project-is-hold { --status-color: #6f7782; }
+      .project-is-planned { --status-color: #7b55a5; }
+
+      .project-status {
+        margin-top: 9px;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        color: var(--status-color);
+        font-size: 12px;
+        font-weight: 900;
+      }
+
+      .project-status i {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--status-color);
+        box-shadow: 0 0 0 4px color-mix(in srgb, var(--status-color) 12%, transparent);
+      }
+
+      .project-note {
+        width: 100%;
+        margin: -2px 0 14px !important;
+        padding: 9px 11px;
+        border-left: 3px solid var(--status-color);
+        border-radius: 0 7px 7px 0;
+        color: #4e5c55 !important;
+        background: color-mix(in srgb, var(--status-color) 6%, white);
+        font-size: 12px !important;
+        line-height: 1.6 !important;
       }
 
       .featured-card + .featured-card {
@@ -632,6 +776,7 @@
       }
 
       .mock-card {
+        --status-color: #6f7782;
         min-width: 0;
         overflow: hidden;
         display: flex;
@@ -795,6 +940,14 @@
         .card-grid {
           grid-template-columns: repeat(2, 1fr);
         }
+
+        .status-board {
+          grid-template-columns: 1fr;
+        }
+
+        .status-filters {
+          grid-template-columns: repeat(3, 1fr);
+        }
       }
 
       @media (max-width: 640px) {
@@ -818,6 +971,15 @@
           display: none;
         }
 
+        .header-meta {
+          gap: 5px;
+        }
+
+        .admin-link {
+          padding: 6px 8px;
+          font-size: 10px;
+        }
+
         main {
           padding-top: 18px;
         }
@@ -835,6 +997,20 @@
 
         .quick-nav a {
           white-space: nowrap;
+        }
+
+        .status-board {
+          padding: 16px;
+          gap: 16px;
+        }
+
+        .status-filters {
+          display: flex;
+          overflow-x: auto;
+        }
+
+        .status-filter {
+          min-width: 88px;
         }
 
         .section {
@@ -909,7 +1085,8 @@
         </a>
         <div class="header-meta">
           <span>打ち合わせ・要件確認用</span>
-          <strong>18 PROJECTS</strong>
+          <a class="admin-link" href="./admin/">表示を管理</a>
+          <strong><b data-project-total>19</b> PROJECTS</strong>
         </div>
       </div>
     </header>
@@ -924,9 +1101,9 @@
             機能プロトタイプ、画面モックをまとめています。
           </p>
           <div class="hero-chips" aria-label="成果物の種類">
-            <span>入力フォーム 6件</span>
-            <span>集計・管理 2件</span>
-            <span>業務改善 11件</span>
+            <span>入力フォーム <b data-category-count="forms">6</b>件</span>
+            <span>集計・管理 <b data-category-count="dashboards">2</b>件</span>
+            <span>業務改善 <b data-category-count="operations">11</b>件</span>
           </div>
         </div>
         <div class="library-map" aria-label="システム・プロトタイプ集の内訳">
@@ -934,17 +1111,17 @@
           <div class="map-row">
             <span class="map-icon">入力</span>
             <div><strong>アンケート・報告</strong><small>お客様が入力する画面</small></div>
-            <b>6</b>
+            <b data-category-count="forms">6</b>
           </div>
           <div class="map-row">
             <span class="map-icon">集計</span>
             <div><strong>集計・管理</strong><small>スタッフが確認する画面</small></div>
-            <b>2</b>
+            <b data-category-count="dashboards">2</b>
           </div>
           <div class="map-row">
             <span class="map-icon">業務</span>
             <div><strong>業務改善</strong><small>日々の作業を支援する画面</small></div>
-            <b>11</b>
+            <b data-category-count="operations">11</b>
           </div>
         </div>
       </section>
@@ -954,6 +1131,34 @@
         <a href="#forms">アンケート・入力フォーム</a>
         <a href="#dashboards">集計・管理画面</a>
       </nav>
+
+      <section class="status-board" aria-labelledby="status-title">
+        <div class="status-heading">
+          <p>PROJECT STATUS</p>
+          <h2 id="status-title">進捗状況</h2>
+          <span>ステータスを選ぶと、該当するプロジェクトだけを表示します。</span>
+        </div>
+        <div class="status-filters" aria-label="ステータスで絞り込む">
+          <button class="status-filter all" type="button" data-filter="all" aria-pressed="true">
+            <span>すべて</span><strong data-project-total>19</strong>
+          </button>
+          <button class="status-filter done" type="button" data-filter="done" aria-pressed="false">
+            <span>実装済み</span><strong data-count="done">0</strong>
+          </button>
+          <button class="status-filter active" type="button" data-filter="active" aria-pressed="false">
+            <span>着手中</span><strong data-count="active">0</strong>
+          </button>
+          <button class="status-filter review" type="button" data-filter="review" aria-pressed="false">
+            <span>確認待ち</span><strong data-count="review">0</strong>
+          </button>
+          <button class="status-filter hold" type="button" data-filter="hold" aria-pressed="false">
+            <span>保留中</span><strong data-count="hold">0</strong>
+          </button>
+          <button class="status-filter planned" type="button" data-filter="planned" aria-pressed="false">
+            <span>未着手</span><strong data-count="planned">0</strong>
+          </button>
+        </div>
+      </section>
 
       <section class="section" id="operations">
         <div class="section-heading">
@@ -1637,5 +1842,7 @@
       <span>平和住宅情報センター様｜業務改善システム・プロトタイプ集</span>
       <span>PROTOTYPE LIBRARY / 2026</span>
     </footer>
+    <script src="./assets/project-state.js"></script>
+    <script src="./assets/gallery-status.js"></script>
   </body>
 </html>
