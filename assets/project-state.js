@@ -18,6 +18,7 @@
   };
 
   const projects = [
+    { id: "meishi-desk", title: "名刺管理・DMリスト作成", category: "operations", defaultStatus: "review" },
     { id: "ai-room-staging", title: "AIお部屋ステージング", category: "operations", defaultStatus: "active" },
     { id: "room-tracker-schedule", title: "Room Tracker 活動スケジュール", category: "operations", defaultStatus: "active" },
     { id: "shift-planner", title: "シフト自動作成システム", category: "operations", defaultStatus: "active" },
