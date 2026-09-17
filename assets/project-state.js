@@ -18,6 +18,7 @@
   };
 
   const projects = [
+    { id: "admission-result", title: "【合格前予約】合格連絡", category: "forms", defaultStatus: "review" },
     { id: "meishi-desk", title: "名刺管理・DMリスト作成", category: "operations", defaultStatus: "review" },
     { id: "ai-room-staging", title: "AIお部屋ステージング", category: "operations", defaultStatus: "active" },
     { id: "room-tracker-schedule", title: "Room Tracker 活動スケジュール", category: "operations", defaultStatus: "active" },
