@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="robots" content="noindex,nofollow">
+  <title>解約・退去のお手続き | 平和住宅情報センター</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%231e4d87'/%3E%3Cpath d='M8 20L20 9l12 11v12H8Z' fill='white'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css">
+  <script src="properties.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <div class="prototype-bar"><span class="prototype-tag">PROTOTYPE</span> 画面・操作の確認用です。入力内容は送信・保存されません。</div>
+  <header class="header"><div class="header-inner">
+    <a class="brand" href="#" aria-label="平和住宅情報センター トップ">
+      <img class="brand-logo" src="assets/heiwa-logo-transparent.png" alt="平和住宅情報センター" width="1882" height="836">
+    </a>
+    <span class="header-caption">ご入居者さまのお手続き</span>
+    <div class="header-help"><span>解約・退去に関するお問い合わせ</span><a href="tel:0222346348">022-234-6348</a><small>業務課 9:30–17:00</small></div>
+  </div></header>
+  <main class="shell">
+    <div class="breadcrumb"><span>ご入居者さま</span><span aria-hidden="true">/</span><span>解約・退去のお手続き</span></div>
+    <section class="hero">
+      <div class="hero-copy"><p class="eyebrow">MOVE OUT GUIDE</p><h1>次の暮らしへ。<br>退去のお手続きを、<wbr><span style="white-space:nowrap">スムーズに。</span></h1><p>これまでお住まいいただき、ありがとうございます。<br>ご契約内容を確認しながら、必要な情報をご入力ください。</p><span class="hero-note"><span aria-hidden="true">◷</span> ご用意いただくもの：賃貸借契約書・返金先口座</span></div>
+      <img class="hero-art" src="assets/move-out-homes.png" alt="青い屋根の住宅とマンション、緑の植栽のイラスト" width="1536" height="1024">
+    </section>
+    <ol class="stepper" aria-label="お手続きの流れ"><li class="current" aria-current="step"><span>01</span>情報の入力</li><li><span>02</span>内容の確認</li><li><span>03</span>完了</li></ol>
+    <div id="entry-view" class="layout">
+      <div class="form-column">
+        <section class="before-card"><div class="before-title"><span class="info-icon">i</span><h2>お手続きの前にご確認ください</h2></div><ul><li>平和住宅情報センターの管理物件が対象です。</li><li>お申し込みは<strong>ご契約者ご本人さま</strong>からお願いいたします。</li><li>通知後の<strong>退去明渡日の変更・解約の取消しはできません。</strong></li></ul><details><summary>受付・契約に関する注意事項をすべて見る</summary><div class="detail-body"><p>お部屋と駐車場が別名義の場合は、それぞれの契約者さまから通知が必要です。</p><p>当社からの「最終受付確認」メールをもって正式受付となります。5日経過しても連絡がない場合は、業務課へお問い合わせください。heiwajuutaku.com のメールを受信できるよう設定をお願いいたします。</p><p>解約予告期間、最終賃料の日割・月割、短期解約違約金は契約書に準じます。お盆・年末年始などの休業日は退去立会いができません。</p></div></details></section>
+        <div class="form-intro"><span>以下の項目をご入力ください</span><span><b class="required">必須</b> は入力が必要です</span></div>
+        <form id="cancel-form" novalidate>
+          <div id="form-sections"></div>
+          <section class="consent-card"><h2>最後に、ご確認をお願いします</h2><p>退去明渡しまでに粗大ごみ・自転車等を撤去してください。残置物がある場合は、撤去処分費用として10,000円（税別）〜をご請求します。</p><label class="check-label"><input id="terms" name="terms" type="checkbox" required><span>上記の注意事項、および退去明渡日の変更・解約の取消しができないことを確認しました。<b class="required">必須</b></span></label><label class="check-label"><input id="privacy" name="privacy" type="checkbox" required><span><a href="https://www.heiwajuutaku.com/privacy_policy" target="_blank" rel="noopener">個人情報の取り扱い <span aria-hidden="true">↗</span></a>に同意します。<b class="required">必須</b></span></label><div id="form-error" class="error-summary" role="alert" hidden></div><button type="submit" class="primary">入力内容を確認する <span aria-hidden="true">→</span></button><p class="submit-note">この画面ではまだお手続きは完了しません。</p></section>
+        </form>
+      </div>
+      <aside class="sidebar"><div class="sidebar-sticky"><div class="navigation-card"><p class="eyebrow">YOUR PROGRESS</p><h2>入力する内容</h2><nav aria-label="入力項目"><a href="#property" class="active"><span>01</span>物件・退去日<i></i></a><a href="#contract"><span>02</span>ご契約者情報<i></i></a><a href="#moving"><span>03</span>転居先について<i></i></a><a href="#refund"><span>04</span>ご返金先・その他<i></i></a></nav><div class="progress-caption"><span>入力の進み具合</span><strong id="progress-text">0%</strong></div><div class="progress-track"><div id="progress-fill"></div></div></div><div class="help-card"><span class="help-symbol" aria-hidden="true">?</span><h3>お困りのことは<br>ありませんか？</h3><p>退去のお手続きについて、<br>業務課がご案内いたします。</p><a href="tel:0222346348">022-234-6348</a><small>受付時間 9:30–17:00</small><a class="guide-link" href="https://www.heiwajuutaku.com/move_out/" target="_blank" rel="noopener">退去の流れを見る <span aria-hidden="true">↗</span></a></div><p class="sidebar-foot">ひとつずつ、確認しながら。<br>次の暮らしへの準備をお手伝いします。</p></div></aside>
+    </div>
+    <section id="review-view" class="review-view" hidden aria-labelledby="review-title"><p class="eyebrow">CHECK YOUR DETAILS</p><h2 id="review-title" tabindex="-1">入力内容をご確認ください</h2><p>修正する場合は、各項目の「修正する」から戻れます。</p><div id="review-content"></div><div class="review-actions"><button type="button" id="back-button" class="secondary">← 入力画面に戻る</button><button type="button" id="complete-button" class="primary">完了画面を確認する <span aria-hidden="true">→</span></button></div><p class="submit-note">プロトタイプのため、解約通知の送信・正式受付は行われません。</p></section>
+    <section id="complete-view" class="complete-view" hidden><div class="complete-check" aria-hidden="true">✓</div><p class="eyebrow">PREVIEW COMPLETE</p><h2 id="complete-title" tabindex="-1">お手続きの流れを<br>ご確認いただきました</h2><p>こちらはプロトタイプの完了画面です。<br><strong>解約通知は送信されていません。</strong></p><div class="next-card"><h3>実際のお手続きでは</h3><ol><li>入力いただいたメールアドレスに受付案内をお送りします。</li><li>当社からの「最終受付確認」メールをもって正式受付となります。</li><li>5日経過しても連絡がない場合は、業務課へお問い合わせください。</li></ol></div><button type="button" id="restart-button" class="secondary">入力画面に戻る</button></section>
+  </main>
+  <footer><div><strong>株式会社 平和住宅情報センター</strong><span>仙台の暮らしに、ずっと寄り添う。</span></div><small>© Heiwa Juutaku Information Center</small></footer>
+</body>
+</html>
