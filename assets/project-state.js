@@ -10,6 +10,7 @@
     { id: "planned", label: "未着手", color: "#7b55a5", symbol: "○", description: "これから着手するツール", noteLabel: "着手に向けて" },
     { id: "hold", label: "保留中", color: "#8b6419", symbol: "Ⅱ", description: "いったん作業を止めているツール", noteLabel: "保留理由・再開条件" },
     { id: "migrated", label: "移行済み", color: "#606976", symbol: "↗", description: "テスト実装・本実装は社内App Storeで確認できます", noteLabel: "引き継ぎメモ" },
+    { id: "handed-off", label: "髙橋満様へ引き継ぎ済み", shortLabel: "引き継ぎ済み", color: "#496a8b", symbol: "↪", description: "平和住宅情報センターのエンジニア・髙橋満様へ引き継いだツール", noteLabel: "引き継ぎ内容・補足" },
   ];
 
   const categories = {

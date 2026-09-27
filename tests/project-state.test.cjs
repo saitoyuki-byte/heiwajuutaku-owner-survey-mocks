@@ -44,10 +44,14 @@ test("version 2 choices can undo a handoff and round-trip through storage and JS
   state.projects["invoice-check"].status = "active";
   state.projects["shift-planner"].status = "migrated";
   state.projects["shift-planner"].migrationStage = "production";
+  state.projects["ai-room-staging"].status = "handed-off";
+  state.projects["ai-room-staging"].note = "髙橋満様へ資料を引き継ぎ済み";
   api.saveState(state);
   const loaded = api.normalizeState(JSON.parse(JSON.stringify(api.loadState())));
   assert.equal(loaded.projects["invoice-check"].status, "active");
   assert.equal(loaded.projects["shift-planner"].migrationStage, "production");
+  assert.equal(loaded.projects["ai-room-staging"].status, "handed-off");
+  assert.equal(loaded.projects["ai-room-staging"].note, "髙橋満様へ資料を引き継ぎ済み");
 });
 
 test("old URL settings are ignored without losing migration status or notes", () => {

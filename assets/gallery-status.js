@@ -93,9 +93,11 @@
     button.dataset.filter = status.id;
     button.style.setProperty("--status-color", status.color);
     button.setAttribute("aria-pressed", String(status.id === activeFilter));
+    button.setAttribute("aria-label", status.label);
+    button.title = status.label;
     const count = element("strong");
     count.dataset.count = status.id;
-    button.append(element("span", null, status.label), count);
+    button.append(element("span", null, status.shortLabel || status.label), count);
     button.addEventListener("click", () => {
       activeFilter = status.id;
       applyFilters();
@@ -107,36 +109,47 @@
     const value = currentState.projects[entry.project.id];
     const status = statusById[value.status];
     const migrated = value.status === "migrated";
+    const handedOff = value.status === "handed-off";
+    const transferred = migrated || handedOff;
     entry.card.dataset.projectStatus = status.id;
     entry.card.dataset.priority = String(value.priority);
     entry.card.style.setProperty("--status-color", status.color);
     entry.card.classList.toggle("progress-card--migrated", migrated);
+    entry.card.classList.toggle("progress-card--handed-off", handedOff);
     entry.badge.textContent = `${status.symbol} ${migrated ? "社内App Storeへ移行済み" : status.label}`;
     entry.stage.hidden = !migrated;
     entry.stage.textContent = value.migrationStage === "production" ? "本実装" : "テスト実装";
-    entry.note.hidden = migrated && !value.note;
+    entry.note.hidden = transferred && !value.note;
     entry.noteLabel.textContent = status.noteLabel;
     entry.noteValue.textContent = value.note || "未設定";
     entry.note.classList.toggle("is-unset", !value.note);
-    entry.migration.hidden = !migrated;
-    entry.migration.textContent = `${entry.stage.textContent}のツールは社内App Storeでご確認ください。`;
-    entry.primary.hidden = migrated || !entry.originalHref;
+    entry.migration.hidden = !transferred;
+    entry.migration.textContent = handedOff
+      ? "平和住宅情報センターのエンジニア・髙橋満様へ引き継ぎ済みです。"
+      : `${entry.stage.textContent}のツールは社内App Storeでご確認ください。`;
+    entry.primary.hidden = transferred || !entry.originalHref;
     entry.primary.href = entry.originalHref || "#";
     entry.primary.textContent = "プロトタイプを開く →";
     if (entry.originalTarget) entry.primary.target = entry.originalTarget;
     else entry.primary.removeAttribute("target");
     if (entry.originalRel) entry.primary.rel = entry.originalRel;
     else entry.primary.removeAttribute("rel");
-    entry.archiveNote.hidden = !migrated;
-    entry.summary.textContent = migrated ? "移行前の内容・リンク" : "説明・機能を見る";
+    entry.archiveNote.hidden = !transferred;
+    entry.archiveNote.textContent = handedOff
+      ? "以下は髙橋満様への引き継ぎ時点のプロトタイプです。"
+      : "以下は移行前のプロトタイプです。テスト実装・本実装のツールは社内App Storeでご確認ください。";
+    entry.summary.textContent = handedOff ? "引き継ぎ時点の内容・リンク"
+      : migrated ? "移行前の内容・リンク" : "説明・機能を見る";
   }
 
   function updateCounts() {
     const published = entries.filter((entry) => currentState.projects[entry.project.id].visible);
     const migrated = published.filter((entry) => currentState.projects[entry.project.id].status === "migrated");
+    const handedOff = published.filter((entry) => currentState.projects[entry.project.id].status === "handed-off");
     document.querySelectorAll("[data-project-total]").forEach((node) => { node.textContent = published.length; });
-    document.querySelectorAll("[data-working-total]").forEach((node) => { node.textContent = published.length - migrated.length; });
+    document.querySelectorAll("[data-working-total]").forEach((node) => { node.textContent = published.length - migrated.length - handedOff.length; });
     document.querySelectorAll("[data-migrated-total]").forEach((node) => { node.textContent = migrated.length; });
+    document.querySelectorAll("[data-handed-off-total]").forEach((node) => { node.textContent = handedOff.length; });
     Object.keys(store.categories).forEach((category) => {
       document.querySelectorAll(`[data-category-count="${category}"]`).forEach((node) => {
         node.textContent = published.filter((entry) => entry.project.category === category).length;

@@ -61,7 +61,8 @@
     store.statuses.forEach((status) => {
       const item = document.createElement("div");
       item.className = "summary-item";
-      item.innerHTML = `<span>${status.label}</span><strong>${counts[status.id]}</strong>`;
+      item.title = status.label;
+      item.innerHTML = `<span>${status.shortLabel || status.label}</span><strong>${counts[status.id]}</strong>`;
       statusContainer.appendChild(item);
     });
 
@@ -122,6 +123,7 @@
       row.style.setProperty("--status-color", status.color);
       row.classList.toggle("is-hidden", !current.visible);
       row.classList.toggle("is-migrated", current.status === "migrated");
+      row.classList.toggle("is-handed-off", current.status === "handed-off");
       row.querySelector("[data-migration-controls]").hidden = current.status !== "migrated";
       row.querySelector("[data-note-label]").textContent = status.noteLabel;
       row.querySelector("[data-visibility-label]").textContent = current.visible ? "表示中" : "非表示";
