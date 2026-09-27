@@ -1161,6 +1161,7 @@
 
       }
     </style>
+    <link rel="stylesheet" href="./assets/gallery-progress.css?v=20260927-handoff" />
   </head>
   <body>
     <header class="site-header">
@@ -1187,8 +1188,7 @@
           <p class="eyebrow">HEIWA HOUSING / PROTOTYPE LIBRARY</p>
           <h1>業務改善システム・<br />プロトタイプ集</h1>
           <p>
-            平和住宅情報センター様の業務改善に向けて開発した、実証版システム、
-            機能プロトタイプ、画面モックをまとめています。
+            制作・確認中のツールと、社内App Storeへ移行したツールの状況を確認できます。
           </p>
           <div class="hero-chips" aria-label="成果物の種類">
             <span>入力フォーム <b data-category-count="forms">9</b>件</span>
@@ -1196,38 +1196,25 @@
             <span>業務改善 <b data-category-count="operations">12</b>件</span>
           </div>
         </div>
-        <div class="library-map" aria-label="システム・プロトタイプ集の内訳">
-          <span>LIBRARY MAP</span>
-          <div class="map-row">
-            <span class="map-icon">入力</span>
-            <div><strong>アンケート・報告</strong><small>お客様が入力する画面</small></div>
-            <b data-category-count="forms">9</b>
-          </div>
-          <div class="map-row">
-            <span class="map-icon">集計</span>
-            <div><strong>集計・管理</strong><small>スタッフが確認する画面</small></div>
-            <b data-category-count="dashboards">2</b>
-          </div>
-          <div class="map-row">
-            <span class="map-icon">業務</span>
-            <div><strong>業務改善</strong><small>日々の作業を支援する画面</small></div>
-            <b data-category-count="operations">12</b>
-          </div>
+        <div class="progress-overview" aria-label="掲載ツールの内訳">
+          <div><span>プロトタイプ</span><strong data-working-total>16</strong><small>制作・確認・移行前</small></div>
+          <div><span>社内App Storeへ移行済み</span><strong data-migrated-total>7</strong><small>テスト実装・本実装</small></div>
         </div>
       </section>
 
-      <nav class="quick-nav" aria-label="カテゴリーへ移動">
-        <a href="#operations">新着・業務改善</a>
-        <a href="#forms">アンケート・入力フォーム</a>
-        <a href="#dashboards">集計・管理画面</a>
+      <nav class="quick-nav" aria-label="カテゴリーで絞り込む">
+        <button type="button" data-category="all" aria-pressed="true">すべて</button>
+        <button type="button" data-category="operations" aria-pressed="false">業務改善</button>
+        <button type="button" data-category="forms" aria-pressed="false">アンケート・入力フォーム</button>
+        <button type="button" data-category="dashboards" aria-pressed="false">集計・管理画面</button>
       </nav>
 
       <aside class="production-guide" aria-label="正式実装ツールのご案内">
         <div class="production-guide-copy">
           <span class="production-guide-icon" aria-hidden="true">✓</span>
           <div>
-            <strong>正式なテスト実装・本実装ツールはこちら</strong>
-            <span>運用に進んだツールは、社内ツール一覧でご確認いただけます。</span>
+            <strong>テスト実装・本実装のツールは社内App Storeへ</strong>
+            <span>移行済みのツールは、グレーのカードで掲載しています。</span>
           </div>
         </div>
         <a
@@ -1236,7 +1223,7 @@
           target="_blank"
           rel="noopener"
         >
-          社内ツール一覧を開く <span aria-hidden="true">↗</span>
+          社内App Storeを開く <span aria-hidden="true">↗</span>
         </a>
       </aside>
 
@@ -1244,9 +1231,9 @@
         <div class="status-heading">
           <p>PROJECT STATUS</p>
           <h2 id="status-title">進捗状況</h2>
-          <span>ステータスを選ぶと、該当するプロジェクトだけを表示します。</span>
+          <span>状態別にツールを確認</span>
         </div>
-        <div class="status-filters" aria-label="ステータスで絞り込む">
+        <div class="status-filters" data-progress-filters aria-label="ステータスで絞り込む">
           <button class="status-filter all" type="button" data-filter="all" aria-pressed="true">
             <span>すべて</span><strong data-project-total>23</strong>
           </button>
@@ -1266,6 +1253,14 @@
             <span>未着手</span><strong data-count="planned">0</strong>
           </button>
         </div>
+      </section>
+
+      <p class="progress-result" data-progress-result role="status" aria-live="polite"></p>
+      <div data-progress-board hidden></div>
+      <section class="progress-empty" data-progress-empty hidden>
+        <h2>該当するツールはありません</h2>
+        <p>カテゴリーやステータスを変更してご確認ください。</p>
+        <button type="button" data-clear-filters>すべてのツールを表示</button>
       </section>
 
       <section class="section" id="operations">
@@ -2037,7 +2032,7 @@
       <span>平和住宅情報センター様｜業務改善システム・プロトタイプ集</span>
       <span>PROTOTYPE LIBRARY / 2026</span>
     </footer>
-    <script src="./assets/project-state.js?v=20260920-cancel"></script>
-    <script src="./assets/gallery-status.js"></script>
+    <script src="./assets/project-state.js?v=20260927-handoff"></script>
+    <script src="./assets/gallery-status.js?v=20260927-handoff"></script>
   </body>
 </html>

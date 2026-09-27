@@ -2,13 +2,15 @@
   "use strict";
 
   const STORAGE_KEY = "heiwaPrototypeGalleryState:v1";
+  const APP_STORE_URL = "https://heiwa-internal-tools.cantera-saito.chatgpt.site/#top";
 
   const statuses = [
-    { id: "done", label: "実装済み", shortLabel: "実装済み", color: "#17765a" },
-    { id: "active", label: "着手中", shortLabel: "着手中", color: "#0879b7" },
-    { id: "review", label: "確認待ち", shortLabel: "確認待ち", color: "#a45d12" },
-    { id: "hold", label: "保留中", shortLabel: "保留中", color: "#6f7782" },
-    { id: "planned", label: "未着手", shortLabel: "未着手", color: "#7b55a5" },
+    { id: "active", label: "着手中", color: "#0879b7", symbol: "◐", description: "制作・調整を進めているツール", noteLabel: "次のアクション" },
+    { id: "review", label: "確認待ち", color: "#a45d12", symbol: "◎", description: "内容や動作の確認を待っているツール", noteLabel: "確認したいこと" },
+    { id: "done", label: "実装済み", color: "#17765a", symbol: "✓", description: "実装済み・社内App Storeへの移行前", noteLabel: "次のアクション" },
+    { id: "planned", label: "未着手", color: "#7b55a5", symbol: "○", description: "これから着手するツール", noteLabel: "着手に向けて" },
+    { id: "hold", label: "保留中", color: "#8b6419", symbol: "Ⅱ", description: "いったん作業を止めているツール", noteLabel: "保留理由・再開条件" },
+    { id: "migrated", label: "移行済み", color: "#606976", symbol: "↗", description: "テスト実装・本実装は社内App Storeで確認できます", noteLabel: "引き継ぎメモ" },
   ];
 
   const categories = {
@@ -25,20 +27,20 @@
     { id: "ai-room-staging", title: "AIお部屋ステージング", category: "operations", defaultStatus: "active" },
     { id: "room-tracker-schedule", title: "Room Tracker 活動スケジュール", category: "operations", defaultStatus: "active" },
     { id: "shift-planner", title: "シフト自動作成システム", category: "operations", defaultStatus: "active" },
-    { id: "invoice-check", title: "請求金額照合ツール", category: "operations", defaultStatus: "active" },
-    { id: "workspace-manuals", title: "Google Workspace 基本操作マニュアル", category: "operations", defaultStatus: "done" },
+    { id: "invoice-check", title: "請求金額照合ツール", category: "operations", defaultStatus: "migrated", defaultMigrationStage: "testing" },
+    { id: "workspace-manuals", title: "Google Workspace 基本操作マニュアル", category: "operations", defaultStatus: "migrated", defaultMigrationStage: "production" },
     { id: "tenant-guide", title: "住まいのお困りごとナビ", category: "operations", defaultStatus: "review" },
-    { id: "external-inspection", title: "外部点検クラウド", category: "operations", defaultStatus: "active" },
-    { id: "waitlist", title: "2027年春入居 空き待ち予約システム", category: "operations", defaultStatus: "done" },
+    { id: "external-inspection", title: "外部点検クラウド", category: "operations", defaultStatus: "migrated", defaultMigrationStage: "testing" },
+    { id: "waitlist", title: "2027年春入居 空き待ち予約システム", category: "operations", defaultStatus: "migrated", defaultMigrationStage: "production" },
     { id: "payment-reconciliation", title: "未決済照合システム", category: "operations", defaultStatus: "hold" },
-    { id: "inventory-management", title: "備品在庫管理システム", category: "operations", defaultStatus: "review" },
+    { id: "inventory-management", title: "備品在庫管理システム", category: "operations", defaultStatus: "migrated", defaultMigrationStage: "testing" },
     { id: "construction-priority", title: "工事優先順位ダッシュボード", category: "operations", defaultStatus: "review" },
     { id: "insurance-new", title: "保険加入確認書類 提出フォーム（新規）", category: "forms", defaultStatus: "done" },
     { id: "insurance-renewal", title: "保険加入確認書類 提出フォーム（更新）", category: "forms", defaultStatus: "done" },
-    { id: "tenant-contact", title: "不具合・お困りごと お問い合わせフォーム", category: "forms", defaultStatus: "active" },
+    { id: "tenant-contact", title: "不具合・お困りごと お問い合わせフォーム", category: "forms", defaultStatus: "migrated", defaultMigrationStage: "testing" },
     { id: "existing-owner-survey", title: "創業50周年記念 既存オーナーアンケート", category: "forms", defaultStatus: "hold" },
     { id: "new-owner-survey", title: "新規賃貸住宅管理受託契約 確認事項アンケート", category: "forms", defaultStatus: "hold" },
-    { id: "room-check", title: "入居時室内チェック 写真アップロードフォーム", category: "forms", defaultStatus: "review" },
+    { id: "room-check", title: "入居時室内チェック 写真アップロードフォーム", category: "forms", defaultStatus: "migrated", defaultMigrationStage: "testing" },
     { id: "survey-dashboard", title: "アンケート集計ダッシュボード", category: "dashboards", defaultStatus: "hold" },
     { id: "survey-admin", title: "アンケート管理ダッシュボード", category: "dashboards", defaultStatus: "hold" },
   ];
@@ -49,12 +51,14 @@
       visible: true,
       priority: false,
       note: "",
+      migrationStage: project.defaultMigrationStage || "testing",
+      migrationUrl: APP_STORE_URL,
     };
   }
 
   function getDefaultState() {
     return {
-      version: 1,
+      version: 2,
       updatedAt: null,
       projects: Object.fromEntries(
         projects.map((project) => [project.id, defaultProjectState(project)]),
@@ -70,17 +74,38 @@
       visible: typeof value?.visible === "boolean" ? value.visible : fallback.visible,
       priority: typeof value?.priority === "boolean" ? value.priority : fallback.priority,
       note: typeof value?.note === "string" ? value.note.slice(0, 120) : fallback.note,
+      migrationStage: ["testing", "production"].includes(value?.migrationStage)
+        ? value.migrationStage : fallback.migrationStage,
+      migrationUrl: safeMigrationUrl(value?.migrationUrl) || fallback.migrationUrl,
     };
+  }
+
+  function safeMigrationUrl(value) {
+    if (typeof value !== "string" || value.length > 2048) return null;
+    try {
+      const url = new URL(value.trim());
+      return url.protocol === "https:" && !url.username && !url.password ? url.href : null;
+    } catch {
+      return null;
+    }
   }
 
   function normalizeState(value) {
     const fallback = getDefaultState();
-    const sourceProjects = value && typeof value.projects === "object" ? value.projects : {};
-    fallback.updatedAt = typeof value?.updatedAt === "string" ? value.updatedAt : null;
+    const sourceProjects = value?.projects && typeof value.projects === "object" ? value.projects : {};
+    fallback.updatedAt = typeof value?.updatedAt === "string" && Number.isFinite(Date.parse(value.updatedAt))
+      ? value.updatedAt : null;
     fallback.projects = Object.fromEntries(
       projects.map((project) => [
         project.id,
-        sanitizeProjectState(sourceProjects[project.id], project),
+        sanitizeProjectState(
+          // Apply the verified App Store handoff once for legacy saved settings.
+          // Version 2 preserves subsequent manual status choices, including undoing a handoff.
+          value?.version !== 2 && project.defaultStatus === "migrated"
+            ? { ...sourceProjects[project.id], status: "migrated", migrationStage: project.defaultMigrationStage }
+            : sourceProjects[project.id],
+          project,
+        ),
       ]),
     );
     return fallback;
@@ -114,6 +139,7 @@
 
   global.HeiwaProjectState = Object.freeze({
     STORAGE_KEY,
+    APP_STORE_URL,
     statuses,
     categories,
     projects,
@@ -123,5 +149,6 @@
     saveState,
     resetState,
     normalizeTitle,
+    safeMigrationUrl,
   });
 })(window);

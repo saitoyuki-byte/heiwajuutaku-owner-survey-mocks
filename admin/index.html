@@ -9,7 +9,7 @@
       content="平和住宅情報センター様向けプロトタイプ集の表示と進捗を管理します。"
     />
     <title>表示管理｜業務改善システム・プロトタイプ集</title>
-    <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="./styles.css?v=20260927-handoff" />
   </head>
   <body>
     <header class="topbar">
@@ -35,6 +35,7 @@
           <h1 id="page-title">表示と進捗を整える</h1>
           <p class="lead">
             ステータスを選ぶだけで、プロトタイプ集の色・件数・絞り込みへ反映されます。
+            社内App Storeへ移したツールは「移行済み」を選んでください。
           </p>
         </div>
         <div class="save-state" role="status" aria-live="polite">
@@ -116,14 +117,14 @@
           <select data-field="status"></select>
         </label>
         <label class="control note-control">
-          <span>一覧に表示するメモ</span>
-          <input data-field="note" maxlength="120" placeholder="例：10月運用開始予定" />
+          <span data-note-label>次のアクション</span>
+          <input data-field="note" maxlength="120" placeholder="例：担当者に入力項目の確認を依頼" />
         </label>
         <div class="toggle-controls">
           <label class="toggle-control">
             <input type="checkbox" data-field="priority" />
             <span class="switch" aria-hidden="true"></span>
-            <span><strong>優先表示</strong><small>カテゴリー内の先頭へ</small></span>
+            <span><strong>優先表示</strong><small>同じ状態の先頭へ</small></span>
           </label>
           <label class="toggle-control">
             <input type="checkbox" data-field="visible" />
@@ -131,10 +132,24 @@
             <span><strong>一覧に掲載</strong><small data-visibility-label>表示中</small></span>
           </label>
         </div>
+        <div class="migration-controls" data-migration-controls hidden>
+          <p>↗ 社内App Storeへ移行済み<span>一覧ではグレーのカードで表示します。</span></p>
+          <label class="control">
+            <span>移行先の実装状況</span>
+            <select data-field="migrationStage">
+              <option value="testing">テスト実装</option>
+              <option value="production">本実装</option>
+            </select>
+          </label>
+          <label class="control migration-url-control">
+            <span>移行先URL（空欄の場合は社内App Store）</span>
+            <input type="url" data-field="migrationUrl" maxlength="2048" placeholder="https://…" />
+          </label>
+        </div>
       </article>
     </template>
 
-    <script src="../assets/project-state.js?v=20260920-cancel"></script>
-    <script src="./admin.js"></script>
+    <script src="../assets/project-state.js?v=20260927-handoff"></script>
+    <script src="./admin.js?v=20260927-handoff"></script>
   </body>
 </html>

@@ -79,10 +79,16 @@
   }
 
   function save(message) {
-    state = store.saveState(state);
-    updateSavedLabel();
-    updateSummary();
-    if (message) showToast(message);
+    try {
+      state = store.saveState(state);
+      document.querySelector("[data-save-label]").textContent = "この端末に保存済み";
+      updateSavedLabel();
+      updateSummary();
+      if (message) showToast(message);
+    } catch {
+      document.querySelector("[data-save-label]").textContent = "保存できていません";
+      showToast("保存できませんでした。設定を書き出して変更を保管してください。");
+    }
   }
 
   function renderRow(project) {
@@ -101,18 +107,37 @@
     row.querySelector('[data-field="note"]').value = projectState.note;
     row.querySelector('[data-field="priority"]').checked = projectState.priority;
     row.querySelector('[data-field="visible"]').checked = projectState.visible;
+    row.querySelector('[data-field="migrationStage"]').value = projectState.migrationStage;
+    row.querySelector('[data-field="migrationUrl"]').value = projectState.migrationUrl;
+    const fieldLabels = {
+      status: "ステータス", note: "表示メモ", priority: "優先表示", visible: "一覧に掲載",
+      migrationStage: "移行先の実装状況", migrationUrl: "移行先URL",
+    };
+    row.querySelectorAll("[data-field]").forEach((field) => {
+      field.setAttribute("aria-label", `${project.title}：${fieldLabels[field.dataset.field]}`);
+    });
 
     function paintRow() {
       const current = state.projects[project.id];
       const status = statusById[current.status];
       row.style.setProperty("--status-color", status.color);
       row.classList.toggle("is-hidden", !current.visible);
+      row.classList.toggle("is-migrated", current.status === "migrated");
+      row.querySelector("[data-migration-controls]").hidden = current.status !== "migrated";
+      row.querySelector("[data-note-label]").textContent = status.noteLabel;
       row.querySelector("[data-visibility-label]").textContent = current.visible ? "表示中" : "非表示";
     }
 
     row.addEventListener("change", (event) => {
       const field = event.target.dataset.field;
       if (!field) return;
+      if (field === "migrationUrl") {
+        const input = event.target;
+        const url = input.value.trim() ? store.safeMigrationUrl(input.value) : store.APP_STORE_URL;
+        input.setCustomValidity(url ? "" : "https:// で始まる有効なURLを入力してください。");
+        if (!url) { input.reportValidity(); return; }
+        input.value = url;
+      }
       state.projects[project.id][field] =
         event.target.type === "checkbox" ? event.target.checked : event.target.value;
       paintRow();
@@ -123,6 +148,9 @@
     row.querySelector('[data-field="note"]').addEventListener("input", (event) => {
       state.projects[project.id].note = event.target.value;
       save();
+    });
+    row.querySelector('[data-field="migrationUrl"]').addEventListener("input", (event) => {
+      event.target.setCustomValidity("");
     });
 
     paintRow();
@@ -170,7 +198,12 @@
     const reader = new FileReader();
     reader.addEventListener("load", () => {
       try {
-        state = store.saveState(JSON.parse(reader.result));
+        const imported = JSON.parse(reader.result);
+        if (![1, 2].includes(imported?.version) || !imported.projects ||
+            typeof imported.projects !== "object" || Array.isArray(imported.projects)) {
+          throw new Error("Invalid settings file");
+        }
+        state = store.saveState(imported);
         renderRows();
         updateSummary();
         updateSavedLabel();
@@ -179,6 +212,7 @@
         showToast("設定ファイルを読み込めませんでした");
       }
     });
+    reader.addEventListener("error", () => showToast("設定ファイルを読み込めませんでした"));
     reader.readAsText(file);
   }
 
@@ -199,6 +233,14 @@
     updateSummary();
     updateSavedLabel();
     showToast("初期設定に戻しました");
+  });
+
+  window.addEventListener("storage", (event) => {
+    if (event.key !== store.STORAGE_KEY && event.key !== null) return;
+    state = store.loadState();
+    renderRows();
+    updateSummary();
+    updateSavedLabel();
   });
 
   addFilterOptions();
