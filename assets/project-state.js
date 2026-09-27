@@ -2,7 +2,6 @@
   "use strict";
 
   const STORAGE_KEY = "heiwaPrototypeGalleryState:v1";
-  const APP_STORE_URL = "https://heiwa-internal-tools.cantera-saito.chatgpt.site/#top";
 
   const statuses = [
     { id: "active", label: "着手中", color: "#0879b7", symbol: "◐", description: "制作・調整を進めているツール", noteLabel: "次のアクション" },
@@ -52,7 +51,6 @@
       priority: false,
       note: "",
       migrationStage: project.defaultMigrationStage || "testing",
-      migrationUrl: APP_STORE_URL,
     };
   }
 
@@ -76,18 +74,7 @@
       note: typeof value?.note === "string" ? value.note.slice(0, 120) : fallback.note,
       migrationStage: ["testing", "production"].includes(value?.migrationStage)
         ? value.migrationStage : fallback.migrationStage,
-      migrationUrl: safeMigrationUrl(value?.migrationUrl) || fallback.migrationUrl,
     };
-  }
-
-  function safeMigrationUrl(value) {
-    if (typeof value !== "string" || value.length > 2048) return null;
-    try {
-      const url = new URL(value.trim());
-      return url.protocol === "https:" && !url.username && !url.password ? url.href : null;
-    } catch {
-      return null;
-    }
   }
 
   function normalizeState(value) {
@@ -139,7 +126,6 @@
 
   global.HeiwaProjectState = Object.freeze({
     STORAGE_KEY,
-    APP_STORE_URL,
     statuses,
     categories,
     projects,
@@ -149,6 +135,5 @@
     saveState,
     resetState,
     normalizeTitle,
-    safeMigrationUrl,
   });
 })(window);

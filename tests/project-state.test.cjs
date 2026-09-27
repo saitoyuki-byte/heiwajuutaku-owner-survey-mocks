@@ -44,20 +44,20 @@ test("version 2 choices can undo a handoff and round-trip through storage and JS
   state.projects["invoice-check"].status = "active";
   state.projects["shift-planner"].status = "migrated";
   state.projects["shift-planner"].migrationStage = "production";
-  state.projects["shift-planner"].migrationUrl = "https://example.com/app#shift";
   api.saveState(state);
   const loaded = api.normalizeState(JSON.parse(JSON.stringify(api.loadState())));
   assert.equal(loaded.projects["invoice-check"].status, "active");
   assert.equal(loaded.projects["shift-planner"].migrationStage, "production");
-  assert.equal(loaded.projects["shift-planner"].migrationUrl, "https://example.com/app#shift");
 });
 
-test("imported migration URLs reject executable schemes and credentials", () => {
+test("old URL settings are ignored without losing migration status or notes", () => {
   const api = store();
-  for (const url of ["javascript:alert(1)", "data:text/html,test", "//example.com", "https://user:pass@example.com", "http://example.com"]) {
-    assert.equal(api.safeMigrationUrl(url), null);
-    const result = api.normalizeState({ version: 2, projects: { "invoice-check": { status: "migrated", migrationUrl: url } } });
-    assert.equal(result.projects["invoice-check"].migrationUrl, api.APP_STORE_URL);
-  }
+  const result = api.normalizeState({ version: 2, projects: {
+    "invoice-check": { status: "migrated", migrationStage: "production", note: "既存のメモ", migrationUrl: "https://example.com/old" },
+  }});
+  assert.equal(result.projects["invoice-check"].status, "migrated");
+  assert.equal(result.projects["invoice-check"].migrationStage, "production");
+  assert.equal(result.projects["invoice-check"].note, "既存のメモ");
+  assert.equal(Object.hasOwn(result.projects["invoice-check"], "migrationUrl"), false);
   assert.doesNotThrow(() => api.normalizeState({ projects: null, updatedAt: "invalid" }));
 });

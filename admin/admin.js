@@ -108,10 +108,9 @@
     row.querySelector('[data-field="priority"]').checked = projectState.priority;
     row.querySelector('[data-field="visible"]').checked = projectState.visible;
     row.querySelector('[data-field="migrationStage"]').value = projectState.migrationStage;
-    row.querySelector('[data-field="migrationUrl"]').value = projectState.migrationUrl;
     const fieldLabels = {
       status: "ステータス", note: "表示メモ", priority: "優先表示", visible: "一覧に掲載",
-      migrationStage: "移行先の実装状況", migrationUrl: "移行先URL",
+      migrationStage: "移行先の実装状況",
     };
     row.querySelectorAll("[data-field]").forEach((field) => {
       field.setAttribute("aria-label", `${project.title}：${fieldLabels[field.dataset.field]}`);
@@ -131,13 +130,6 @@
     row.addEventListener("change", (event) => {
       const field = event.target.dataset.field;
       if (!field) return;
-      if (field === "migrationUrl") {
-        const input = event.target;
-        const url = input.value.trim() ? store.safeMigrationUrl(input.value) : store.APP_STORE_URL;
-        input.setCustomValidity(url ? "" : "https:// で始まる有効なURLを入力してください。");
-        if (!url) { input.reportValidity(); return; }
-        input.value = url;
-      }
       state.projects[project.id][field] =
         event.target.type === "checkbox" ? event.target.checked : event.target.value;
       paintRow();
@@ -148,9 +140,6 @@
     row.querySelector('[data-field="note"]').addEventListener("input", (event) => {
       state.projects[project.id].note = event.target.value;
       save();
-    });
-    row.querySelector('[data-field="migrationUrl"]').addEventListener("input", (event) => {
-      event.target.setCustomValidity("");
     });
 
     paintRow();

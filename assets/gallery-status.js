@@ -79,13 +79,6 @@
     const description = element("p", null, status.description);
     text.append(title, description);
     heading.append(text);
-    if (status.id === "migrated") {
-      const link = element("a", "migration-store-link", "社内App Storeを開く ↗");
-      link.href = store.APP_STORE_URL;
-      link.target = "_blank";
-      link.rel = "noopener";
-      heading.append(link);
-    }
     const grid = element("div", "progress-grid");
     section.append(heading, grid);
     board.append(section);
@@ -127,12 +120,12 @@
     entry.note.classList.toggle("is-unset", !value.note);
     entry.migration.hidden = !migrated;
     entry.migration.textContent = `${entry.stage.textContent}のツールは社内App Storeでご確認ください。`;
-    entry.primary.hidden = !migrated && !entry.originalHref;
-    entry.primary.href = migrated ? value.migrationUrl : entry.originalHref || "#";
-    entry.primary.textContent = migrated ? "移行先を確認する ↗" : "プロトタイプを開く →";
-    if (migrated || entry.originalTarget) entry.primary.target = migrated ? "_blank" : entry.originalTarget;
+    entry.primary.hidden = migrated || !entry.originalHref;
+    entry.primary.href = entry.originalHref || "#";
+    entry.primary.textContent = "プロトタイプを開く →";
+    if (entry.originalTarget) entry.primary.target = entry.originalTarget;
     else entry.primary.removeAttribute("target");
-    if (migrated || entry.originalRel) entry.primary.rel = migrated ? "noopener" : entry.originalRel;
+    if (entry.originalRel) entry.primary.rel = entry.originalRel;
     else entry.primary.removeAttribute("rel");
     entry.archiveNote.hidden = !migrated;
     entry.summary.textContent = migrated ? "移行前の内容・リンク" : "説明・機能を見る";

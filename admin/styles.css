@@ -214,7 +214,7 @@ h1 { margin: 0; font-size: clamp(2rem, 4vw, 3.25rem); line-height: 1.18; letter-
 .project-row.is-hidden { opacity: .58; }
 .project-row.is-migrated { background: #f0f2f5; border-color: #cbd3dc; border-left-color: #8a96a6; }
 .project-row.is-migrated h2 { color: #455364; }
-.migration-controls { grid-column: 1 / -1; display: grid; grid-template-columns: 250px 180px minmax(220px, 1fr); align-items: center; gap: 18px; padding: 14px 0 0; border-top: 1px solid #d5dce3; }
+.migration-controls { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(250px, 1fr) 180px; align-items: center; gap: 18px; padding: 14px 0 0; border-top: 1px solid #d5dce3; }
 .migration-controls > p { margin: 0; color: #465569; font-size: 14px; font-weight: 700; }
 .migration-controls > p > span { display: block; font-weight: 400; font-size: 12px; margin-top: 5px; }
 .project-identity { min-width: 0; display: flex; align-items: center; gap: 12px; }
@@ -272,7 +272,6 @@ h1 { margin: 0; font-size: clamp(2rem, 4vw, 3.25rem); line-height: 1.18; letter-
   .project-row { grid-template-columns: minmax(240px, 1fr) 180px 1fr; }
   .toggle-controls { grid-column: 1 / -1; padding-top: 11px; border-top: 1px solid #edf1ef; }
   .migration-controls { grid-template-columns: 1fr 1fr; }
-  .migration-url-control { grid-column: 1 / -1; }
 }
 
 @media (max-width: 720px) {

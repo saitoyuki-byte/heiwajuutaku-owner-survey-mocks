@@ -65,14 +65,11 @@ main { padding-top: 24px; }
 .group-migrated .progress-group-heading { border-left-color: #8a95a3; }
 .group-migrated .progress-group-heading :is(h2, p) { color: #475569; }
 .group-migrated .group-count { background: #d7dfe7; color: #475569; }
-.migration-store-link { font-size: 14px; color: #334155; font-weight: 700; text-underline-offset: 4px; }
 .progress-card--migrated { background: #f1f3f5; border-color: #ccd3db; border-top-color: #929ca9; box-shadow: none; }
 .progress-card--migrated .progress-badge { color: #455161; background: #dfe4e9; }
 .progress-card--migrated h3 { color: #3b4756; }
 .progress-card--migrated :is(.progress-category, .progress-description, .progress-detail-toggle) { color: #5b6675; }
 .migration-message { font-size: 14px; color: #48586b; line-height: 1.7; margin: 0 0 14px; }
-.progress-card--migrated .progress-primary { color: #334155; background: #e2e7ec; border-color: #bfc9d5; }
-.progress-card--migrated .progress-primary:hover { background: #d5dde5; }
 .progress-card--migrated :is(.featured-preview, .card-visual) { filter: grayscale(1); }
 .progress-card--migrated .project-detail-content :is(.open-button, .text-link) { color: #465364; background: #e3e7ec; box-shadow: none; }
 .progress-card--migrated .progress-next { background: #eaedf0; border-color: #d4dbe3; }
