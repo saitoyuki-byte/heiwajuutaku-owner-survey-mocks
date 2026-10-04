@@ -40,6 +40,7 @@
     { id: "existing-owner-survey", title: "創業50周年記念 既存オーナーアンケート", category: "forms", defaultStatus: "hold" },
     { id: "new-owner-survey", title: "新規賃貸住宅管理受託契約 確認事項アンケート", category: "forms", defaultStatus: "hold" },
     { id: "room-check", title: "入居時室内チェック 写真アップロードフォーム", category: "forms", defaultStatus: "migrated", defaultMigrationStage: "testing" },
+    { id: "move-out-report", title: "退去時室内写真＆鍵収納場所報告フォーム", category: "forms", defaultStatus: "review" },
     { id: "survey-dashboard", title: "アンケート集計ダッシュボード", category: "dashboards", defaultStatus: "hold" },
     { id: "survey-admin", title: "アンケート管理ダッシュボード", category: "dashboards", defaultStatus: "hold" },
   ];
