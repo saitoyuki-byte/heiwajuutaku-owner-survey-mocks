@@ -17,7 +17,7 @@ const path = require("node:path");
   try {
     await page.goto(base);
     await page.waitForSelector(".progress-card");
-    assert.equal(await page.locator(".progress-card:visible").count(), 23);
+    assert.equal(await page.locator(".progress-card:visible").count(), 24);
     assert.equal(await page.locator(".progress-card--migrated").count(), 7);
     assert.equal(await page.locator('.progress-card--migrated .migration-stage').allTextContents().then((labels) => labels.filter((x) => x === "テスト実装").length), 5);
     assert.equal(await page.locator("#operations").isVisible(), false);
@@ -42,7 +42,7 @@ const path = require("node:path");
     await page.locator('[data-category="dashboards"]').click();
     assert.equal(await page.locator("[data-progress-empty]").isVisible(), true);
     await page.locator("[data-clear-filters]").click();
-    assert.equal(await page.locator(".progress-card:visible").count(), 23);
+    assert.equal(await page.locator(".progress-card:visible").count(), 24);
 
     const admin = await context.newPage();
     await admin.goto(new URL("admin/", base).href);
@@ -69,7 +69,7 @@ const path = require("node:path");
     await page.locator('[data-filter="handed-off"]').click();
     assert.equal(await page.locator(".progress-card:visible").count(), 1);
     assert.equal(await page.locator("[data-handed-off-total]").textContent(), "1");
-    assert.equal(await page.locator("[data-working-total]").textContent(), "15");
+    assert.equal(await page.locator("[data-working-total]").textContent(), "16");
     const handedOff = page.locator('[data-project-id="shift-planner"]');
     assert.equal(await handedOff.locator(".progress-badge").textContent(), "↪ 髙橋満様へ引き継ぎ済み");
     assert.equal(await handedOff.locator(".migration-stage").isVisible(), false);

@@ -20,6 +20,7 @@
   };
 
   const projects = [
+    { id: "measurement-service", title: "採寸代行サービス依頼フォーム", category: "forms", defaultStatus: "review" },
     { id: "cancel-form", title: "解約・退去のお手続き", category: "forms", defaultStatus: "review" },
     { id: "admission-result", title: "【合格前予約】選考結果のご連絡", category: "forms", defaultStatus: "review" },
     { id: "meishi-desk", title: "名刺管理・DMリスト作成", category: "operations", defaultStatus: "review" },
