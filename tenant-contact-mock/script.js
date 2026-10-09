@@ -55,6 +55,10 @@ const membershipState = {
   error: "",
 };
 
+const selectedMockUploads = { photos: [], videos: [] };
+let mockUploadMessage = '';
+const attachmentPreviews = window.HeiwaAttachmentPreviews.create({ getUploads: () => state.complete ? { photos: [], videos: [] } : selectedMockUploads });
+
 const membershipServices = [
   { id: "support", label: "安心入居サポート" },
   { id: "mamorocca", label: "Mamorocca（マモロッカ）" },
@@ -475,15 +479,11 @@ function renderStep2() {
           </label>
         </div>
         <div class="file-rule"><span aria-hidden="true">i</span>
-          <p>写真・動画を合わせて50MBまで。モックではファイル名のみ表示します。</p>
+          <p>写真・PDF・動画を合わせて50MB、10ファイルまで。モックでは実際の送信・保存は行いません。</p>
         </div>
-        ${
-          state.photos.length || state.videos.length
-            ? `<ul class="file-list">${[...state.photos, ...state.videos]
-                .map((file) => `<li><span>✓</span>${esc(file)}</li>`)
-                .join("")}</ul>`
-            : ""
-        }
+        <p class="attachment-status" role="status">${esc(mockUploadMessage)}${mockUploadMessage ? '<br />' : ''}選択済み：${state.photos.length + state.videos.length} / 10ファイル</p>
+        <p class="attachment-preview-hint">写真をタップすると拡大表示します。PDF・動画はファイル名で確認できます。</p>
+        ${attachmentPreviews.markup(selectedMockUploads, esc)}
       </div>
       ${navigation(true)}
     </section>`;
@@ -896,6 +896,7 @@ function renderSuccess() {
 }
 
 function render() {
+  attachmentPreviews.sync();
   if (state.formMode === "membership") {
     renderMembershipForm();
     return;
@@ -943,7 +944,18 @@ document.addEventListener("click", (event) => {
   const target = event.target.closest("button");
   if (!target) return;
 
-  if (target.hasAttribute("data-property-select")) {
+  if (target.hasAttribute('data-remove-upload')) {
+    const key = target.dataset.removeUpload, index = Number(target.dataset.uploadIndex);
+    if (!['photos', 'videos'].includes(key) || !Number.isSafeInteger(index) || index < 0) return;
+    const file = selectedMockUploads[key][index];
+    if (!file) return;
+    selectedMockUploads[key] = selectedMockUploads[key].filter((_file, position) => position !== index);
+    state[key] = selectedMockUploads[key].map(file => file.name);
+    mockUploadMessage = `${file.name}を添付から外しました。`;
+    render();
+    const nextButton = document.querySelector(`[data-remove-upload="${key}"][data-upload-index="${Math.min(index, selectedMockUploads[key].length - 1)}"]`);
+    (nextButton || document.getElementById(key === 'photos' ? 'photoFiles' : 'videoFiles'))?.focus({ preventScroll: true });
+  } else if (target.hasAttribute("data-property-select")) {
     selectProperty(
       target.dataset.propertyTarget,
       target.dataset.propertyNumber,
@@ -997,6 +1009,8 @@ document.addEventListener("click", (event) => {
     render();
     window.scrollTo({ top: 0, behavior: "smooth" });
   } else if (target.dataset.action === "restart") {
+    selectedMockUploads.photos = []; selectedMockUploads.videos = [];
+    state.photos = []; state.videos = []; mockUploadMessage = '';
     state.complete = false;
     state.step = 1;
     document.querySelector(".success-card").outerHTML = '<section class="form-card" id="formCard" aria-live="polite"></section>';
@@ -1053,11 +1067,18 @@ document.addEventListener("change", (event) => {
     membershipState.error = "";
     render();
   } else if (target.id === "photoFiles" || target.id === "videoFiles") {
-    const names = Array.from(target.files || []).map((file) => file.name);
+    const files = Array.from(target.files || []);
     target.value = "";
-    if (!names.length) return;
-    if (target.id === "photoFiles") state.photos = [...state.photos, ...names];
-    if (target.id === "videoFiles") state.videos = [...state.videos, ...names];
+    if (!files.length) return;
+    const key = target.id === 'photoFiles' ? 'photos' : 'videos';
+    const next = [...selectedMockUploads[key], ...files], other = selectedMockUploads[key === 'photos' ? 'videos' : 'photos'];
+    if (next.length + other.length > 10 || [...next, ...other].reduce((bytes, file) => bytes + file.size, 0) > 50 * 1024 * 1024) {
+      mockUploadMessage = '追加できませんでした。添付は合計50MB、10ファイルまでです。選択済みのファイルはそのまま残っています。';
+      render(); return;
+    }
+    selectedMockUploads[key] = next;
+    state[key] = next.map(file => file.name);
+    mockUploadMessage = `${files.length}ファイルを追加しました。`;
     render();
   }
 });
