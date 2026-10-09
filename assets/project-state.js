@@ -20,6 +20,7 @@
   };
 
   const projects = [
+    { id: "fees-inquiry", title: "ご契約・料金のお問い合わせ", category: "forms", defaultStatus: "review" },
     { id: "viewing-application", title: "案内・申込管理", category: "operations", defaultStatus: "review" },
     { id: "measurement-service", title: "採寸代行サービス依頼フォーム", category: "forms", defaultStatus: "review" },
     { id: "cancel-form", title: "解約・退去のお手続き", category: "forms", defaultStatus: "review" },
