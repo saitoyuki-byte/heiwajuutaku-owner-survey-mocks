@@ -466,12 +466,12 @@ function renderStep2() {
           <label class="upload-box">
             <input id="photoFiles" type="file" accept="image/*,.pdf" multiple />
             <span class="upload-icon" aria-hidden="true">写真</span>
-            <strong>写真・PDFを選ぶ</strong><small>複数選択できます</small>
+            <strong>写真・PDFを追加</strong><small>1枚ずつ追加できます。複数選択も可能です。</small>
           </label>
           <label class="upload-box">
             <input id="videoFiles" type="file" accept="video/*" multiple />
             <span class="upload-icon" aria-hidden="true">動画</span>
-            <strong>動画を選ぶ</strong><small>症状の音や動きが分かる動画</small>
+            <strong>動画を追加</strong><small>選択済みの動画に追加できます</small>
           </label>
         </div>
         <div class="file-rule"><span aria-hidden="true">i</span>
@@ -1054,8 +1054,10 @@ document.addEventListener("change", (event) => {
     render();
   } else if (target.id === "photoFiles" || target.id === "videoFiles") {
     const names = Array.from(target.files || []).map((file) => file.name);
-    if (target.id === "photoFiles") state.photos = names;
-    if (target.id === "videoFiles") state.videos = names;
+    target.value = "";
+    if (!names.length) return;
+    if (target.id === "photoFiles") state.photos = [...state.photos, ...names];
+    if (target.id === "videoFiles") state.videos = [...state.videos, ...names];
     render();
   }
 });
