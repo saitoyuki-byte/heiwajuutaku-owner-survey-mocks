@@ -1177,7 +1177,7 @@
         <div class="header-meta">
           <span>打ち合わせ・要件確認用</span>
           <a class="admin-link" href="./admin/">表示を管理</a>
-          <strong><b data-project-total>26</b> PROJECTS</strong>
+          <strong><b data-project-total>27</b> PROJECTS</strong>
         </div>
       </div>
     </header>
@@ -1193,11 +1193,11 @@
           <div class="hero-chips" aria-label="成果物の種類">
             <span>入力フォーム <b data-category-count="forms">11</b>件</span>
             <span>集計・管理 <b data-category-count="dashboards">2</b>件</span>
-            <span>業務改善 <b data-category-count="operations">13</b>件</span>
+            <span>業務改善 <b data-category-count="operations">14</b>件</span>
           </div>
         </div>
         <div class="progress-overview" aria-label="掲載ツールの内訳">
-          <div><span>プロトタイプ</span><strong data-working-total>18</strong><small>制作・確認・移行前</small></div>
+          <div><span>プロトタイプ</span><strong data-working-total>20</strong><small>制作・確認・移行前</small></div>
           <div class="overview-migrated"><span>社内App Storeへ移行済み</span><strong data-migrated-total>7</strong><small>テスト実装・本実装</small></div>
           <div class="overview-handed-off"><span>髙橋満様へ引き継ぎ済み</span><strong data-handed-off-total>0</strong><small>エンジニアへ引き継ぎ</small></div>
         </div>
@@ -1236,7 +1236,7 @@
         </div>
         <div class="status-filters" data-progress-filters aria-label="ステータスで絞り込む">
           <button class="status-filter all" type="button" data-filter="all" aria-pressed="true">
-            <span>すべて</span><strong data-project-total>26</strong>
+            <span>すべて</span><strong data-project-total>27</strong>
           </button>
           <button class="status-filter done" type="button" data-filter="done" aria-pressed="false">
             <span>実装済み</span><strong data-count="done">0</strong>
@@ -1272,6 +1272,54 @@
           </div>
           <span>現場業務の整理と効率化</span>
         </div>
+
+        <article class="featured-card" id="store-check">
+          <div class="featured-content">
+            <span class="tag green new">店舗業務・チェック管理</span>
+            <h3>店舗チェック（開店・閉店）</h3>
+            <p>
+              4店舗の開店・閉店・清掃・車両チェックを、入力フォームと管理画面の2画面で確認できる操作プロトタイプです。
+              入力者を自動記録し、承認権限のある人だけが入力内容に最終チェックを入れられます。
+            </p>
+            <ul class="feature-list">
+              <li>店舗・日付・作業区分ごとのチェックと補足コメントを記録</li>
+              <li>画像・動画の複数添付、写真のプレビュー、動画再生に対応</li>
+              <li>管理画面で入力者・承認者・日時を確認し、閲覧のみと承認ありを切り替えて体験</li>
+            </ul>
+            <p class="access-note">
+              ※デモアカウントで操作する試用版です。Google Workspace認証・社員間共有は未接続で、
+              記録と添付はブラウザ内に保存されます。現在は閲覧権限のある方のみアクセスできます。
+            </p>
+            <a
+              class="open-button"
+              href="https://heiwa-store-check-prototype.cantera-saito.chatgpt.site/"
+              target="_blank"
+              rel="noopener"
+            >
+              店舗チェックを開く <span aria-hidden="true">›</span>
+            </a>
+          </div>
+          <div class="featured-preview" aria-hidden="true">
+            <div class="preview-window">
+              <div class="preview-bar"><i></i><i></i><i></i></div>
+              <div class="preview-summary">
+                <div><span>画面構成</span><b>2</b></div>
+                <div><span>入力者</span><b>自動</b></div>
+                <div><span>最終チェック</span><b>権限別</b></div>
+                <div><span>画像・動画</span><b>対応</b></div>
+              </div>
+              <div class="preview-body">
+                <div class="preview-table">
+                  <div><i></i><i></i><i></i></div>
+                  <div><i></i><i></i><i></i></div>
+                  <div><i></i><i></i><i></i></div>
+                  <div><i></i><i></i><i></i></div>
+                </div>
+                <div class="preview-side"><i></i><i></i><i></i><i></i></div>
+              </div>
+            </div>
+          </div>
+        </article>
 
         <article class="featured-card" id="viewing-application">
           <div class="featured-content">
@@ -2109,7 +2157,7 @@
       <span>平和住宅情報センター様｜業務改善システム・プロトタイプ集</span>
       <span>PROTOTYPE LIBRARY / 2026</span>
     </footer>
-    <script src="./assets/project-state.js?v=20261011-resident-inquiry"></script>
+    <script src="./assets/project-state.js?v=20261012-store-check"></script>
     <script src="./assets/gallery-status.js?v=20260927-engineer"></script>
   </body>
 </html>

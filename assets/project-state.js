@@ -20,6 +20,7 @@
   };
 
   const projects = [
+    { id: "store-check", title: "店舗チェック（開店・閉店）", category: "operations", defaultStatus: "review" },
     { id: "fees-inquiry", title: "ご入居者様専用お問合せフォーム", category: "forms", defaultStatus: "review" },
     { id: "viewing-application", title: "案内・申込管理", category: "operations", defaultStatus: "review" },
     { id: "measurement-service", title: "採寸代行サービス依頼フォーム", category: "forms", defaultStatus: "review" },
