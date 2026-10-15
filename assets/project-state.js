@@ -20,6 +20,7 @@
   };
 
   const projects = [
+    { id: "pre-inspection-booking", title: "事前立会受付ツール", category: "operations", defaultStatus: "review" },
     { id: "store-check", title: "店舗チェック（開店・閉店）", category: "operations", defaultStatus: "review" },
     { id: "fees-inquiry", title: "ご入居者様専用お問合せフォーム", category: "forms", defaultStatus: "review" },
     { id: "viewing-application", title: "案内・申込管理", category: "operations", defaultStatus: "review" },
