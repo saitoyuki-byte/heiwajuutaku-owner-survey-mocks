@@ -1177,7 +1177,7 @@
         <div class="header-meta">
           <span>打ち合わせ・要件確認用</span>
           <a class="admin-link" href="./admin/">表示を管理</a>
-          <strong><b data-project-total>27</b> PROJECTS</strong>
+          <strong><b data-project-total>29</b> PROJECTS</strong>
         </div>
       </div>
     </header>
@@ -1193,11 +1193,11 @@
           <div class="hero-chips" aria-label="成果物の種類">
             <span>入力フォーム <b data-category-count="forms">11</b>件</span>
             <span>集計・管理 <b data-category-count="dashboards">2</b>件</span>
-            <span>業務改善 <b data-category-count="operations">14</b>件</span>
+            <span>業務改善 <b data-category-count="operations">16</b>件</span>
           </div>
         </div>
         <div class="progress-overview" aria-label="掲載ツールの内訳">
-          <div><span>プロトタイプ</span><strong data-working-total>20</strong><small>制作・確認・移行前</small></div>
+          <div><span>プロトタイプ</span><strong data-working-total>22</strong><small>制作・確認・移行前</small></div>
           <div class="overview-migrated"><span>社内App Storeへ移行済み</span><strong data-migrated-total>7</strong><small>テスト実装・本実装</small></div>
           <div class="overview-handed-off"><span>髙橋満様へ引き継ぎ済み</span><strong data-handed-off-total>0</strong><small>エンジニアへ引き継ぎ</small></div>
         </div>
@@ -1236,7 +1236,7 @@
         </div>
         <div class="status-filters" data-progress-filters aria-label="ステータスで絞り込む">
           <button class="status-filter all" type="button" data-filter="all" aria-pressed="true">
-            <span>すべて</span><strong data-project-total>27</strong>
+            <span>すべて</span><strong data-project-total>29</strong>
           </button>
           <button class="status-filter done" type="button" data-filter="done" aria-pressed="false">
             <span>実装済み</span><strong data-count="done">0</strong>
@@ -1272,6 +1272,55 @@
           </div>
           <span>現場業務の整理と効率化</span>
         </div>
+
+        <article class="featured-card" id="fire-inspection-survey">
+          <div class="featured-content">
+            <span class="tag green new">点検案内・在宅確認</span>
+            <h3>消防設備点検等 在宅確認アンケート管理システム</h3>
+            <p>
+              点検・作業の在宅確認を、管理画面と入居者向け回答フォームで操作できるプロトタイプです。
+              CSV取込みから個別回答、未回答者だけへの2回の催促、電話回答までを一連で試せます。
+            </p>
+            <ul class="feature-list">
+              <li>物件・点検日時の登録、入居者CSVの取込みと送信対象の確認</li>
+              <li>個別URL付きの案内と、在宅・不在・備考の回答反映</li>
+              <li>初回案内と2回の催促、未回答者の抽出、電話での代理回答</li>
+            </ul>
+            <p class="access-note">
+              ※データは利用中のブラウザ内に保存されます。CSV体験ではお手元のCSVを選択してください。
+              SMS・メールは実送信せず、実CSVの氏名・連絡先はサイトに同梱していません。
+            </p>
+            <div class="button-row">
+              <a class="open-button" href="https://heiwa-fire-survey-prototype.cantera-saito.chatgpt.site/#/admin" target="_blank" rel="noopener">
+                管理画面を開く <span aria-hidden="true">›</span>
+              </a>
+              <a class="open-button secondary" href="https://heiwa-fire-survey-prototype.cantera-saito.chatgpt.site/#/answer/demo-0-12-answer" target="_blank" rel="noopener">
+                入居者フォームを開く <span aria-hidden="true">›</span>
+              </a>
+              <a class="open-button secondary" href="https://heiwa-fire-survey-prototype.cantera-saito.chatgpt.site/#/practice" target="_blank" rel="noopener">
+                CSVで業務を体験 <span aria-hidden="true">›</span>
+              </a>
+            </div>
+          </div>
+          <div class="featured-preview" aria-hidden="true">
+            <div class="preview-window">
+              <div class="preview-bar"><i></i><i></i><i></i></div>
+              <div class="preview-summary">
+                <div><span>入居者取込</span><b>CSV</b></div>
+                <div><span>SMS案内</span><b>計3回</b></div>
+                <div><span>回答反映</span><b>随時</b></div>
+                <div><span>電話回答</span><b>手入力</b></div>
+              </div>
+              <div class="preview-body">
+                <div class="preview-table">
+                  <div><i></i><i></i><i></i></div><div><i></i><i></i><i></i></div>
+                  <div><i></i><i></i><i></i></div><div><i></i><i></i><i></i></div>
+                </div>
+                <div class="preview-side"><i></i><i></i><i></i><i></i></div>
+              </div>
+            </div>
+          </div>
+        </article>
 
         <article class="featured-card" id="pre-inspection-booking">
           <div class="featured-content">
@@ -2215,7 +2264,7 @@
       <span>平和住宅情報センター様｜業務改善システム・プロトタイプ集</span>
       <span>PROTOTYPE LIBRARY / 2026</span>
     </footer>
-    <script src="./assets/project-state.js?v=20261015-pre-inspection"></script>
+    <script src="./assets/project-state.js?v=20261022-fire-survey"></script>
     <script src="./assets/gallery-status.js?v=20260927-engineer"></script>
   </body>
 </html>
