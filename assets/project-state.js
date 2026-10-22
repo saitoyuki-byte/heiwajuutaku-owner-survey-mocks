@@ -20,6 +20,7 @@
   };
 
   const projects = [
+    { id: "fire-inspection-survey", title: "消防設備点検等 在宅確認アンケート管理システム", category: "operations", defaultStatus: "review" },
     { id: "pre-inspection-booking", title: "事前立会受付ツール", category: "operations", defaultStatus: "review" },
     { id: "store-check", title: "店舗チェック（開店・閉店）", category: "operations", defaultStatus: "review" },
     { id: "fees-inquiry", title: "ご入居者様専用お問合せフォーム", category: "forms", defaultStatus: "review" },
